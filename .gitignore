@@ -22,11 +22,7 @@ ExtentReport.html
 .DS_Store
 Thumbs.db
 
-src/test/java/tests/CreateAdvancedSettingsTest.java
 src/test/java/tests/CreateBudgetDetailsTest.java
 src/test/java/tests/EditBudgetDetailsTest.java
-src/test/java/tests/StaffMappingTest.java
-src/main/java/com/idsnext/pages/CreateAdvancedSettingsPage.java
 src/main/java/com/idsnext/pages/CreateBudgetDetailsPage.java
 src/main/java/com/idsnext/pages/EditBudgetDetailsPage.java
-src/main/java/com/idsnext/pages/StaffMappingPage.java
