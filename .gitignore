@@ -21,8 +21,3 @@ ExtentReport.html
 # OS files
 .DS_Store
 Thumbs.db
-
-src/test/java/tests/CreateBudgetDetailsTest.java
-src/test/java/tests/EditBudgetDetailsTest.java
-src/main/java/com/idsnext/pages/CreateBudgetDetailsPage.java
-src/main/java/com/idsnext/pages/EditBudgetDetailsPage.java
