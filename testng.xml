@@ -9,6 +9,16 @@
             <class name="tests.ServicesTest"/>
             <class name="tests.EditServicesTest"/>
             <class name="tests.ProductsTest"/>
+            <class name="tests.EditProductsTest"/>
+            <class name="tests.ResourcesTest"/>
+            <class name="tests.EditResourcesTest"/>
+            <class name="tests.ServiceCategoriesTest"/>
+            <class name="tests.EditServiceCategoriesTest"/>
+            <class name="tests.ProductCategoriesTest"/>
+            <class name="tests.EditProductCategoriesTest"/>
+            <class name="tests.StaffMappingTest"/>
+            <class name="tests.EditStaffMappingTest"/>
+            <class name="tests.CreateAdvancedSettingsTest"/>
 
         </classes>
     </test>
