@@ -4,7 +4,6 @@ import org.testng.annotations.Test;
 
 import com.idsnext.pages.EditProductCategoriesPage;
 import com.idsnext.pages.LoginPage;
-
 import utils.AssertionUtils;
 import utils.BaseTest;
 
@@ -45,4 +44,51 @@ public class EditProductCategoriesTest extends BaseTest {
         );
 
 }
+
+
+    @Test
+    public void verifyresetfunctionality() throws InterruptedException {
+
+        // Step 1: Login
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(config.getUsername(), config.getPassword());
+
+        EditProductCategoriesPage editProductCategoriesPage = new EditProductCategoriesPage(driver);
+
+        // Step 2: CLICK FX REPORTS     
+        editProductCategoriesPage.clickFXSPAConfigIcon();
+        editProductCategoriesPage.switchWindow();
+
+        // Step 3: Open 3-dot menu
+        editProductCategoriesPage.clickRandom();
+        editProductCategoriesPage.clickProductCategories();
+        editProductCategoriesPage.clickRandom();
+        editProductCategoriesPage.clickRow();
+        // Click Reset
+    editProductCategoriesPage.resetProductCategories();
+
+    // Assertions
+
+    AssertionUtils.assertEqualsWithMessage(
+            editProductCategoriesPage.getProductNameValue(),
+            "",
+            "Product Categories name reset successfully",
+            "Product Categories name not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            editProductCategoriesPage.getProductDescriptionValue(),
+            "",
+            "Description reset successfully",
+            "Description not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            editProductCategoriesPage.getProductHSNCodeValue(),
+            "",
+            "HSN code reset successfully",
+            "HSN code not cleared"
+    );
+
+    }
 }

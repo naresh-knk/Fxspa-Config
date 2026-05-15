@@ -5,42 +5,37 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
-public class NegativeProductCategoryPage extends BasePage {
+public class NegativePackagePage extends BasePage {
 
     private WebDriver driver;
     private WebDriverWait wait;
 
-    public NegativeProductCategoryPage(WebDriver driver) {
+    public NegativePackagePage(WebDriver driver) {
         super(driver);
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
     }
 
     // ===== Locators =====
+     private By loader =
+            By.xpath("//div[contains(@class,'loader-outer')]");
+
+    private By overlayBackdrop =
+            By.xpath("//div[contains(@class,'cdk-overlay-backdrop')]");
     private By saveButton = By.xpath("//button[contains(text(),' Save ')]");
     private By errorMessages = By.xpath("//mat-error");
 
-    // First 3 fields
-    private By ProductCategoryName = By.xpath("//input[@placeholder='Product Line']");
-    private By ProductCategoryDesc = By.xpath("//input[@placeholder='Description']");
-    private By HsnCode = By.xpath("//input[@placeholder='HSN Code']");
-    private By ProductCategoryNameError = By.xpath("//mat-error[text()=' Service Line Required ']");
-    private By ProductCategoryDescError = By.xpath("//mat-error[text()=' Description Required ']");
-    private By HsnCodeError = By.xpath("//mat-error[text()=' HSNCode Required ']");
+     private By pCode= By.xpath("//input[@placeholder='Package Code*']");
+    private By pName= By.xpath("//input[contains(@placeholder,'Package Name*')]");
+    private By days= By.xpath("//input[contains(@placeholder,'Days')]");
+    private By hsnCode= By.xpath("//input[contains(@placeholder,'HSN Code*')]");
+    // Upload photo
+    private By uploadInput = By.xpath("//input[@type='file']");
 
     // ===== Actions =====
 
     public void clickSave() {
         wait.until(ExpectedConditions.elementToBeClickable(saveButton)).click();
-    }
-
-    public void clickFieldsWithoutData() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ProductCategoryName)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ProductCategoryDesc)).click();  
-        wait.until(ExpectedConditions.visibilityOfElementLocated(HsnCode)).click();   }
-
-    public boolean isValidationDisplayed() {
-        return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(errorMessages)).size() > 0;
     }
 
     public String getAllValidationMessages() {
@@ -51,19 +46,20 @@ public class NegativeProductCategoryPage extends BasePage {
         return errors.toString();
     }
 
-    // ===== NEW METHOD (for first 3 fields only) =====
-    public String getFieldErrors() {
+    private void waitForAngularIdle() {
+        try {
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
+        } catch (Exception ignored) {}
 
-        String nameErr = wait.until(ExpectedConditions.visibilityOfElementLocated(ProductCategoryNameError)).getText();
-
-        String descErr = wait.until(ExpectedConditions.visibilityOfElementLocated(ProductCategoryDescError)).getText();
-
-        String hsnCodeErr = wait.until(ExpectedConditions.visibilityOfElementLocated(HsnCodeError)).getText();
-
-
-        return nameErr + " | " + descErr + " | " + hsnCodeErr;
+        try {
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
+        } catch (Exception ignored) {}
     }
 
+    public void uploadInvalidFile(String filePath) {
+        waitForAngularIdle();
+        driver.findElement(uploadInput).sendKeys(filePath);
+    }
 
     // ===== FIXED METHOD =====
     public String getToastMessage() {
@@ -96,6 +92,18 @@ public class NegativeProductCategoryPage extends BasePage {
     }
 
     return "";
+}
+
+private By toastMessage = By.xpath("//div[@id='toast-popup']//p");
+
+public String getToastMsgError() {
+    try {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(toastMessage))
+                .getText()
+                .trim();
+    } catch (Exception e) {
+        return "";
+    }
 }
 
 }

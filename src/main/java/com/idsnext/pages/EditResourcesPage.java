@@ -33,11 +33,10 @@ public class EditResourcesPage extends BasePage {
     private By rname= By.xpath("//input[@placeholder='Resource Name']");
     private By rdesc= By.xpath("//input[contains(@placeholder,'Description')]");
     private String updateResourcesName;
-  
-
-    
     private By updateButton =
             By.xpath("//button[contains(text(),' Update ')]");
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
 
     // ===== Constructor =====
@@ -132,6 +131,17 @@ public class EditResourcesPage extends BasePage {
     
 }
 
+public void resetResources() {
+
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        //waitForAngularIdle();
+    
+}
+
 public String getUpdateResourcesName() {
     return updateResourcesName.trim();
 }
@@ -156,5 +166,19 @@ public String getToastMsg() {
     }
 
     return "";
+}
+
+// ===== Reset Validation Getters =====
+
+public String getResourcesNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(rname))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getResourcesDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(rdesc))
+            .getAttribute("value")
+            .trim();
 }
 }

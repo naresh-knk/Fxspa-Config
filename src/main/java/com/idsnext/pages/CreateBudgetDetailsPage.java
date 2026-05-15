@@ -46,6 +46,8 @@ public class CreateBudgetDetailsPage extends BasePage {
     private String budgetDetails;
     private By createButton =
             By.xpath("//button[contains(text(),' Create ')]");
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
 
     // ===== Constructor =====
@@ -162,6 +164,52 @@ public class CreateBudgetDetailsPage extends BasePage {
 
     }
 
+
+    public void resetBudgetDetails() {
+
+        //String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+        waitForAngularIdle();
+
+        
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(financialYear))
+                .sendKeys("2023-2024");
+        
+        wait.until(ExpectedConditions.visibilityOfElementLocated(april))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(may))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(june))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(july))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(august))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sept))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(oct))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(nov))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(dec))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(jan))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(feb))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(march))
+                .sendKeys(randomNumeric);
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        //waitForAngularIdle();
+
+    }
+
     public String getBudgetDetails() {
     return budgetDetails.trim();
 }
@@ -187,4 +235,13 @@ public String getToastMsg() {
 
     return "";
 }
+
+// ===== Reset Validation Getters =====
+
+public String getBudgetDetailsNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(financialYear))
+            .getAttribute("value")
+            .trim();
+}
+
 }

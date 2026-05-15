@@ -30,7 +30,7 @@ public class ProductCategoriesPage extends BasePage {
 
             private By plusButton = By.xpath("//button[normalize-space()='+']");
 
-    private By serviceLine= By.xpath("//input[@placeholder='Product Line']");
+    private By ProductLine= By.xpath("//input[@placeholder='Product Line']");
     private By tax= By.xpath("//mat-select[@formcontrolname='Tax']");
     private By hsnCode= By.xpath("//input[contains(@placeholder,'HSN Code')]");
     // private By pcategory= By.xpath("//span[text()='Product Category']");
@@ -40,6 +40,8 @@ public class ProductCategoriesPage extends BasePage {
     private By createButton =
             By.xpath("//button[contains(text(),' Save ')]");
             private String productCategories;
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
 
     // ===== Constructor =====
@@ -137,7 +139,7 @@ public class ProductCategoriesPage extends BasePage {
 
         
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(serviceLine))
+        wait.until(ExpectedConditions.visibilityOfElementLocated(ProductLine))
                 .sendKeys("Name " + randomName);
         
 
@@ -154,6 +156,36 @@ public class ProductCategoriesPage extends BasePage {
         WebElement create =
                 wait.until(ExpectedConditions.visibilityOfElementLocated(createButton));
         jsClick(create);
+        //waitForAngularIdle();
+    
+}
+
+public void resetProductCategories() {
+
+        String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+        waitForAngularIdle();
+
+        
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(ProductLine))
+                .sendKeys("Name " + randomName);
+        
+
+        selectFromMatDropdownByIndex(tax, 0);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+                .sendKeys("Desc " + randomName);
+        //selectFromMatDropdown(incomeHead, "Ayurveda");
+        
+
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
         //waitForAngularIdle();
     
 }
@@ -183,4 +215,24 @@ public String getToastMsg() {
 
     return "";
 }
+
+// ===== Reset Validation Getters =====
+
+public String getProductNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(ProductLine))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getProductDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getProductHSNCodeValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
+            .getAttribute("value")
+            .trim();
+}  
 }

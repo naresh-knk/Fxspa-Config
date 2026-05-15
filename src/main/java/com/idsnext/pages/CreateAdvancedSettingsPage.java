@@ -36,6 +36,9 @@ public class CreateAdvancedSettingsPage extends BasePage {
     private By createButton =
             By.xpath("//button[contains(text(),' Save ')]");
 
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
+
 
     // ===== Constructor =====
     public CreateAdvancedSettingsPage(WebDriver driver) {
@@ -132,6 +135,32 @@ public class CreateAdvancedSettingsPage extends BasePage {
 
     }
 
+    public void resetAdvancedSettings() {
+
+        String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+        waitForAngularIdle();
+
+        
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(operationName))
+                .sendKeys("Name " + randomName);
+        
+        wait.until(ExpectedConditions.visibilityOfElementLocated(operationID))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+                .sendKeys("Desc " + randomName);
+        
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        //waitForAngularIdle();
+
+    }
+
     public String getAdvancedSettings() {
     return AdvancedSettings.trim();
 }
@@ -157,4 +186,19 @@ public String getToastMsg() {
 
     return "";
 }
+
+// ===== Reset Validation Getters =====
+
+public String getAdvanceSettingsNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(operationName))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getAdvanceSettingsDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+            .getAttribute("value")
+            .trim();
+}
+
 }

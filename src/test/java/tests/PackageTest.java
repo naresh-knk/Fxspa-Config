@@ -4,6 +4,8 @@ import org.testng.annotations.Test;
 
 import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.PackagePage;
+import com.idsnext.pages.ServicesPage;
+
 import utils.AssertionUtils;
 import utils.BaseTest;
 
@@ -45,4 +47,41 @@ public class PackageTest extends BaseTest {
         );
 
     }
+
+     @Test
+    public void verifyResetFunctionality() {
+
+    LoginPage loginPage = new LoginPage(driver);
+    loginPage.login(config.getUsername(), config.getPassword());
+
+    PackagePage PackagePage = new PackagePage(driver);
+    ServicesPage servicesPage=new ServicesPage(driver);
+
+    PackagePage.clickFXSPAConfigIcon();
+    PackagePage.switchWindow();
+
+    servicesPage.clickRandom();
+    PackagePage.clickPackage();
+    servicesPage.clickRandom();
+    PackagePage.clickAdd();
+
+    // Click Reset
+    PackagePage.resetPackage();
+
+    // Assertions
+
+    AssertionUtils.assertEqualsWithMessage(
+            PackagePage.getPackageNameValue(),
+            "",
+            "Package name reset successfully",
+            "Package name not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            PackagePage.getPackageDescriptionValue(),
+            "",
+            "Description reset successfully",
+            "Description not cleared"
+    );
+}
 }

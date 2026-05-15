@@ -4,6 +4,7 @@ import org.testng.annotations.Test;
 
 import com.idsnext.pages.EditServicesPage;
 import com.idsnext.pages.LoginPage;
+import com.idsnext.pages.ServicesPage;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -18,6 +19,7 @@ public class EditServicesTest extends BaseTest {
         loginPage.login(config.getUsername(), config.getPassword());
 
         EditServicesPage editservicesPage = new EditServicesPage(driver);
+        
 
         // Step 2: CLICK FX SPA CONFIG
         editservicesPage.clickFXSPAConfigIcon();
@@ -29,7 +31,7 @@ public class EditServicesTest extends BaseTest {
         editservicesPage.clickRandom();
 
         // Step 4: Update Service
-        editservicesPage.clickAdd();
+        editservicesPage.clickRow();
         editservicesPage.updateServices();
 
         // Step 5: Capture Toast Message
@@ -46,4 +48,47 @@ public class EditServicesTest extends BaseTest {
                 "Service not updated"
         );
     }
+
+    @Test
+    public void verifyResetFunctionality() {
+
+    LoginPage loginPage = new LoginPage(driver);
+    loginPage.login(config.getUsername(), config.getPassword());
+
+    EditServicesPage editservicesPage = new EditServicesPage(driver);
+    ServicesPage servicesPage = new ServicesPage(driver);
+
+    editservicesPage.clickFXSPAConfigIcon();
+    editservicesPage.switchWindow();
+    servicesPage.clickRandom();
+    editservicesPage.clickServices();
+    servicesPage.clickRandom();
+    editservicesPage.clickRow();
+
+    // Click Reset
+    editservicesPage.resetServices();
+
+    // Assertions
+
+    AssertionUtils.assertEqualsWithMessage(
+            servicesPage.getServiceNameValue(),
+            "",
+            "Service name reset successfully",
+            "Service name not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            servicesPage.getServiceDescriptionValue(),
+            "",
+            "Description reset successfully",
+            "Description not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            servicesPage.getServiceDurationValue(),
+            "",
+            "Duration reset successfully",
+            "Duration not cleared"
+    );
+}
 }

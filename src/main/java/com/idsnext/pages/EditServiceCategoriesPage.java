@@ -33,11 +33,13 @@ public class EditServiceCategoriesPage extends BasePage {
 
     private By serviceLine= By.xpath("//input[@placeholder='Service Line']");
    // private By tax= By.xpath("//mat-select[@formcontrolname='Tax']");
-   // private By hsnCode= By.xpath("//input[contains(@placeholder,'HSN Code')]");
+    private By hsnCode= By.xpath("//input[contains(@placeholder,'HSN Code')]");
     private By desc= By.xpath("//input[contains(@placeholder,'Description')]");
    // private By incomeHead= By.xpath("//mat-select[@formcontrolname='Income']");
     private By updateButton =
             By.xpath("//button[contains(text(),' Update ')]");
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
             private String updateServiceCategory;
 
 
@@ -128,6 +130,28 @@ public class EditServiceCategoriesPage extends BasePage {
     
 }
 
+public void resetServiceCategories() {
+
+        String randomName = RandomStringUtils.randomAlphabetic(4);
+        //String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+        waitForAngularIdle();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(serviceLine))
+                .sendKeys("Name " + randomName);
+        
+        wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+                .sendKeys("Desc " + randomName);
+
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        // waitForAngularIdle();
+    
+}
+
 public String getUpdateServiceCategory() {
     return updateServiceCategory.trim();
 }
@@ -153,4 +177,24 @@ public String getToastMsg() {
 
     return "";
 }
+
+// ===== Reset Validation Getters =====
+
+public String getServiceNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(serviceLine))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getServiceDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getServiceHSNCodeValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
+            .getAttribute("value")
+            .trim();
+}  
 }

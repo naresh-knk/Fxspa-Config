@@ -56,8 +56,7 @@ public class BaseTest {
         options.addArguments("--incognito");
         options.addArguments("--disable-save-password-bubble");
 
-        // CI Safe Options
-        // options.addArguments("--headless=new");
+        options.addArguments("--headless=new");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
 

@@ -4,6 +4,7 @@ import org.testng.annotations.Test;
 
 import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.ResourcesPage;
+import com.idsnext.pages.ServicesPage;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -46,4 +47,41 @@ public class ResourcesTest extends BaseTest {
         );
 
     }
+
+   @Test
+public void verifyResetFunctionality() {
+
+    LoginPage loginPage = new LoginPage(driver);
+    loginPage.login(config.getUsername(), config.getPassword());
+
+    ResourcesPage resourcesPage = new ResourcesPage(driver);
+    ServicesPage servicesPage=new ServicesPage(driver);
+
+    resourcesPage.clickFXSPAConfigIcon();
+    resourcesPage.switchWindow();
+
+    servicesPage.clickRandom();
+    resourcesPage.clickResources();
+    servicesPage.clickRandom();
+    resourcesPage.clickAdd();
+
+    // Click Reset
+    resourcesPage.resetResources();
+
+    // Assertions
+
+    AssertionUtils.assertEqualsWithMessage(
+            resourcesPage.getResourcesNameValue(),
+            "",
+            "Resources name reset successfully",
+            "Resources name not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            resourcesPage.getResourcesDescriptionValue(),
+            "",
+            "Description reset successfully",
+            "Description not cleared"
+    );
+}
 }

@@ -4,6 +4,8 @@ import org.testng.annotations.Test;
 
 import com.idsnext.pages.EditResourcesPage;
 import com.idsnext.pages.LoginPage;
+import com.idsnext.pages.ResourcesPage;
+import com.idsnext.pages.ServicesPage;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -44,5 +46,41 @@ public class EditResourcesTest extends BaseTest {
                 "Resources not updated"
         );
     }
+
+    public void verifyResetFunctionality() {
+
+    LoginPage loginPage = new LoginPage(driver);
+    loginPage.login(config.getUsername(), config.getPassword());
+
+    EditResourcesPage editresourcesPage = new EditResourcesPage(driver);
+    ServicesPage servicesPage=new ServicesPage(driver);
+
+    editresourcesPage.clickFXSPAConfigIcon();
+    editresourcesPage.switchWindow();
+
+    servicesPage.clickRandom();
+    editresourcesPage.clickResources();
+    servicesPage.clickRandom();
+    editresourcesPage.clickRow();
+
+    // Click Reset
+    editresourcesPage.resetResources();
+
+    // Assertions
+
+    AssertionUtils.assertEqualsWithMessage(
+            editresourcesPage.getResourcesNameValue(),
+            "",
+            "Resources name reset successfully",
+            "Resources name not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            editresourcesPage.getResourcesDescriptionValue(),
+            "",
+            "Description reset successfully",
+            "Description not cleared"
+    );
+}
     
 }

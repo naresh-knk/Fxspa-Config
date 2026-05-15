@@ -41,10 +41,13 @@ public class ProductsPage extends BasePage {
     private By retailPrice= By.xpath("//input[contains(@placeholder,'Retail Price')]");
     private By checkBox=By.xpath("//mat-label[text()='Week Days']/following-sibling::*");
     private String createdProductName;  
-
-    
     private By createButton =
             By.xpath("//button[contains(text(),' Save ')]");
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
+            private By yesButton =
+            By.xpath("//span[contains(text(),'Yes')]");
+            
 
 
     // ===== Constructor =====
@@ -168,6 +171,47 @@ public class ProductsPage extends BasePage {
        
 }
 
+public void resetProducts() {
+
+        String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+        createdProductName = "Name " + randomName;
+        waitForAngularIdle();
+
+        
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(rname))
+                .sendKeys("Name " + randomName);
+                selectFromMatDropdownByIndex(measure, 0);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(rdesc))
+                .sendKeys("Desc " + randomName);
+
+        selectFromMatDropdownByIndex(pcategory, 0);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sdesc))
+                .sendKeys("Desc " + randomName);
+
+        selectFromMatDropdownByIndex(property, 0);
+        //selectFromMatDropdown(spaOutlets, "Zen Spa");
+        selectFromMatDropdownByIndex(spaOutlets, 0);
+        driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(checkBox)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(retailPrice))
+                .sendKeys(randomNumeric);
+
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+         WebElement yes =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(yesButton));
+        jsClick(yes);
+        waitForAngularIdle();
+
+       
+}
+
  public String getCreatedProductName() {
     return createdProductName;
 }
@@ -178,6 +222,20 @@ public String getFirstRowProductName() {
 
     return wait.until(ExpectedConditions.visibilityOfElementLocated(firstRowProduct))
             .getText()
+            .trim();
+}
+
+// ===== Reset Validation Getters =====
+
+public String getProductNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(rname))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getProductDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(rdesc))
+            .getAttribute("value")
             .trim();
 }
 }

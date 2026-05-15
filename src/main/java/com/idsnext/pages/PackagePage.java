@@ -57,6 +57,9 @@ public class PackagePage extends BasePage {
     private By createButton =
             By.xpath("//button[contains(text(),' Save ')]");
 
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
+
 
     // ===== Constructor =====
     public PackagePage(WebDriver driver) {
@@ -230,6 +233,91 @@ public String getCreatedResources() {
     return createdPackage.trim();
 }
 
+public void resetPackage() {
+
+    String randomName = RandomStringUtils.randomAlphabetic(4);
+    String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+    waitForAngularIdle();
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(pCode))
+            .sendKeys(randomNumeric);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(pName))
+            .sendKeys("Name " + randomName);
+
+    wait.until(ExpectedConditions.elementToBeClickable(startCal))
+            .click();
+
+    LocalDate today = LocalDate.now();
+    LocalDate endDate = LocalDate.now().plusDays(3);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
+
+    String currentDate = today.format(formatter);
+    String endDateValue = endDate.format(formatter);
+
+    wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//td[@aria-label='" + currentDate + "']")))
+            .click();
+
+    wait.until(ExpectedConditions.elementToBeClickable(endCal))
+            .click();
+
+    // check if end date month is visible
+    List<WebElement> endDateElement = wait.until(
+            ExpectedConditions.presenceOfAllElementsLocatedBy(
+                    By.xpath("//td[@aria-label='" + endDateValue + "']")));
+
+    if (endDateElement.size() == 0) {
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[contains(@class,'mat-calendar-next-button')]")))
+                .click();
+    }
+
+    wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//td[@aria-label='" + endDateValue + "']")))
+            .click();
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(days))
+            .sendKeys(randomNumeric);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
+            .sendKeys(randomNumeric);
+
+    selectFromMatDropdownByIndex(category, 0);
+
+    wait.until(ExpectedConditions.elementToBeClickable(checkBox))
+            .click();
+
+    wait.until(ExpectedConditions.elementToBeClickable(ok))
+            .click();
+
+    selectFromMatDropdownByIndex(property, 0);
+    selectFromMatDropdownByIndex(spaOutlets, 0);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(ranclick))
+            .sendKeys(Keys.ESCAPE);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(prefix))
+            .sendKeys(randomName);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(series))
+            .sendKeys(randomName);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(sufix))
+            .sendKeys(randomName);
+
+    selectFromMatDropdownByIndex(tax, 0);
+
+    waitForAngularIdle();
+
+    WebElement reset = wait.until(
+            ExpectedConditions.elementToBeClickable(resetButton));
+
+    jsClick(reset);
+}
+
+
 public String getToastMsg() {
 
     JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -250,5 +338,19 @@ public String getToastMsg() {
     }
 
     return "";
+}
+
+// ===== Reset Validation Getters =====
+
+public String getPackageNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(pCode))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getPackageDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(pName))
+            .getAttribute("value")
+            .trim();
 }
 }

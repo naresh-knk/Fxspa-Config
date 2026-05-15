@@ -45,9 +45,10 @@ public class ServicesPage extends BasePage {
     private By sPrice= By.xpath("//input[contains(@formcontrolname,'SpecialAmount')]");
     private String createdServiceName;  
 
-    
     private By createButton =
             By.xpath("//button[contains(text(),' Save ')]");
+        private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
 
     // ===== Constructor =====
@@ -197,6 +198,55 @@ public class ServicesPage extends BasePage {
     waitForAngularIdle();
 }
 
+ public void resetServices() {
+
+    String randomName = RandomStringUtils.randomAlphabetic(4);
+    String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+    createdServiceName = "Name " + randomName;   // store generated service name
+
+    waitForAngularIdle();
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(sname))
+            .sendKeys(createdServiceName);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(sdesc))
+            .sendKeys("Desc " + randomName);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(sduration))
+            .sendKeys(randomNumeric);
+
+    selectFromMatDropdown(selectServiceCategory, "Ayurveda");
+    selectFromMatDropdown(serviceAvailableFor, "All");
+
+    driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
+
+    selectFromMatDropdown(resource, "resources11");
+
+    driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
+    selectFromMatDropdown(property, "FX FD Central QA Property1 - 900003 (900003)");
+    selectFromMatDropdown(spaOutlets, "Spa Plein De Vie");
+
+    driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(checkBox)).click();
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(sAmt))
+            .sendKeys(randomNumeric);
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(sPrice))
+            .sendKeys(randomNumeric);
+
+    waitForAngularIdle();
+
+    WebElement reset =
+            wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+    jsClick(reset);
+
+    waitForAngularIdle();
+}
+
+
 public String getCreatedServiceName() {
     return createdServiceName;
 }
@@ -209,7 +259,24 @@ public String getFirstRowServiceName() {
             .getText()
             .trim();
 }
+// ===== Reset Validation Getters =====
 
-    
+public String getServiceNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(sname))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getServiceDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(sdesc))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getServiceDurationValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(sduration))
+            .getAttribute("value")
+            .trim();
+}  
 
 }

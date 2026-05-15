@@ -33,9 +33,14 @@ public class EditPackagePage extends BasePage {
 
     private By desc= By.xpath("//textarea[contains(@placeholder,'Package Description')]");
 
+    private By pCode= By.xpath("//input[@placeholder='Package Code*']");
+    private By pName= By.xpath("//input[contains(@placeholder,'Package Name*')]");
+
     private String updatePackage;    
     private By updateButton =
             By.xpath("//button[contains(text(),' Update ')]");
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
 
     // ===== Constructor =====
@@ -133,6 +138,25 @@ public class EditPackagePage extends BasePage {
     jsClick(create);
 }
 
+public void resetPackage() {
+
+    String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+    waitForAngularIdle();
+    wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+            .clear();;
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+            .sendKeys(randomNumeric);
+
+    waitForAngularIdle();
+
+    WebElement reset = wait.until(
+            ExpectedConditions.elementToBeClickable(resetButton));
+
+    jsClick(reset);
+}
+
 public String getUpdatePackage() {
     return updatePackage.trim();
 }
@@ -157,5 +181,19 @@ public String getToastMsg() {
     }
 
     return "";
+}
+
+// ===== Reset Validation Getters =====
+
+public String getPackageNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(pCode))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getPackageDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(pName))
+            .getAttribute("value")
+            .trim();
 }
 }

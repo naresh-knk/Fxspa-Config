@@ -40,4 +40,47 @@ AssertionUtils.assertEqualsWithMessage(
         "Service name mismatch in listing"
 );
     }
+
+   @Test
+public void verifyResetFunctionality() {
+
+    LoginPage loginPage = new LoginPage(driver);
+    loginPage.login(config.getUsername(), config.getPassword());
+
+    ServicesPage servicesPage = new ServicesPage(driver);
+
+    servicesPage.clickFXSPAConfigIcon();
+    servicesPage.switchWindow();
+
+    servicesPage.clickRandom();
+    servicesPage.clickServices();
+    servicesPage.clickRandom();
+    servicesPage.clickAdd();
+
+    // Click Reset
+    servicesPage.resetServices();
+
+    // Assertions
+
+    AssertionUtils.assertEqualsWithMessage(
+            servicesPage.getServiceNameValue(),
+            "",
+            "Service name reset successfully",
+            "Service name not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            servicesPage.getServiceDescriptionValue(),
+            "",
+            "Description reset successfully",
+            "Description not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            servicesPage.getServiceDurationValue(),
+            "",
+            "Duration reset successfully",
+            "Duration not cleared"
+    );
+}
 }

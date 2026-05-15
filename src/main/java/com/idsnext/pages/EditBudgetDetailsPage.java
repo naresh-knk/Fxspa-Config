@@ -46,6 +46,8 @@ public class EditBudgetDetailsPage extends BasePage {
     private String editBudgetDetails;
     private By updateButton =
             By.xpath("//button[contains(text(),' Update ')]");
+        private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
 
     // ===== Constructor =====
@@ -96,7 +98,7 @@ public class EditBudgetDetailsPage extends BasePage {
         }
     }
 
-       public void clickRandom() throws InterruptedException {
+       public void clickRandom() {
         waitForAngularIdle();
         wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
        // Thread.sleep(10000); // Temporary wait to observe the click action, replace with proper wait if needed
@@ -162,6 +164,20 @@ public class EditBudgetDetailsPage extends BasePage {
 
     }
 
+     public void resetBudgetDetails() {
+
+        //String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        //waitForAngularIdle();
+
+    }
+
     public String geteditBudgetDetails() {
     return editBudgetDetails.trim();
 }
@@ -186,5 +202,14 @@ public String getToastMsg() {
     }
 
     return "";
+}
+
+
+// ===== Reset Validation Getters =====
+
+public String getBudgetDetailsNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(financialYear))
+            .getAttribute("value")
+            .trim();
 }
 }

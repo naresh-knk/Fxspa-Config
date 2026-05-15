@@ -3,7 +3,10 @@ package tests;
 import org.testng.annotations.Test;
 
 import com.idsnext.pages.CreateAdvancedSettingsPage;
+import com.idsnext.pages.CreateAdvancedSettingsPage;
 import com.idsnext.pages.LoginPage;
+import com.idsnext.pages.ServicesPage;
+
 import utils.AssertionUtils;
 import utils.BaseTest;
 
@@ -44,4 +47,41 @@ public class CreateAdvancedSettingsTest extends BaseTest {
         );
 
     }
+
+//      @Test
+//     public void verifyResetFunctionality() {
+
+//     LoginPage loginPage = new LoginPage(driver);
+//     loginPage.login(config.getUsername(), config.getPassword());
+
+//     CreateAdvancedSettingsPage AdvancedSettingsPage = new CreateAdvancedSettingsPage(driver);
+//     ServicesPage servicesPage=new ServicesPage(driver);
+
+//     AdvancedSettingsPage.clickFXSPAConfigIcon();
+//     AdvancedSettingsPage.switchWindow();
+
+//     servicesPage.clickRandom();
+//     AdvancedSettingsPage.clickAdvancedSettings();
+//     servicesPage.clickRandom();
+//     AdvancedSettingsPage.clickAdd();
+
+//     // Click Reset
+//     AdvancedSettingsPage.resetAdvancedSettings();
+
+//     // Assertions
+
+//    AssertionUtils.assertEqualsWithMessage(
+//             AdvancedSettingsPage.getAdvanceSettingsNameValue(),
+//             "",
+//             "Advanced Settings name reset successfully",
+//             "Advanced Settings name not cleared"
+//     );
+
+//     AssertionUtils.assertEqualsWithMessage(
+//             AdvancedSettingsPage.getAdvanceSettingsDescriptionValue(),
+//             "",
+//             "Description reset successfully",
+//             "Description not cleared"
+//     );
+
 }

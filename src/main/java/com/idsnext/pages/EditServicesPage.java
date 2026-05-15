@@ -39,6 +39,8 @@ public class EditServicesPage extends BasePage {
     
     private By UpdateButton =
             By.xpath("//button[contains(text(),' Update ')]");
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
 
     // ===== Constructor =====
@@ -105,7 +107,7 @@ public class EditServicesPage extends BasePage {
         waitForAngularIdle();
     }
 
-     public void clickAdd() {
+     public void clickRow() {
         waitForAngularIdle();
 
         WebElement plus =
@@ -134,8 +136,17 @@ public class EditServicesPage extends BasePage {
                 wait.until(ExpectedConditions.visibilityOfElementLocated(UpdateButton));
         jsClick(create);
         //waitForAngularIdle();
+    
+}
 
+public void resetServices() {
 
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        //waitForAngularIdle();
     
 }
 

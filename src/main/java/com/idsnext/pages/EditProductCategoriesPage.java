@@ -30,12 +30,14 @@ public class EditProductCategoriesPage extends BasePage {
 
         //     private By plusButton = By.xpath("//button[normalize-space()='+']");
         private By rowclick = By.xpath("(//td[contains(text(),'Name')])[1]");
-
+    private By ProductLine= By.xpath("//input[@placeholder='Product Line']");
     private By hsnCode= By.xpath("//input[contains(@placeholder,'HSN Code')]");
     private By desc= By.xpath("//input[contains(@placeholder,'Description')]");
     private By updateButton =
-            By.xpath("//button[contains(text(),' Update ')]");
-            private String updateProductCategory;
+        By.xpath("//button[contains(text(),' Update ')]");
+    private By resetButton =
+        By.xpath("//button[contains(text(),'Reset')]");
+    private String updateProductCategory;
 
 
     // ===== Constructor =====
@@ -127,6 +129,17 @@ public class EditProductCategoriesPage extends BasePage {
         //waitForAngularIdle();
 }
 
+
+    public void resetProductCategories() {
+        
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        //waitForAngularIdle();
+}
+
 public String getUpdateProductCategory() {
     return updateProductCategory.trim();
 }
@@ -152,4 +165,25 @@ public String getToastMsg() {
 
     return "";
 }
+
+// ===== Reset Validation Getters =====
+
+public String getProductNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(ProductLine))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getProductDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getProductHSNCodeValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
+            .getAttribute("value")
+            .trim();
+}  
+
 }

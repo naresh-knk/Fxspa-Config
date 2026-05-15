@@ -37,9 +37,10 @@ public class ServiceCategoriesPage extends BasePage {
     //private By incomeHead= By.xpath("//mat-select[@formcontrolname='Income']");
     private String ServiceCategories;
 
-    
     private By createButton =
             By.xpath("//button[contains(text(),' Save ')]");
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
 
     // ===== Constructor =====
@@ -158,6 +159,36 @@ public class ServiceCategoriesPage extends BasePage {
 
     }
 
+    public void resetServiceCategories() {
+
+        String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+        waitForAngularIdle();
+
+        
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(serviceLine))
+                .sendKeys("Name " + randomName);
+        
+
+        selectFromMatDropdownByIndex(tax, 0);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
+                .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+                .sendKeys("Desc " + randomName);
+        //selectFromMatDropdownByIndex(incomeHead, 0);
+        
+
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        //waitForAngularIdle();
+
+    }
+
     public String getServiceCategories() {
     return ServiceCategories.trim();
 }
@@ -183,4 +214,24 @@ public String getToastMsg() {
 
     return "";
 }
+
+// ===== Reset Validation Getters =====
+
+public String getServiceNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(serviceLine))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getServiceDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getServiceHSNCodeValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
+            .getAttribute("value")
+            .trim();
+}  
 }

@@ -4,6 +4,7 @@ import org.testng.annotations.Test;
 
 import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.ProductsPage;
+import com.idsnext.pages.ServicesPage;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -42,4 +43,42 @@ AssertionUtils.assertEqualsWithMessage(
 
 
     }
+
+     @Test
+public void verifyResetFunctionality() {
+
+    LoginPage loginPage = new LoginPage(driver);
+    loginPage.login(config.getUsername(), config.getPassword());
+
+    ProductsPage ProductPage = new ProductsPage(driver);
+    ServicesPage servicesPage=new ServicesPage(driver);
+
+    ProductPage.clickFXSPAConfigIcon();
+    ProductPage.switchWindow();
+
+    servicesPage.clickRandom();
+    ProductPage.clickProducts();
+    servicesPage.clickRandom();
+    ProductPage.clickAdd();
+
+    // Click Reset
+    ProductPage.resetProducts();
+
+    // Assertions
+
+    AssertionUtils.assertEqualsWithMessage(
+            ProductPage.getProductNameValue(),
+            "",
+            "Product name reset successfully",
+            "Product name not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            ProductPage.getProductDescriptionValue(),
+            "",
+            "Description reset successfully",
+            "Description not cleared"
+    );
+}
+
 }

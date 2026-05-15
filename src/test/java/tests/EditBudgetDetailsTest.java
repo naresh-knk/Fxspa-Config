@@ -1,8 +1,12 @@
 package tests;
 
 import org.testng.annotations.Test;
+
+import com.idsnext.pages.CreateBudgetDetailsPage;
 import com.idsnext.pages.EditBudgetDetailsPage;
 import com.idsnext.pages.LoginPage;
+import com.idsnext.pages.ServicesPage;
+
 import utils.AssertionUtils;
 import utils.BaseTest;
 
@@ -43,4 +47,34 @@ public class EditBudgetDetailsTest extends BaseTest {
         );
 
     }
+
+//      @Test
+//     public void verifyResetFunctionality() {
+
+//     LoginPage loginPage = new LoginPage(driver);
+//     loginPage.login(config.getUsername(), config.getPassword());
+
+//     EditBudgetDetailsPage editBudgetDetailsPage = new EditBudgetDetailsPage(driver);
+    
+//     editBudgetDetailsPage.clickFXSPAConfigIcon();
+//     editBudgetDetailsPage.switchWindow();
+
+//     editBudgetDetailsPage.clickRandom();
+//     editBudgetDetailsPage.clickBudgetDetails();
+//     editBudgetDetailsPage.clickRandom();
+//     editBudgetDetailsPage.clickRow();
+
+//     // Click Reset
+//     editBudgetDetailsPage.resetBudgetDetails();
+
+//     // Assertions
+
+//     AssertionUtils.assertEqualsWithMessage(
+//             editBudgetDetailsPage.getBudgetDetailsNameValue(),
+//             "",
+//             "Budget Details name reset successfully",
+//             "Budget Details name not cleared"
+//     );
+
+// }
 }

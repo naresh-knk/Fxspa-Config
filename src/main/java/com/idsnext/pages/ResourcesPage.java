@@ -39,10 +39,10 @@ public class ResourcesPage extends BasePage {
     private By quantity = By.xpath("//input[@placeholder='Quantity']");
     private String CreatedResources;
   
-
-    
     private By createButton =
             By.xpath("//button[contains(text(),' Save ')]");
+            private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
 
     // ===== Constructor =====
@@ -159,6 +159,36 @@ public class ResourcesPage extends BasePage {
  
 }
 
+public void resetResources() {
+
+        String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(1);
+
+        waitForAngularIdle();
+
+        
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(rname))
+                .sendKeys("Name " + randomName);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(rdesc))
+                .sendKeys("Desc " + randomName);
+
+        selectFromMatDropdownByIndex(selectEquipment, 0);
+        selectFromMatDropdownByIndex(property, 0);
+        selectFromMatDropdownByIndex(spaOutlets, 0);
+        driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(quantity))
+                .sendKeys(randomNumeric);
+
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        //waitForAngularIdle();
+ 
+}
+
 public String getCreatedResources() {
     return CreatedResources.trim();
 }
@@ -184,4 +214,19 @@ public String getToastMsg() {
 
     return "";
 }
+
+// ===== Reset Validation Getters =====
+
+public String getResourcesNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(rname))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getResourcesDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(rdesc))
+            .getAttribute("value")
+            .trim();
+}
+
 }

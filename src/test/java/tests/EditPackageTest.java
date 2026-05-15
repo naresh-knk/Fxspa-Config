@@ -3,6 +3,8 @@ package tests;
 import org.testng.annotations.Test;
 
 import com.idsnext.pages.LoginPage;
+import com.idsnext.pages.PackagePage;
+import com.idsnext.pages.ServicesPage;
 import com.idsnext.pages.EditPackagePage;
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -45,4 +47,41 @@ public class EditPackageTest extends BaseTest {
         );
 
     }
+
+     @Test
+    public void verifyResetFunctionality() {
+
+    LoginPage loginPage = new LoginPage(driver);
+    loginPage.login(config.getUsername(), config.getPassword());
+
+    EditPackagePage editPackagePage = new EditPackagePage(driver);
+    ServicesPage servicesPage=new ServicesPage(driver);
+
+    editPackagePage.clickFXSPAConfigIcon();
+    editPackagePage.switchWindow();
+
+    servicesPage.clickRandom();
+    editPackagePage.clickPackage();
+    servicesPage.clickRandom();
+    editPackagePage.clickAdd();
+
+    // Click Reset
+    editPackagePage.resetPackage();
+
+    // Assertions
+
+    AssertionUtils.assertEqualsWithMessage(
+            editPackagePage.getPackageNameValue(),
+            "",
+            "Package name reset successfully",
+            "Package name not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            editPackagePage.getPackageDescriptionValue(),
+            "",
+            "Description reset successfully",
+            "Description not cleared"
+    );
+}
 }

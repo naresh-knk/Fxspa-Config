@@ -35,11 +35,10 @@ public class EditProductsPage extends BasePage {
     private By sdesc= By.xpath("//input[contains(@placeholder,'Short Description')]");
     private String updateProductName;
    
-
-    
     private By updateButton =
             By.xpath("//button[contains(text(),' Update ')]");
-
+     private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
     // ===== Constructor =====
     public EditProductsPage(WebDriver driver) {
@@ -133,6 +132,18 @@ public class EditProductsPage extends BasePage {
 
 }
 
+public void resetProducts() {
+
+        waitForAngularIdle();
+
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+        jsClick(reset);
+        //waitForAngularIdle();
+
+}
+
+
 public String getUpdateProductName() {
     return updateProductName.trim();
 }
@@ -157,5 +168,19 @@ public String getToastMsg() {
     }
 
     return "";
+}
+
+// ===== Reset Validation Getters =====
+
+public String getProductNameValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(rname))
+            .getAttribute("value")
+            .trim();
+}
+
+public String getProductDescriptionValue() {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(rdesc))
+            .getAttribute("value")
+            .trim();
 }
 }

@@ -45,4 +45,50 @@ public class ServiceCategoriesTest extends BaseTest {
         );
 
     }
+
+     @Test
+    public void verifyresetfunctionality() throws InterruptedException {
+
+        // Step 1: Login
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(config.getUsername(), config.getPassword());
+
+        ServiceCategoriesPage serviceCategoriesPage = new ServiceCategoriesPage(driver);
+
+        // Step 2: CLICK FX REPORTS     
+        serviceCategoriesPage.clickFXSPAConfigIcon();
+        serviceCategoriesPage.switchWindow();
+
+        // Step 3: Open 3-dot menu
+        serviceCategoriesPage.clickRandom();
+        serviceCategoriesPage.clickServiceCategories();
+        serviceCategoriesPage.clickRandom();
+        serviceCategoriesPage.clickAdd();
+        // Click Reset
+    serviceCategoriesPage.resetServiceCategories();
+
+    // Assertions
+
+    AssertionUtils.assertEqualsWithMessage(
+            serviceCategoriesPage.getServiceNameValue(),
+            "",
+            "Service Categories name reset successfully",
+            "Service Categories name not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            serviceCategoriesPage.getServiceDescriptionValue(),
+            "",
+            "Description reset successfully",
+            "Description not cleared"
+    );
+
+    AssertionUtils.assertEqualsWithMessage(
+            serviceCategoriesPage.getServiceHSNCodeValue(),
+            "",
+            "HSN code reset successfully",
+            "HSN code not cleared"
+    );
+
+    }
 }
