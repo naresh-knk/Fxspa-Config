@@ -1,0 +1,42 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="IDSNext Suite">
+
+    <test name="Sample Test">
+
+        <classes>
+           <class name="tests.LoginTest"/>
+            <class name="tests.ServicesTest"/>
+            <class name="tests.EditServicesTest"/>
+            <class name="tests.ProductsTest"/>
+            <class name="tests.EditProductsTest"/>
+            <class name="tests.ResourcesTest"/>
+            <class name="tests.EditResourcesTest"/>
+            <class name="tests.ServiceCategoriesTest"/>
+            <class name="tests.EditServiceCategoriesTest"/>
+            <class name="tests.ProductCategoriesTest"/>
+            <class name="tests.EditProductCategoriesTest"/>
+            <class name="tests.StaffMappingTest"/>
+            <class name="tests.EditStaffMappingTest"/>
+            <class name="tests.PackageTest"/>
+            <class name="tests.EditPackageTest"/>
+            <class name="tests.CreateAdvancedSettingsTest"/>
+            <class name="tests.CreateBudgetDetailsTest"/>
+            <class name="tests.EditBudgetDetailsTest"/>
+            <class name="tests.BillSeriesSetupTest"/>
+            <class name="tests.StatusTest"/>
+            <class name="tests.SearchTest"/>
+            <class name="tests.PaginationTest"/>
+            <class name="tests.NegativeServiceTest"/>
+            <class name="tests.NegativeServiceCategoryTest"/>
+            <class name="tests.NegativeResourcesTest"/>
+            <class name="tests.NegativeProductTest"/>
+            <class name="tests.NegativeProductCategoryTest"/>
+            <class name="tests.NegativeBudgetTest"/>
+            <class name="tests.NegativePackageTest"/>
+            <class name="tests.CopyTest"/>
+
+        </classes>
+    </test>
+
+</suite>

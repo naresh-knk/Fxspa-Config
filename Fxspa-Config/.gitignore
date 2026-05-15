@@ -1,0 +1,24 @@
+# Maven
+target/
+
+# TestNG reports
+test-output/
+
+# Screenshots
+screenshots/
+
+# Extent report
+ExtentReport.html
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
