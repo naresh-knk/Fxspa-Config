@@ -10,7 +10,7 @@ import utils.BaseTest;
 public class BusinessRefusalTest extends BaseTest {
 
     @Test
-    public void verifyAppointmentReportNavigation() {
+    public void verifyBusinessRefusalReportNavigation() {
 
         // Step 1: Login
         LoginPage loginPage = new LoginPage(driver);
