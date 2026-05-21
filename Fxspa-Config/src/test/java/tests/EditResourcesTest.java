@@ -3,8 +3,6 @@ package tests;
 import org.testng.annotations.Test;
 
 import com.idsnext.pages.EditResourcesPage;
-import com.idsnext.pages.LoginPage;
-import com.idsnext.pages.ResourcesPage;
 import com.idsnext.pages.ServicesPage;
 
 import utils.AssertionUtils;
@@ -15,24 +13,16 @@ public class EditResourcesTest extends BaseTest {
     @Test
     public void verifyResourcesNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         EditResourcesPage editresourcesPage = new EditResourcesPage(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        editresourcesPage.clickFXSPAConfigIcon();
-        editresourcesPage.switchWindow();
-
-        // Step 3: Open 3-dot menu
+        // Open 3-dot menu
         editresourcesPage.clickRandom();
         editresourcesPage.clickResources();
         editresourcesPage.clickRandom();
         editresourcesPage.clickRow();
         editresourcesPage.updateResources();
 
-        // Step 4: Capture Toast Message
+        //  Capture Toast Message
         String actualToastMsg = editresourcesPage.getToastMsg();
 
         // Expected Toast Message
@@ -49,14 +39,8 @@ public class EditResourcesTest extends BaseTest {
 
     public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
-
     EditResourcesPage editresourcesPage = new EditResourcesPage(driver);
     ServicesPage servicesPage=new ServicesPage(driver);
-
-    editresourcesPage.clickFXSPAConfigIcon();
-    editresourcesPage.switchWindow();
 
     servicesPage.clickRandom();
     editresourcesPage.clickResources();

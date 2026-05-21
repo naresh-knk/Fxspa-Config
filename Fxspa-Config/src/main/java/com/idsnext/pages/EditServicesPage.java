@@ -47,7 +47,7 @@ public class EditServicesPage extends BasePage {
     public EditServicesPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Common Waits =====

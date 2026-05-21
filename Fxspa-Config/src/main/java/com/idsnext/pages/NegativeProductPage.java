@@ -13,7 +13,7 @@ public class NegativeProductPage extends BasePage {
     public NegativeProductPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Locators =====

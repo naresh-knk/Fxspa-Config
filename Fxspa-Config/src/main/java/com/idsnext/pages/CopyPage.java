@@ -12,16 +12,12 @@ public class CopyPage extends BasePage {
     ServicesPage servicePage=new ServicesPage(driver);
 
     // ===== LOCATORS =====
-
-    // select first row checkbox
     private By firstRowCheckbox =
             By.xpath("(//mat-checkbox)[2]");
 
-    // copy button
     private By copyButton =
             By.xpath("//span[text()='Copy']");
 
-    // save button (to confirm copy screen opened)
     private By saveButton =
             By.xpath("//button//span[normalize-space()='Save']");
 
@@ -36,7 +32,7 @@ public class CopyPage extends BasePage {
     public CopyPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         this.servicePage = new ServicesPage(driver);
     }
 

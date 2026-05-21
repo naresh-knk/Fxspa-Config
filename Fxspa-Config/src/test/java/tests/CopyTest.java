@@ -5,9 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.idsnext.pages.CopyPage;
-import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.SearchPage;
-
 import utils.BaseTest;
 
 public class CopyTest extends BaseTest {
@@ -18,14 +16,8 @@ public class CopyTest extends BaseTest {
     @BeforeMethod
     public void setup() {
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         searchPage = new SearchPage(driver);
         copyPage = new CopyPage(driver);
-
-        searchPage.clickFXSPAConfigIcon();
-        searchPage.switchWindow();
         searchPage.clickRandom();
     }
 

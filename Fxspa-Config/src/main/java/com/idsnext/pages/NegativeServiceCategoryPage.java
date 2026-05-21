@@ -13,7 +13,7 @@ public class NegativeServiceCategoryPage extends BasePage {
     public NegativeServiceCategoryPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Locators =====
@@ -26,7 +26,7 @@ public class NegativeServiceCategoryPage extends BasePage {
     private By HsnCode = By.xpath("//input[@placeholder='HSN Code']");
     private By ServiceCategoryNameError = By.xpath("//mat-error[text()=' Service Line Required ']");
     private By ServiceCategoryDescError = By.xpath("//mat-error[text()=' Description Required ']");
-    private By HsnCodeError = By.xpath("//input[@placeholder='HSNCode Required']");
+    private By HsnCodeError = By.xpath("//mat-error[text()=' HSNCode Required ']");
 
     // ===== Actions =====
 

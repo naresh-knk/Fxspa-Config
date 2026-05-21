@@ -3,7 +3,6 @@ package tests;
 import org.testng.annotations.Test;
 
 import com.idsnext.pages.EditServicesPage;
-import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.ServicesPage;
 
 import utils.AssertionUtils;
@@ -14,27 +13,18 @@ public class EditServicesTest extends BaseTest {
     @Test
     public void verifyServicesNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         EditServicesPage editservicesPage = new EditServicesPage(driver);
-        
 
-        // Step 2: CLICK FX SPA CONFIG
-        editservicesPage.clickFXSPAConfigIcon();
-        editservicesPage.switchWindow();
-
-        // Step 3: Navigate to Services
+        //  Navigate to Services
         editservicesPage.clickRandom();
         editservicesPage.clickServices();
         editservicesPage.clickRandom();
 
-        // Step 4: Update Service
+        //  Update Service
         editservicesPage.clickRow();
         editservicesPage.updateServices();
 
-        // Step 5: Capture Toast Message
+        //  Capture Toast Message
         String actualToastMsg = editservicesPage.getToastMsg();
 
         // Expected Toast Message
@@ -52,14 +42,9 @@ public class EditServicesTest extends BaseTest {
     @Test
     public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
-
     EditServicesPage editservicesPage = new EditServicesPage(driver);
     ServicesPage servicesPage = new ServicesPage(driver);
 
-    editservicesPage.clickFXSPAConfigIcon();
-    editservicesPage.switchWindow();
     servicesPage.clickRandom();
     editservicesPage.clickServices();
     servicesPage.clickRandom();

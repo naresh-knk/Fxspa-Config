@@ -32,12 +32,15 @@ public class SearchPage extends BasePage {
     private By overlayBackdrop =
             By.xpath("//div[contains(@class,'cdk-overlay-backdrop')]");
 
+    private By randomMenuOpened =
+        By.cssSelector("span.menu-span.rotate");
+
     // ===== Constructor =====
 
     public SearchPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Common Wait =====
@@ -87,10 +90,39 @@ public class SearchPage extends BasePage {
     }
 
     //  Generic module click
+    // public void selectModule(By moduleLocator) {
+    //     waitForAngularIdle();
+    //     jsClick(wait.until(ExpectedConditions.elementToBeClickable(moduleLocator)));
+    // }
+
+
+
+
     public void selectModule(By moduleLocator) {
+
         waitForAngularIdle();
-        jsClick(wait.until(ExpectedConditions.elementToBeClickable(moduleLocator)));
+        boolean isOpened = false;
+
+        try {
+            isOpened = driver.findElement(randomMenuOpened).isDisplayed();
+        } catch (Exception e) {
+            isOpened = false;
+        }
+
+        if (!isOpened) {
+
+            WebElement random =
+                    wait.until(ExpectedConditions.elementToBeClickable(randomIcon));
+
+            jsClick(random);
+        }
+
+        WebElement module =
+                wait.until(ExpectedConditions.elementToBeClickable(moduleLocator));
+
+        jsClick(module);
     }
+
 
     public void search(String text) {
         waitForAngularIdle();

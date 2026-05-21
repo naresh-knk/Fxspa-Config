@@ -1,10 +1,7 @@
 package tests;
 
 import org.testng.annotations.Test;
-
 import com.idsnext.pages.ServicesPage;
-import com.idsnext.pages.LoginPage;
-
 import utils.AssertionUtils;
 import utils.BaseTest;
 
@@ -13,17 +10,7 @@ public class ServicesTest extends BaseTest {
     @Test
     public void verifyServicesNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         ServicesPage servicesPage = new ServicesPage(driver);
-
-        // Step 2: CLICK FX SPA    
-        servicesPage.clickFXSPAConfigIcon();
-        servicesPage.switchWindow();
-
-        // Step 3: Open 3-dot menu
         servicesPage.clickRandom();
         servicesPage.clickServices();
         servicesPage.clickRandom();
@@ -44,14 +31,7 @@ AssertionUtils.assertEqualsWithMessage(
    @Test
 public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
-
     ServicesPage servicesPage = new ServicesPage(driver);
-
-    servicesPage.clickFXSPAConfigIcon();
-    servicesPage.switchWindow();
-
     servicesPage.clickRandom();
     servicesPage.clickServices();
     servicesPage.clickRandom();
@@ -83,4 +63,6 @@ public void verifyResetFunctionality() {
             "Duration not cleared"
     );
 }
+
+
 }

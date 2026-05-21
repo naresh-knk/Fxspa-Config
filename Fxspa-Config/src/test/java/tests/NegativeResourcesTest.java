@@ -2,7 +2,6 @@ package tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.NegativeResourcesPage;
 import com.idsnext.pages.ResourcesPage;
 
@@ -13,15 +12,10 @@ public class NegativeResourcesTest extends BaseTest {
     @Test
     public void verifyResourcesNegativeFlow() throws InterruptedException {
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         ResourcesPage resourcesPage = new ResourcesPage(driver);
         NegativeResourcesPage page = new NegativeResourcesPage(driver);
 
         // ===== NAVIGATION =====
-        resourcesPage.clickFXSPAConfigIcon();
-        resourcesPage.switchWindow();
         resourcesPage.clickRandom();
         resourcesPage.clickResources();
         resourcesPage.clickRandom();
@@ -52,7 +46,7 @@ public class NegativeResourcesTest extends BaseTest {
         Assert.assertTrue(validationText.toLowerCase().contains("required"), "Resources Name validation missing");
         Assert.assertTrue(validationText.toLowerCase().contains("required"), "Description validation missing");
         // ===== STEP 3: Upload invalid file =====
-        page.uploadInvalidFile("C:\\Users\\Deepshika\\Desktop\\IdsNext Automation\\idsnext-automation\\src\\resources\\testdata\\sample.pdf");
+        page.uploadInvalidFile("C:\\Users\\Deepshika\\Desktop\\IdsNext Automation\\idsnext-automation\\Fxspa-Config\\src\\resources\\testdata\\sample.pdf");
         Thread.sleep(2000);
         String toast2 = page.getToastMsgError();
         System.out.println("Step3 Toast (Invalid File): " + toast2);

@@ -49,7 +49,7 @@ public class ResourcesPage extends BasePage {
     public ResourcesPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Common Waits =====
@@ -132,7 +132,7 @@ public class ResourcesPage extends BasePage {
     public void createResources() {
 
         String randomName = RandomStringUtils.randomAlphabetic(4);
-        String randomNumeric = RandomStringUtils.randomNumeric(1);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
 
         waitForAngularIdle();
 

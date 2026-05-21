@@ -14,9 +14,6 @@ public class NegativeBudgetTest extends BaseTest {
     @Test
     public void verifyBudgetDetailsNegativeFlow() throws InterruptedException {
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         CreateBudgetDetailsPage budgetDetailsPage =
                 new CreateBudgetDetailsPage(driver);
 
@@ -24,9 +21,6 @@ public class NegativeBudgetTest extends BaseTest {
                 new NegativeBudgetPage(driver);
 
         // ===== NAVIGATION =====
-
-        budgetDetailsPage.clickFXSPAConfigIcon();
-        budgetDetailsPage.switchWindow();
         budgetDetailsPage.clickRandom();
         budgetDetailsPage.clickBudgetDetails();
         budgetDetailsPage.clickRandom();

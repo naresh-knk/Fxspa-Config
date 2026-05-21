@@ -44,7 +44,7 @@ public class CreateAdvancedSettingsPage extends BasePage {
     public CreateAdvancedSettingsPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Common Waits =====
@@ -112,14 +112,14 @@ public class CreateAdvancedSettingsPage extends BasePage {
     public void createAdvancedSettings() {
 
         String randomName = RandomStringUtils.randomAlphabetic(4);
-        String randomNumeric = RandomStringUtils.randomNumeric(2);
+        String randomNumeric = RandomStringUtils.randomNumeric(3);
 
         waitForAngularIdle();
 
         
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(operationName))
-                .sendKeys("Name " + randomName);
+                .sendKeys("Op" + randomName);
         
         wait.until(ExpectedConditions.visibilityOfElementLocated(operationID))
                 .sendKeys(randomNumeric);

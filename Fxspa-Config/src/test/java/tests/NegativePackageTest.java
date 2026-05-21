@@ -2,7 +2,6 @@ package tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.NegativePackagePage;
 import com.idsnext.pages.PackagePage;
 
@@ -13,15 +12,10 @@ public class NegativePackageTest extends BaseTest {
     @Test
     public void verifyPackageNegativeFlow() throws InterruptedException {
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         PackagePage PackagePage = new PackagePage(driver);
         NegativePackagePage page = new NegativePackagePage(driver);
 
         // ===== NAVIGATION =====
-        PackagePage.clickFXSPAConfigIcon();
-        PackagePage.switchWindow();
         PackagePage.clickRandom();
         PackagePage.clickPackage();
         PackagePage.clickRandom();
@@ -41,7 +35,7 @@ public class NegativePackageTest extends BaseTest {
         // ===== STEP 2: Click fields without data → Check validation =====
         page.clickSave();
 
-        page.uploadInvalidFile("C:\\Users\\Deepshika\\Desktop\\IdsNext Automation\\idsnext-automation\\src\\resources\\testdata\\sample.pdf");
+        page.uploadInvalidFile("C:\\Users\\Deepshika\\Desktop\\IdsNext Automation\\idsnext-automation\\Fxspa-Config\\src\\resources\\testdata\\sample.pdf");
         Thread.sleep(2000);
         String toast2 = page.getToastMsgError();
         System.out.println("Step 2 Toast (Invalid File): " + toast2);

@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.SearchPage;
 import utils.BaseTest;
 
@@ -15,13 +14,7 @@ public class SearchTest extends BaseTest {
     @BeforeMethod
     public void setup() {
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         searchPage = new SearchPage(driver);
-
-        searchPage.clickFXSPAConfigIcon();
-        searchPage.switchWindow();
         searchPage.clickRandom();
     }
 
@@ -80,7 +73,7 @@ public class SearchTest extends BaseTest {
     public void verifyAdvanceSearch() {
         searchPage.selectModule(By.xpath("//span[normalize-space()='Advanced Settings']"));
         //mat-header-cell[text()=' Operation ID ']
-        searchPage.search("Advance");
-        searchPage.validateColumnValues("Operation Name", "Advance");
+        searchPage.search("Enable");
+        searchPage.validateColumnValues("Operation Name", "Enable");
     }
 }

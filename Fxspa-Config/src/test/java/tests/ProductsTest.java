@@ -2,7 +2,6 @@ package tests;
 
 import org.testng.annotations.Test;
 
-import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.ProductsPage;
 import com.idsnext.pages.ServicesPage;
 
@@ -14,17 +13,9 @@ public class ProductsTest extends BaseTest {
     @Test
     public void verifyProductsNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-       loginPage.login(config.getUsername(), config.getPassword());
-
         ProductsPage productsPage = new ProductsPage(driver);
 
-        // Step 2: CLICK FX Spa     
-        productsPage.clickFXSPAConfigIcon();
-        productsPage.switchWindow();
-
-        // Step 3: Open 3-dot menu
+        // Open 3-dot menu
         productsPage.clickRandom();
         productsPage.clickProducts();
         productsPage.clickRandom();
@@ -32,9 +23,9 @@ public class ProductsTest extends BaseTest {
         productsPage.createProducts();
 
         String expectedProductName = productsPage.getCreatedProductName();
-String actualProductName = productsPage.getFirstRowProductName();
+        String actualProductName = productsPage.getFirstRowProductName();
 
-AssertionUtils.assertEqualsWithMessage(
+        AssertionUtils.assertEqualsWithMessage(
         actualProductName,
         expectedProductName,
         "Product created and visible in first row",
@@ -45,16 +36,10 @@ AssertionUtils.assertEqualsWithMessage(
     }
 
      @Test
-public void verifyResetFunctionality() {
-
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
+        public void verifyResetFunctionality() {
 
     ProductsPage ProductPage = new ProductsPage(driver);
     ServicesPage servicesPage=new ServicesPage(driver);
-
-    ProductPage.clickFXSPAConfigIcon();
-    ProductPage.switchWindow();
 
     servicesPage.clickRandom();
     ProductPage.clickProducts();

@@ -2,9 +2,7 @@ package tests;
 
 import org.testng.annotations.Test;
 import com.idsnext.pages.CreateBudgetDetailsPage;
-import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.ServicesPage;
-
 import utils.AssertionUtils;
 import utils.BaseTest;
 
@@ -13,17 +11,8 @@ public class CreateBudgetDetailsTest extends BaseTest {
     @Test
     public void verifybudgetDetailsNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         CreateBudgetDetailsPage budgetDetailsPage = new CreateBudgetDetailsPage(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        budgetDetailsPage.clickFXSPAConfigIcon();
-        budgetDetailsPage.switchWindow();
-
-        // Step 3: Open 3-dot menu
         budgetDetailsPage.clickRandom();
         budgetDetailsPage.clickBudgetDetails();
         budgetDetailsPage.clickRandom();
@@ -50,15 +39,8 @@ public class CreateBudgetDetailsTest extends BaseTest {
      @Test
     public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
-
     CreateBudgetDetailsPage BudgetDetailsPage = new CreateBudgetDetailsPage(driver);
     ServicesPage servicesPage=new ServicesPage(driver);
-
-    BudgetDetailsPage.clickFXSPAConfigIcon();
-    BudgetDetailsPage.switchWindow();
-
     servicesPage.clickRandom();
     BudgetDetailsPage.clickBudgetDetails();
     servicesPage.clickRandom();

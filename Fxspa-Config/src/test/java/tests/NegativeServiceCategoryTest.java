@@ -2,7 +2,6 @@ package tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.NegativeServiceCategoryPage;
 import com.idsnext.pages.ServiceCategoriesPage;
 
@@ -13,15 +12,10 @@ public class NegativeServiceCategoryTest extends BaseTest {
     @Test
     public void verifyServiceCategoryNegativeFlow() throws InterruptedException {
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
         ServiceCategoriesPage ServiceCategoryPage = new ServiceCategoriesPage(driver);
         NegativeServiceCategoryPage page = new NegativeServiceCategoryPage(driver);
 
         // ===== NAVIGATION =====
-        ServiceCategoryPage.clickFXSPAConfigIcon();
-        ServiceCategoryPage.switchWindow();
         ServiceCategoryPage.clickRandom();
         ServiceCategoryPage.clickServiceCategories();
         ServiceCategoryPage.clickRandom();

@@ -51,14 +51,14 @@ public class BillSeriesSetupPage extends BasePage {
     private By resetButton =
             By.xpath("//button[contains(text(),'Reset')]");
 
-    private String createdBillSeries;
+    private static int dateIncrement = 2;
 
     // ===== Constructor =====
 
     public BillSeriesSetupPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Common Waits =====
@@ -159,71 +159,82 @@ public class BillSeriesSetupPage extends BasePage {
         jsClick(plus);
     }
 
-    // ===== CREATE =====
+// ===== CREATE =====
 
-    public void createBillSeries() {
+public void createBillSeries() {
 
-        String randomNumeric = RandomStringUtils.randomNumeric(2);
+    String uniqueValue =
+            String.valueOf(System.currentTimeMillis()).substring(7);
 
-        waitForAngularIdle();
+    waitForAngularIdle();
 
-        // ===== Outlet =====
+    selectFromMatDropdownByIndex(outlet, 0);
 
-        selectFromMatDropdownByIndex(outlet, 0);
+    wait.until(ExpectedConditions.visibilityOfElementLocated(kotNumber))
+            .sendKeys(uniqueValue);
 
-        // ===== KOT =====
+// ===== Date Selection =====
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(kotNumber))
-                .sendKeys(randomNumeric);
+waitForAngularIdle();
 
-        // ===== Date Selection =====
+WebElement calendar =
+        wait.until(ExpectedConditions.visibilityOfElementLocated(calendarButton));
 
-        waitForAngularIdle();
+jsClick(calendar);
 
-        WebElement calendar =
-                wait.until(ExpectedConditions.visibilityOfElementLocated(calendarButton));
+// Get all enabled dates
 
-        jsClick(calendar);
+java.util.List<WebElement> enabledDates =
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                By.xpath("//td[@role='gridcell' and not(contains(@class,'mat-calendar-body-disabled'))]")
+        ));
 
-        // Select first enabled date
-        By enabledDate =
-                By.xpath("(//td[@role='gridcell' and not(contains(@class,'mat-calendar-body-disabled'))])[1]");
+// Select different date each run
 
-        WebElement date =
-                wait.until(ExpectedConditions.elementToBeClickable(enabledDate));
+int indexToSelect = Math.min(dateIncrement, enabledDates.size() - 1);
 
-        jsClick(date);
+WebElement date = enabledDates.get(indexToSelect);
 
-        // Wait for popup close
-        try {
+jsClick(date);
 
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(
-                    By.cssSelector(".cdk-overlay-pane")
-            ));
+// Increase counter for next execution
+dateIncrement++;
 
-        } catch (Exception ignored) {
-        }
+    // Wait for popup close
 
-        System.out.println(
-                "Selected Date: "
-                        + driver.findElement(startDateInput)
-                        .getAttribute("value")
-        );
+    try {
 
-        // ===== Bill Number =====
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(
+                By.cssSelector(".cdk-overlay-pane")
+        ));
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(billNumber))
-                .sendKeys(randomNumeric);
-
-        waitForAngularIdle();
-
-        // ===== Save =====
-
-        WebElement create =
-                wait.until(ExpectedConditions.elementToBeClickable(createButton));
-
-        jsClick(create);
+    } catch (Exception ignored) {
     }
+
+    System.out.println(
+            "Selected Date: "
+                    + driver.findElement(startDateInput)
+                    .getAttribute("value")
+    );
+
+    // ===== Bill Number =====
+
+    wait.until(ExpectedConditions.visibilityOfElementLocated(billNumber))
+            .sendKeys(uniqueValue);
+
+    waitForAngularIdle();
+
+    // ===== Save =====
+
+    WebElement create =
+            wait.until(ExpectedConditions.elementToBeClickable(createButton));
+
+    jsClick(create);
+}
+
+
+
+
 
     // ===== RESET =====
 

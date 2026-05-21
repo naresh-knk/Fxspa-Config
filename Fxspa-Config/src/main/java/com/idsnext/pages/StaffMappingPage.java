@@ -40,7 +40,7 @@ public class StaffMappingPage extends BasePage {
     public StaffMappingPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Common Waits =====
@@ -147,23 +147,19 @@ public class StaffMappingPage extends BasePage {
 
 public String getToastMsg() {
 
-    JavascriptExecutor js = (JavascriptExecutor) driver;
+    By toastMessage =
+            By.xpath("//div[@id='toast-popup']//p");
 
-    for (int i = 0; i < 15; i++) {
+    try {
 
-        String toast = (String) js.executeScript(
-                "var e=document.querySelector('#toast-popup p'); return e?e.innerText:'';"
-        );
+        WebElement toast =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(toastMessage));
 
-        if (!toast.isEmpty()) {
-            return toast.trim();
-        }
+        return toast.getText().trim();
 
-        try {
-            Thread.sleep(200);
-        } catch (Exception e) {}
+    } catch (Exception e) {
+
+        return "";
     }
-
-    return "";
 }
 }

@@ -42,12 +42,15 @@ public class EditServiceCategoriesPage extends BasePage {
             By.xpath("//button[contains(text(),'Reset')]");
             private String updateServiceCategory;
 
+            private By randomMenuOpened =
+        By.cssSelector("span.menu-span.rotate");
+
 
     // ===== Constructor =====
     public EditServiceCategoriesPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Common Waits =====
@@ -90,7 +93,23 @@ public class EditServiceCategoriesPage extends BasePage {
 
        public void clickRandom() throws InterruptedException {
         waitForAngularIdle();
-        wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
+
+        boolean isOpened = false;
+
+        try {
+            isOpened = driver.findElement(randomMenuOpened).isDisplayed();
+        } catch (Exception e) {
+            isOpened = false;
+        }
+
+        if (!isOpened) {
+
+            WebElement random =
+                    wait.until(ExpectedConditions.elementToBeClickable(randomIcon));
+
+            jsClick(random);
+        }
+        // wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
        // Thread.sleep(10000); // Temporary wait to observe the click action, replace with proper wait if needed
     }
 
