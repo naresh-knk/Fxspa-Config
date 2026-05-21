@@ -51,7 +51,7 @@ public class BillSeriesSetupPage extends BasePage {
     private By resetButton =
             By.xpath("//button[contains(text(),'Reset')]");
 
-    private static int dateIncrement = 2;
+    private static int dateIncrement = 3;
 
     // ===== Constructor =====
 
