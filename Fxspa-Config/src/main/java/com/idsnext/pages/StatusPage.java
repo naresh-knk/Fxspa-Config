@@ -37,16 +37,6 @@ public class StatusPage extends BasePage {
 
     // ===== Wait =====
 
-    private void waitForAngularIdle() {
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
 
     private void jsClick(WebElement element) {
 

@@ -1,51 +1,82 @@
+
 package tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.NegativeServiceCategoryPage;
-import com.idsnext.pages.ServiceCategoriesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.BaseTest;
 
 public class NegativeServiceCategoryTest extends BaseTest {
 
     @Test
-    public void verifyServiceCategoryNegativeFlow() throws InterruptedException {
+    public void verifyServiceCategoryNegativeFlow()
+            throws InterruptedException {
 
-        ServiceCategoriesPage ServiceCategoryPage = new ServiceCategoriesPage(driver);
-        NegativeServiceCategoryPage page = new NegativeServiceCategoryPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
+
+        NegativeServiceCategoryPage page =
+                new NegativeServiceCategoryPage(driver);
 
         // ===== NAVIGATION =====
-        ServiceCategoryPage.clickRandom();
-        ServiceCategoryPage.clickServiceCategories();
-        ServiceCategoryPage.clickRandom();
-        ServiceCategoryPage.clickAdd();
+
+        navigationSteps.navigateToAddPage(
+                ModuleName.SERVICE_CATEGORY
+        );
 
         // ===== STEP 1: Click Save → Check Toast =====
+
         page.clickSave();
 
-        String toast1 = page.getToastMessage();
-        System.out.println("Step1 Toast: " + toast1);
+        String toast1 =
+                page.getToastMessage();
+
+        System.out.println(
+                "Step1 Toast: "
+                        + toast1
+        );
 
         Assert.assertTrue(
-                toast1.toLowerCase().contains("valid") || toast1.toLowerCase().contains("required"),
+                toast1.toLowerCase().contains("valid")
+                        || toast1.toLowerCase().contains("required"),
+
                 "Expected validation toast not shown"
         );
 
-        // ===== STEP 2: Click fields without data → Check validation =====
+        // ===== STEP 2: Empty Field Validation =====
+
         page.clickFieldsWithoutData();
+
         page.clickSave();
 
-        boolean validationVisible = page.isValidationDisplayed();
-        String validationText = page.getFieldErrors(); 
+        boolean validationVisible =
+                page.isValidationDisplayed();
 
-        System.out.println("Step2 Validation: " + validationText);
+        String validationText =
+                page.getFieldErrors();
 
-        Assert.assertTrue(validationVisible, "Validation messages not displayed");
+        System.out.println(
+                "Step2 Validation: "
+                        + validationText
+        );
 
-        Assert.assertTrue(validationText.toLowerCase().contains("required"), "Service Category Name validation missing");
-        Assert.assertTrue(validationText.toLowerCase().contains("required"), "Description validation missing");
-        Assert.assertTrue(validationText.toLowerCase().contains("required"), "Description validation missing");
-        
+        Assert.assertTrue(
+                validationVisible,
+                "Validation messages not displayed"
+        );
+
+        Assert.assertTrue(
+                validationText.toLowerCase().contains("required"),
+                "Service Category Name validation missing"
+        );
+
+        Assert.assertTrue(
+                validationText.toLowerCase().contains("required"),
+                "Description validation missing"
+        );
     }
 }

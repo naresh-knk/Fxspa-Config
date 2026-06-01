@@ -1,27 +1,41 @@
 package tests;
 
 import org.testng.annotations.Test;
+
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.BillSeriesSetupPage;
+import com.idsnext.steps.NavigationSteps;
+
 import utils.AssertionUtils;
 import utils.BaseTest;
 
 public class BillSeriesSetupTest extends BaseTest {
 
     @Test
-    public void verifyBillSeriesNavigation() throws InterruptedException {
+    public void verifyBillSeriesNavigation()
+            throws InterruptedException {
 
-        BillSeriesSetupPage billSeriesSetupPage = new BillSeriesSetupPage(driver);
-        billSeriesSetupPage.clickRandom();
-        billSeriesSetupPage.clickBillSeries();
-        billSeriesSetupPage.clickRandom();
-        billSeriesSetupPage.clickAdd();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
+
+        BillSeriesSetupPage billSeriesSetupPage =
+                new BillSeriesSetupPage(driver);
+
+        // Navigate to Bill Series Setup Add Page
+        navigationSteps.navigateToAddPage(
+                ModuleName.BILL_SERIES
+        );
+
+        // Create Bill Series
         billSeriesSetupPage.createBillSeries();
 
-          
-        String actualToastMsg = billSeriesSetupPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                billSeriesSetupPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Bill Saved Successfully!";
+        String expectedToastMsg =
+                "Bill Saved Successfully!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -30,43 +44,48 @@ public class BillSeriesSetupTest extends BaseTest {
                 "Bill Saved successfully",
                 "Bill not saved"
         );
-
     }
 
-     @Test
-    public void verifyresetfunctionality() throws InterruptedException {
+    @Test
+    public void verifyresetfunctionality()
+            throws InterruptedException {
 
-        BillSeriesSetupPage billSeriesSetupPage = new BillSeriesSetupPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        billSeriesSetupPage.clickRandom();
-        billSeriesSetupPage.clickBillSeries();
-        billSeriesSetupPage.clickRandom();
-        billSeriesSetupPage.clickAdd();
+        BillSeriesSetupPage billSeriesSetupPage =
+                new BillSeriesSetupPage(driver);
+
+        // Navigate to Bill Series Setup Add Page
+        navigationSteps.navigateToAddPage(
+                ModuleName.BILL_SERIES
+        );
+
         // Click Reset
-    billSeriesSetupPage.resetBillSeries();
+        billSeriesSetupPage.resetBillSeries();
 
-    // Assertions
+        // Validate Outlet Reset
+        AssertionUtils.assertEqualsWithMessage(
+                billSeriesSetupPage.getOutletValue(),
+                "",
+                "Outlet name reset successfully",
+                "Outlet name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            billSeriesSetupPage.getOutletValue(),
-            "",
-            "Outlet name reset successfully",
-            "Outlet name not cleared"
-    );
+        // Validate KOT Number Reset
+        AssertionUtils.assertEqualsWithMessage(
+                billSeriesSetupPage.getKOTNumberValue(),
+                "",
+                "KOT Number reset successfully",
+                "KOT Number not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            billSeriesSetupPage.getKOTNumberValue(),
-            "",
-            "KOT Number reset successfully",
-            "KOT Number not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            billSeriesSetupPage.getBillNumberValue(),
-            "",
-            "Bill Number reset successfully",
-            "Bill Number not cleared"
-    );
-
+        // Validate Bill Number Reset
+        AssertionUtils.assertEqualsWithMessage(
+                billSeriesSetupPage.getBillNumberValue(),
+                "",
+                "Bill Number reset successfully",
+                "Bill Number not cleared"
+        );
     }
 }

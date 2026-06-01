@@ -7,11 +7,14 @@ import java.time.Duration;
 
 public class CopyPage extends BasePage {
 
-    private WebDriver driver;
     private WebDriverWait wait;
-    ServicesPage servicePage=new ServicesPage(driver);
+
+    ServicesPage servicePage;
+
+    NavigationPage navPage;
 
     // ===== LOCATORS =====
+
     private By firstRowCheckbox =
             By.xpath("(//mat-checkbox)[2]");
 
@@ -30,31 +33,34 @@ public class CopyPage extends BasePage {
     // ===== CONSTRUCTOR =====
 
     public CopyPage(WebDriver driver) {
+
         super(driver);
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        this.servicePage = new ServicesPage(driver);
+
+        this.wait =
+                new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        this.servicePage =
+                new ServicesPage(driver);
+
+        this.navPage =
+                new NavigationPage(driver);
     }
 
     // ===== COMMON METHODS =====
 
-    private void waitForAngularIdle() {
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
-
     private void jsClick(WebElement element) {
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
 
         ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].click();", element);
+                .executeScript(
+                        "arguments[0].scrollIntoView({block:'center'});",
+                        element
+                );
+
+        ((JavascriptExecutor) driver)
+                .executeScript(
+                        "arguments[0].click();",
+                        element
+                );
     }
 
     // ===== ACTIONS =====
@@ -64,9 +70,13 @@ public class CopyPage extends BasePage {
         waitForAngularIdle();
 
         WebElement checkbox =
-                wait.until(ExpectedConditions.presenceOfElementLocated(firstRowCheckbox));
+                wait.until(
+                        ExpectedConditions.presenceOfElementLocated(
+                                firstRowCheckbox
+                        )
+                );
 
-        jsClick(checkbox); // checkbox is hidden → JS click
+        jsClick(checkbox);
     }
 
     public void clickCopy() {
@@ -74,7 +84,11 @@ public class CopyPage extends BasePage {
         waitForAngularIdle();
 
         WebElement copy =
-                wait.until(ExpectedConditions.elementToBeClickable(copyButton));
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                copyButton
+                        )
+                );
 
         jsClick(copy);
     }
@@ -86,16 +100,23 @@ public class CopyPage extends BasePage {
         waitForAngularIdle();
 
         if (driver.findElements(saveButton).isEmpty()) {
-            throw new AssertionError("Copy screen not opened!");
+
+            throw new AssertionError(
+                    "Copy screen not opened!"
+            );
         }
     }
 
     // ===== COMPLETE FLOW =====
 
     public void performCopy() {
-        servicePage.clickRandom();
+
+        navPage.clickRandom();
+
         selectFirstRecord();
+
         clickCopy();
+
         // validateCopyScreenOpened();
     }
 }

@@ -1,8 +1,11 @@
 package tests;
 
 import org.testng.annotations.Test;
+
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.CreateBudgetDetailsPage;
-import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
+
 import utils.AssertionUtils;
 import utils.BaseTest;
 
@@ -11,19 +14,27 @@ public class CreateBudgetDetailsTest extends BaseTest {
     @Test
     public void verifybudgetDetailsNavigation() throws InterruptedException {
 
-        CreateBudgetDetailsPage budgetDetailsPage = new CreateBudgetDetailsPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        budgetDetailsPage.clickRandom();
-        budgetDetailsPage.clickBudgetDetails();
-        budgetDetailsPage.clickRandom();
-        budgetDetailsPage.clickAdd();
+        CreateBudgetDetailsPage budgetDetailsPage =
+                new CreateBudgetDetailsPage(driver);
+
+        // Navigate to Budget Details Add Page
+        navigationSteps.navigateToAddPage(
+                ModuleName.BUDGET_DETAILS
+        );
+
+        // Create Budget Details
         budgetDetailsPage.createBudgetDetails();
 
-          // Step 4: Capture Toast Message
-        String actualToastMsg = budgetDetailsPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                budgetDetailsPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Budget Amount Successfully Created!";
+        String expectedToastMsg =
+                "Budget Amount Successfully Created!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -32,31 +43,31 @@ public class CreateBudgetDetailsTest extends BaseTest {
                 "Budget Amount created successfully",
                 "Budget Amount not created"
         );
-
     }
 
-    
-     @Test
+    @Test
     public void verifyResetFunctionality() {
 
-    CreateBudgetDetailsPage BudgetDetailsPage = new CreateBudgetDetailsPage(driver);
-    ServicesPage servicesPage=new ServicesPage(driver);
-    servicesPage.clickRandom();
-    BudgetDetailsPage.clickBudgetDetails();
-    servicesPage.clickRandom();
-    BudgetDetailsPage.clickAdd();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    // Click Reset
-    BudgetDetailsPage.resetBudgetDetails();
+        CreateBudgetDetailsPage budgetDetailsPage =
+                new CreateBudgetDetailsPage(driver);
 
-    // Assertions
+        // Navigate to Budget Details Add Page
+        navigationSteps.navigateToAddPage(
+                ModuleName.BUDGET_DETAILS
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            BudgetDetailsPage.getBudgetDetailsNameValue(),
-            "",
-            "Budget Details name reset successfully",
-            "Budget Details name not cleared"
-    );
+        // Click Reset
+        budgetDetailsPage.resetBudgetDetails();
 
-}
+        // Validate Reset
+        AssertionUtils.assertEqualsWithMessage(
+                budgetDetailsPage.getBudgetDetailsNameValue(),
+                "",
+                "Budget Details name reset successfully",
+                "Budget Details name not cleared"
+        );
+    }
 }

@@ -2,8 +2,9 @@ package tests;
 
 import org.testng.annotations.Test;
 
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.ProductsPage;
-import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -13,57 +14,61 @@ public class ProductsTest extends BaseTest {
     @Test
     public void verifyProductsNavigation() throws InterruptedException {
 
-        ProductsPage productsPage = new ProductsPage(driver);
+        ProductsPage productsPage =
+                new ProductsPage(driver);
 
-        // Open 3-dot menu
-        productsPage.clickRandom();
-        productsPage.clickProducts();
-        productsPage.clickRandom();
-        productsPage.clickAdd();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
+
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.PRODUCTS);
+
+        // Create Product
         productsPage.createProducts();
 
-        String expectedProductName = productsPage.getCreatedProductName();
-        String actualProductName = productsPage.getFirstRowProductName();
+        // Validation
+        String expectedProductName =
+                productsPage.getCreatedProductName();
+
+        String actualProductName =
+                productsPage.getFirstRowProductName();
 
         AssertionUtils.assertEqualsWithMessage(
-        actualProductName,
-        expectedProductName,
-        "Product created and visible in first row",
-        "Product name mismatch in listing"
-);
-
-
+                actualProductName,
+                expectedProductName,
+                "Product created and visible in first row",
+                "Product name mismatch in listing"
+        );
     }
 
-     @Test
-        public void verifyResetFunctionality() {
+    @Test
+    public void verifyResetFunctionality() {
 
-    ProductsPage ProductPage = new ProductsPage(driver);
-    ServicesPage servicesPage=new ServicesPage(driver);
+        ProductsPage productsPage =
+                new ProductsPage(driver);
 
-    servicesPage.clickRandom();
-    ProductPage.clickProducts();
-    servicesPage.clickRandom();
-    ProductPage.clickAdd();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    // Click Reset
-    ProductPage.resetProducts();
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.PRODUCTS);
 
-    // Assertions
+        // Click Reset
+        productsPage.resetProducts();
 
-    AssertionUtils.assertEqualsWithMessage(
-            ProductPage.getProductNameValue(),
-            "",
-            "Product name reset successfully",
-            "Product name not cleared"
-    );
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                productsPage.getProductNameValue(),
+                "",
+                "Product name reset successfully",
+                "Product name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            ProductPage.getProductDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-}
-
+        AssertionUtils.assertEqualsWithMessage(
+                productsPage.getProductDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
+    }
 }

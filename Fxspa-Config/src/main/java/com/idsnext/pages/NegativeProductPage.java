@@ -41,8 +41,36 @@ public class NegativeProductPage extends BasePage {
     }
 
     public void clickFirstThreeFieldsWithoutData() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ProductName)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ProductDesc)).click();    }
+
+        clickAndTab(ProductName);
+
+        clickAndTab(ProductDesc);
+    }
+
+    private void clickAndTab(By locator) {
+
+    waitForAngularIdle();
+
+    WebElement element = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(locator));
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+
+    try {
+
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+
+        element.click();
+
+    } catch (Exception e) {
+
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].click();", element);
+    }
+
+    element.sendKeys(Keys.TAB);
+}
 
     public boolean isValidationDisplayed() {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(errorMessages)).size() > 0;
@@ -56,15 +84,6 @@ public class NegativeProductPage extends BasePage {
         return errors.toString();
     }
 
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
 
     // ===== NEW METHOD (for first 3 fields only) =====
     public String getFirstThreeFieldErrors() {

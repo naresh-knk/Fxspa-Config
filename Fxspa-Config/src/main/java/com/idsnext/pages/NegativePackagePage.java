@@ -42,15 +42,6 @@ public class NegativePackagePage extends BasePage {
         return errors.toString();
     }
 
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
 
     public void uploadInvalidFile(String filePath) {
         waitForAngularIdle();

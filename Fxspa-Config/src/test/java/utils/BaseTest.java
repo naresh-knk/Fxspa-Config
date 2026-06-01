@@ -55,6 +55,7 @@ public class BaseTest {
             ChromeOptions options = new ChromeOptions();
             options.setExperimentalOption("prefs", chromePrefs);
 
+            options.addArguments("--headless=new");
             options.addArguments("--incognito");
             options.addArguments("--disable-save-password-bubble");
             options.addArguments("--no-sandbox");

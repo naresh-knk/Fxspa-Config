@@ -1,30 +1,24 @@
 package tests;
 
 import org.testng.annotations.Test;
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.PackagePage;
-import com.idsnext.pages.ServicesPage;
-
+import com.idsnext.steps.NavigationSteps;
 import utils.AssertionUtils;
 import utils.BaseTest;
 
 public class PackageTest extends BaseTest {
 
     @Test
-    public void verifyPackageNavigation() throws InterruptedException {
-
+    public void verifyPackageNavigation() {
+        // Initialize the steps and page objects
+        NavigationSteps navigationSteps = new NavigationSteps(driver);
         PackagePage packagePage = new PackagePage(driver);
 
-        packagePage.clickRandom();
-        packagePage.clickPackage();
-        packagePage.clickRandom();
-        packagePage.clickAdd();
+        navigationSteps.navigateToAddPage(ModuleName.PACKAGES);
         packagePage.createPackage();
 
-        
-        // Capture Toast Message
         String actualToastMsg = packagePage.getToastMsg();
-
-        // Expected Toast Message
         String expectedToastMsg = "Package Created!";
 
         // Assertion
@@ -34,37 +28,30 @@ public class PackageTest extends BaseTest {
                 "Package created successfully",
                 "Package not created"
         );
-
     }
 
-     @Test
+    @Test
     public void verifyResetFunctionality() {
 
-    PackagePage PackagePage = new PackagePage(driver);
-    ServicesPage servicesPage=new ServicesPage(driver);
+        NavigationSteps navigationSteps = new NavigationSteps(driver);
+        PackagePage packagePage = new PackagePage(driver);
 
-    servicesPage.clickRandom();
-    PackagePage.clickPackage();
-    servicesPage.clickRandom();
-    PackagePage.clickAdd();
+        navigationSteps.navigateToAddPage(ModuleName.PACKAGES);
+        packagePage.resetPackage();
 
-    // Click Reset
-    PackagePage.resetPackage();
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                packagePage.getPackageNameValue(),
+                "",
+                "Package name reset successfully",
+                "Package name not cleared"
+        );
 
-    // Assertions
-
-    AssertionUtils.assertEqualsWithMessage(
-            PackagePage.getPackageNameValue(),
-            "",
-            "Package name reset successfully",
-            "Package name not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            PackagePage.getPackageDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-}
+        AssertionUtils.assertEqualsWithMessage(
+                packagePage.getPackageDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
+    }
 }

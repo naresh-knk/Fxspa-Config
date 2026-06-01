@@ -1,92 +1,130 @@
 package tests;
 
-import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import com.idsnext.pages.SearchPage;
+
+import com.idsnext.enums.ModuleName;
+import com.idsnext.steps.NavigationSteps;
 import com.idsnext.pages.StatusPage;
+
 import utils.BaseTest;
 
 public class StatusTest extends BaseTest {
 
-    SearchPage searchPage;
+    NavigationSteps navigationSteps;
+
     StatusPage statusPage;
 
     @BeforeMethod
     public void setup() {
 
-        searchPage = new SearchPage(driver);
-        statusPage = new StatusPage(driver);
-        searchPage.clickRandom();
+        navigationSteps =
+                new NavigationSteps(driver);
+
+        statusPage =
+                new StatusPage(driver);
     }
 
     // ===== COMMON METHOD =====
-    private void verifyAllStatuses() {
+
+    private void verifyAllStatuses(
+            ModuleName moduleName
+    ) {
+
+        navigationSteps.navigateToModule(
+                moduleName
+        );
 
         statusPage.selectStatus("Active");
+
         statusPage.validateStatus("active");
 
         statusPage.selectStatus("Inactive");
+
         statusPage.validateStatus("inactive");
 
         statusPage.selectStatus("All");
+
         statusPage.validateStatus("all");
     }
 
     // ===== SERVICE =====
+
     @Test
     public void verifyServiceStatus() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Services']"));
-        verifyAllStatuses();
+
+        verifyAllStatuses(
+                ModuleName.SERVICES
+        );
     }
 
     // ===== RESOURCES =====
+
     @Test
     public void verifyResourcesStatus() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Resources']"));
-        verifyAllStatuses();
+
+        verifyAllStatuses(
+                ModuleName.RESOURCES
+        );
     }
 
     // ===== PRODUCTS =====
+
     @Test
     public void verifyProductStatus() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Products']"));
-        verifyAllStatuses();
+
+        verifyAllStatuses(
+                ModuleName.PRODUCTS
+        );
     }
 
     // ===== STAFF =====
+
     @Test
     public void verifyStaffStatus() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Staff Mapping']"));
-        searchPage.clickRandom();
-        verifyAllStatuses();
+
+        verifyAllStatuses(
+                ModuleName.STAFF_MAPPING
+        );
     }
 
     // ===== SERVICE CATEGORY =====
+
     @Test
     public void verifyServiceCategoryStatus() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Service Categories']"));
-        verifyAllStatuses();
+
+        verifyAllStatuses(
+                ModuleName.SERVICE_CATEGORY
+        );
     }
 
     // ===== PRODUCT CATEGORY =====
+
     @Test
     public void verifyProductCategoryStatus() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Product Categories']"));
-        verifyAllStatuses();
+
+        verifyAllStatuses(
+                ModuleName.PRODUCT_CATEGORY
+        );
     }
 
     // ===== PACKAGE =====
+
     @Test
     public void verifyPackageStatus() {
-        searchPage.selectModule(By.xpath("//span[text()=' Packages ']"));
-        verifyAllStatuses();
+
+        verifyAllStatuses(
+                ModuleName.PACKAGES
+        );
     }
 
     // ===== ADVANCED SETTINGS =====
+
     @Test
     public void verifyAdvanceStatus() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Advanced Settings']"));
-        verifyAllStatuses();
+
+        verifyAllStatuses(
+                ModuleName.ADVANCED_SETTINGS
+        );
     }
 }

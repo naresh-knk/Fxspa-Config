@@ -2,8 +2,9 @@ package tests;
 
 import org.testng.annotations.Test;
 
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.ResourcesPage;
-import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -13,21 +14,25 @@ public class ResourcesTest extends BaseTest {
     @Test
     public void verifyResourcesNavigation() throws InterruptedException {
 
-        ResourcesPage resourcesPage = new ResourcesPage(driver);
+        ResourcesPage resourcesPage =
+                new ResourcesPage(driver);
 
-        // Open 3-dot menu
-        resourcesPage.clickRandom();
-        resourcesPage.clickResources();
-        resourcesPage.clickRandom();
-        resourcesPage.clickAdd();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
+
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.RESOURCES);
+
+        // Create Resource
         resourcesPage.createResources();
 
-        
-        //  Capture Toast Message
-        String actualToastMsg = resourcesPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                resourcesPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Resource Successfully Created!";
+        String expectedToastMsg =
+                "Resource Successfully Created!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -36,37 +41,36 @@ public class ResourcesTest extends BaseTest {
                 "Resources created successfully",
                 "Resources not created"
         );
-
     }
 
-   @Test
-public void verifyResetFunctionality() {
+    @Test
+    public void verifyResetFunctionality() {
 
-    ResourcesPage resourcesPage = new ResourcesPage(driver);
-    ServicesPage servicesPage=new ServicesPage(driver);
+        ResourcesPage resourcesPage =
+                new ResourcesPage(driver);
 
-    servicesPage.clickRandom();
-    resourcesPage.clickResources();
-    servicesPage.clickRandom();
-    resourcesPage.clickAdd();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    // Click Reset
-    resourcesPage.resetResources();
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.RESOURCES);
 
-    // Assertions
+        // Click Reset
+        resourcesPage.resetResources();
 
-    AssertionUtils.assertEqualsWithMessage(
-            resourcesPage.getResourcesNameValue(),
-            "",
-            "Resources name reset successfully",
-            "Resources name not cleared"
-    );
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                resourcesPage.getResourcesNameValue(),
+                "",
+                "Resources name reset successfully",
+                "Resources name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            resourcesPage.getResourcesDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-}
+        AssertionUtils.assertEqualsWithMessage(
+                resourcesPage.getResourcesDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
+    }
 }
