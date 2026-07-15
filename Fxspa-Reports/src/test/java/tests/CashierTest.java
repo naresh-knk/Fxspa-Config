@@ -1,35 +1,34 @@
 package tests;
 
 import org.testng.annotations.Test;
-import com.idsnext.pages.BusinessRefusalPage;
+import com.idsnext.pages.CashierReportPage;
 import com.idsnext.pages.ReportButtonPage;
 import com.idsnext.enums.ModuleName;
 import com.idsnext.steps.ReportNavigationSteps;
 import utils.AssertionUtils;
 import utils.BaseTest;
 
-public class BusinessRefusalTest extends BaseTest {
+public class CashierTest extends BaseTest {
 
             private final String DOWNLOAD_PATH = "C:\\Users\\Deepshika\\Downloads";
 
     @Test
-    public void verifyBusinessRefusalReportNavigation() {
+    public void verifyCashierReportNavigation() {
         ReportNavigationSteps reportSteps = new ReportNavigationSteps(driver);
-        BusinessRefusalPage reportPage = new BusinessRefusalPage(driver);
+        CashierReportPage reportPage = new CashierReportPage(driver);
 
-        reportSteps.navigateToSpaReport(ModuleName.BUSINESS_REFUSAL_REPORT);
-        reportPage.clickOutlets();
-        reportPage.closePopupByEscape();
+        reportSteps.navigateToSpaReport(ModuleName.CASHIER_REPORT);
+
         reportSteps.configureFiltersAndGenerate();
 
         AssertionUtils.assertTrueWithMessage(
-            reportPage.isBusinessRefusalReportGenerated(),
-            "Business Refusal Report generated successfully",
-            "Failed to generate Business Refusal Report"
+            reportPage.isCashierReportGenerated(),
+            "Cashier Report generated successfully",
+            "Failed to generate Cashier Report"
         );
     }
 
-     @Test(priority = 2, dependsOnMethods = {"verifyBusinessRefusalReportNavigation"})
+     @Test(priority = 2, dependsOnMethods = {"verifyCashierReportNavigation"})
     public void verifyReportActionButtonsWorkflow() {
         
         ReportButtonPage buttonsPage = new ReportButtonPage(driver);

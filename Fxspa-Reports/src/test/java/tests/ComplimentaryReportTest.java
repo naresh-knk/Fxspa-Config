@@ -1,35 +1,33 @@
 package tests;
 
 import org.testng.annotations.Test;
-import com.idsnext.pages.BusinessRefusalPage;
+import com.idsnext.pages.ComplimentaryReportPage;
 import com.idsnext.pages.ReportButtonPage;
 import com.idsnext.enums.ModuleName;
 import com.idsnext.steps.ReportNavigationSteps;
 import utils.AssertionUtils;
 import utils.BaseTest;
 
-public class BusinessRefusalTest extends BaseTest {
+public class ComplimentaryReportTest extends BaseTest {
 
             private final String DOWNLOAD_PATH = "C:\\Users\\Deepshika\\Downloads";
 
     @Test
-    public void verifyBusinessRefusalReportNavigation() {
+    public void verifyComplimentaryReportNavigation() {
         ReportNavigationSteps reportSteps = new ReportNavigationSteps(driver);
-        BusinessRefusalPage reportPage = new BusinessRefusalPage(driver);
+        ComplimentaryReportPage reportPage = new ComplimentaryReportPage(driver);
 
-        reportSteps.navigateToSpaReport(ModuleName.BUSINESS_REFUSAL_REPORT);
-        reportPage.clickOutlets();
-        reportPage.closePopupByEscape();
+        reportSteps.navigateToSpaReport(ModuleName.COMPLIMENTARY_REPORT);
         reportSteps.configureFiltersAndGenerate();
 
         AssertionUtils.assertTrueWithMessage(
-            reportPage.isBusinessRefusalReportGenerated(),
-            "Business Refusal Report generated successfully",
-            "Failed to generate Business Refusal Report"
+            reportPage.isComplimentaryReportGenerated(),
+            "Complimentary Report generated successfully",
+            "Failed to generate Complimentary Report"
         );
     }
 
-     @Test(priority = 2, dependsOnMethods = {"verifyBusinessRefusalReportNavigation"})
+     @Test(priority = 2, dependsOnMethods = {"verifyComplimentaryReportNavigation"})
     public void verifyReportActionButtonsWorkflow() {
         
         ReportButtonPage buttonsPage = new ReportButtonPage(driver);

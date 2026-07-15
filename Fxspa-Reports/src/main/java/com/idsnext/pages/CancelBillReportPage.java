@@ -1,13 +1,12 @@
 package com.idsnext.pages;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class BusinessRefusalPage extends BasePage{
+public class CancelBillReportPage extends BasePage{
 
     private WebDriver driver;
     private WebDriverWait wait;
@@ -25,10 +24,10 @@ public class BusinessRefusalPage extends BasePage{
     private By spaReports =
             By.xpath("//span[normalize-space()='SPA Reports']");
 
-    private By bRefusal =
-            By.xpath("(//span[normalize-space()='Business Refusal Report'])");
+    private By cancelBill =
+            By.xpath("(//span[normalize-space()='Cancel Bill/Void Bill Details Report'])");
 
-          private By calendar = By.xpath("(//button[@aria-label=\"Open calendar\"])[1]");
+          private By calendar = By.xpath("(//button[@aria-label='Open calendar'])[1]");
 
         //    private By calendarDate = By.xpath("//button[@aria-label=\"2 December 2025\"]");
            private By leftArrow = By.xpath("//*[@id=\"mat-datepicker-0\"]/mat-calendar-header/div/div/button[2]");
@@ -43,15 +42,15 @@ public class BusinessRefusalPage extends BasePage{
             By.xpath("//div[contains(@class,'cdk-overlay-backdrop')]");
 
     // ===== Constructor =====
-    public BusinessRefusalPage(WebDriver driver) {
+    public CancelBillReportPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
     }
 
-   
 
     // ===== Actions =====
+
 
 
     public void clickRandom() {
@@ -68,9 +67,9 @@ public class BusinessRefusalPage extends BasePage{
         wait.until(ExpectedConditions.elementToBeClickable(spaReports)).click();
     }
 
-    public void clickbRefusal() {
+    public void clickCancelBill() {
         waitForAngularIdle();
-        wait.until(ExpectedConditions.elementToBeClickable(bRefusal)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(cancelBill)).click();
     }
 
     public void clickCalender() {
@@ -122,12 +121,7 @@ public class BusinessRefusalPage extends BasePage{
         waitForAngularIdle();
     }
 
-    public void closePopupByEscape() {
-    Actions actions = new Actions(driver);
-    actions.sendKeys(Keys.ESCAPE).perform();
-}
-
-    public boolean isBusinessRefusalReportGenerated() {
+    public boolean isCancelBillReportGenerated() {
         return isElementVisible(reportTable); // uses BasePage method
     }
 }

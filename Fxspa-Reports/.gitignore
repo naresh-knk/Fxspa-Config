@@ -7,8 +7,6 @@ test-output/
 # Screenshots
 screenshots/
 
-# Extent report
-ExtentReport.html
 
 # IDE files
 .vscode/

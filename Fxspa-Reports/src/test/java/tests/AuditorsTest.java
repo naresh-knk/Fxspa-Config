@@ -2,40 +2,72 @@ package tests;
 
 import org.testng.annotations.Test;
 import com.idsnext.pages.AuditorsPage;
-import com.idsnext.pages.LoginPage;
-
+import com.idsnext.pages.ReportButtonPage;
+import com.idsnext.enums.ModuleName;
+import com.idsnext.steps.ReportNavigationSteps;
 import utils.AssertionUtils;
 import utils.BaseTest;
 
 public class AuditorsTest extends BaseTest {
 
+    private final String DOWNLOAD_PATH = "C:\\Users\\Deepshika\\Downloads";
+
     @Test
     public void verifyAuditorsReportNavigation() {
-
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        ReportNavigationSteps reportSteps = new ReportNavigationSteps(driver);
         AuditorsPage reportPage = new AuditorsPage(driver);
 
-        // Step 2: CLICK FX REPORTS 
-        reportPage.clickFXReport();
-
-        // Step 3: Open 3-dot menu
-        reportPage.clickRandom();
-
-        // Step 4: Navigate Reports → SPA → Appointment
-        reportPage.clickReportSLabel();
-        reportPage.clickSPAReport();
-        reportPage.clickAuditorReport();
-        reportPage.clickCalender();
-        reportPage.clickCalenderDate();
-        reportPage.clickGenerate();
+        reportSteps.navigateToSpaReport(ModuleName.AUDITORS_REPORT);
+        reportSteps.configureFiltersAndGenerate();
 
         AssertionUtils.assertTrueWithMessage(
-            reportPage.isAuditReportGenerated(),           // condition
-            "Audit Report generated successfully", // success message
-            "Failed to generate Aduit Report"    // failure message
+            reportPage.isAuditReportGenerated(),                           // condition
+            "Audit Report generated successfully",                         // success message
+            "Failed to generate Audit Report"                              // failure message
+        );
+    }
+
+    @Test(priority = 2, dependsOnMethods = {"verifyAuditorsReportNavigation"})
+    public void verifyReportActionButtonsWorkflow() {
+        
+        ReportButtonPage buttonsPage = new ReportButtonPage(driver);
+
+        // 1. Export to PDF
+        buttonsPage.clickExportPdf();
+        AssertionUtils.assertTrueWithMessage(
+                buttonsPage.isPdfDownloaded(DOWNLOAD_PATH),
+                "PDF downloaded successfully",
+                "PDF download failed"
         );
 
+        // 2. Export to Excel
+        buttonsPage.clickExportExcel();
+        AssertionUtils.assertTrueWithMessage(
+                buttonsPage.isExcelDownloaded(DOWNLOAD_PATH),
+                "Excel downloaded successfully",
+                "Excel download failed"
+        );
+
+        // 3. Print
+        buttonsPage.clickPrint();
+
+        // 4. Email
+        buttonsPage.clickEmail();
+
+        // 5. Back Button
+        buttonsPage.clickBack();
+        AssertionUtils.assertTrueWithMessage(
+                buttonsPage.isReportVisible(),
+                "Back button working successfully",
+                "Back button failed"
+        );
+
+        // 6. Reset Button
+        buttonsPage.clickReset();
+        AssertionUtils.assertTrueWithMessage(
+                buttonsPage.isButtonReset(),
+                "Reset button working successfully",
+                "Reset button failed"
+        );
     }
 }
