@@ -38,18 +38,9 @@ public class PaginationPage extends BasePage {
     public PaginationPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
 
     private void jsClick(WebElement element) {
         ((JavascriptExecutor) driver)
@@ -162,7 +153,7 @@ private int getVisibleRowCount() {
         }
     }
 
-    // 👉 If we got more rows than expected page size,
+    //  If we got more rows than expected page size,
     // assume 1 extra non-data row and subtract
     int pageSize = getPageSizeFromLabel(); // e.g., 5 from "1 - 5 of 251"
 

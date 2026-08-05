@@ -13,7 +13,7 @@ public class NegativeResourcesPage extends BasePage {
     public NegativeResourcesPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Locators =====
@@ -41,8 +41,34 @@ public class NegativeResourcesPage extends BasePage {
     }
 
     public void clickFirstTwoFieldsWithoutData() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ResourcesName)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ResourcesDesc)).click();    }
+
+    clickAndTab(ResourcesName);
+
+    clickAndTab(ResourcesDesc);
+}
+
+private void clickAndTab(By locator) {
+
+    WebElement element = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(locator));
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+
+    try {
+
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+
+        element.click();
+
+    } catch (Exception e) {
+
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].click();", element);
+    }
+
+    element.sendKeys(Keys.TAB);
+}
 
     public boolean isValidationDisplayed() {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(errorMessages)).size() > 0;
@@ -54,16 +80,6 @@ public class NegativeResourcesPage extends BasePage {
             errors.append(el.getText()).append(" | ");
         }
         return errors.toString();
-    }
-
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
     }
 
     // ===== NEW METHOD (for first 2 fields only) =====

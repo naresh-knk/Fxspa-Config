@@ -6,10 +6,10 @@ import org.openqa.selenium.WebDriver;
 public class LoginPage extends BasePage{
 
     // Locators
-    private By username = By.id("md-input-0-input");
-    private By password = By.id("md-input-1-input");
+    private By username = By.xpath("//input[@type='text']");
+    private By password = By.xpath("//input[@type='password']");
     private By loginButton = By.xpath("//button[.//span[normalize-space()='Login']]");
-    private By fxPosImage = By.xpath("//img[@alt='FX POS']");
+    private By randomIcon = By.xpath("/html/body/app-root/div[1]/nav/ul/li/a/span[1]");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -24,6 +24,6 @@ public class LoginPage extends BasePage{
 
     // ---------------- Check if login is successful ----------------
     public boolean isLoginSuccessful() {
-        return isElementVisible(fxPosImage); // Already using BasePage method
+        return isElementVisible(randomIcon); // Already using BasePage method
     }
 }

@@ -1,9 +1,10 @@
 package tests;
 
 import org.testng.annotations.Test;
-import com.idsnext.pages.BillSeriesSetupPage;
-import com.idsnext.pages.LoginPage;
 
+import com.idsnext.enums.ModuleName;
+import com.idsnext.pages.BillSeriesSetupPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -11,30 +12,30 @@ import utils.BaseTest;
 public class BillSeriesSetupTest extends BaseTest {
 
     @Test
-    public void verifyBillSeriesNavigation() throws InterruptedException {
+    public void verifyBillSeriesNavigation()
+            throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        BillSeriesSetupPage billSeriesSetupPage = new BillSeriesSetupPage(driver);
+        BillSeriesSetupPage billSeriesSetupPage =
+                new BillSeriesSetupPage(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        billSeriesSetupPage.clickFXSPAConfigIcon();
-        billSeriesSetupPage.switchWindow();
+        // Navigate to Bill Series Setup Add Page
+        navigationSteps.navigateToAddPage(
+                ModuleName.BILL_SERIES
+        );
 
-        // Step 3: Open 3-dot menu
-        billSeriesSetupPage.clickRandom();
-        billSeriesSetupPage.clickBillSeries();
-        billSeriesSetupPage.clickRandom();
-        billSeriesSetupPage.clickAdd();
+        // Create Bill Series
         billSeriesSetupPage.createBillSeries();
 
-          // Step 4: Capture Toast Message
-        String actualToastMsg = billSeriesSetupPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                billSeriesSetupPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Bill Saved Successfully!";
+        String expectedToastMsg =
+                "Bill Saved Successfully!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -43,52 +44,48 @@ public class BillSeriesSetupTest extends BaseTest {
                 "Bill Saved successfully",
                 "Bill not saved"
         );
-
     }
 
-     @Test
-    public void verifyresetfunctionality() throws InterruptedException {
+    @Test
+    public void verifyresetfunctionality()
+            throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        BillSeriesSetupPage billSeriesSetupPage = new BillSeriesSetupPage(driver);
+        BillSeriesSetupPage billSeriesSetupPage =
+                new BillSeriesSetupPage(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        billSeriesSetupPage.clickFXSPAConfigIcon();
-        billSeriesSetupPage.switchWindow();
+        // Navigate to Bill Series Setup Add Page
+        navigationSteps.navigateToAddPage(
+                ModuleName.BILL_SERIES
+        );
 
-        // Step 3: Open 3-dot menu
-        billSeriesSetupPage.clickRandom();
-        billSeriesSetupPage.clickBillSeries();
-        billSeriesSetupPage.clickRandom();
-        billSeriesSetupPage.clickAdd();
         // Click Reset
-    billSeriesSetupPage.resetBillSeries();
+        billSeriesSetupPage.resetBillSeries();
 
-    // Assertions
+        // Validate Outlet Reset
+        AssertionUtils.assertEqualsWithMessage(
+                billSeriesSetupPage.getOutletValue(),
+                "",
+                "Outlet name reset successfully",
+                "Outlet name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            billSeriesSetupPage.getOutletValue(),
-            "",
-            "Outlet name reset successfully",
-            "Outlet name not cleared"
-    );
+        // Validate KOT Number Reset
+        AssertionUtils.assertEqualsWithMessage(
+                billSeriesSetupPage.getKOTNumberValue(),
+                "",
+                "KOT Number reset successfully",
+                "KOT Number not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            billSeriesSetupPage.getKOTNumberValue(),
-            "",
-            "KOT Number reset successfully",
-            "KOT Number not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            billSeriesSetupPage.getBillNumberValue(),
-            "",
-            "Bill Number reset successfully",
-            "Bill Number not cleared"
-    );
-
+        // Validate Bill Number Reset
+        AssertionUtils.assertEqualsWithMessage(
+                billSeriesSetupPage.getBillNumberValue(),
+                "",
+                "Bill Number reset successfully",
+                "Bill Number not cleared"
+        );
     }
 }

@@ -2,10 +2,9 @@ package tests;
 
 import org.testng.annotations.Test;
 
-import com.idsnext.pages.CreateBudgetDetailsPage;
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.EditBudgetDetailsPage;
-import com.idsnext.pages.LoginPage;
-import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -13,30 +12,33 @@ import utils.BaseTest;
 public class EditBudgetDetailsTest extends BaseTest {
 
     @Test
-    public void verifyeditbudgetDetailsNavigation() throws InterruptedException {
+    public void verifyeditbudgetDetailsNavigation()
+            throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        EditBudgetDetailsPage editBudgetDetailsPage = new EditBudgetDetailsPage(driver);
+        EditBudgetDetailsPage editBudgetDetailsPage =
+                new EditBudgetDetailsPage(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        editBudgetDetailsPage.clickFXSPAConfigIcon();
-        editBudgetDetailsPage.switchWindow();
+        // Navigate to Budget Details module
+        navigationSteps.navigateToModule(
+                ModuleName.BUDGET_DETAILS
+        );
 
-        // Step 3: Open 3-dot menu
-        editBudgetDetailsPage.clickRandom();
-        editBudgetDetailsPage.clickBudgetDetails();
-        editBudgetDetailsPage.clickRandom();
+        // Open existing row
         editBudgetDetailsPage.clickRow();
+
+        // Update Budget Details
         editBudgetDetailsPage.updateBudgetDetails();
 
-          // Step 4: Capture Toast Message
-        String actualToastMsg = editBudgetDetailsPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                editBudgetDetailsPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Budget Amount Successfully Updated!";
+        String expectedToastMsg =
+                "Budget Amount Successfully Updated!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -45,36 +47,35 @@ public class EditBudgetDetailsTest extends BaseTest {
                 "Budget Amount Updated successfully",
                 "Budget Amount not updated"
         );
-
     }
 
-//      @Test
-//     public void verifyResetFunctionality() {
+    // Reset functionality is not working
+    // @Test
+    public void verifyResetFunctionality() {
 
-//     LoginPage loginPage = new LoginPage(driver);
-//     loginPage.login(config.getUsername(), config.getPassword());
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-//     EditBudgetDetailsPage editBudgetDetailsPage = new EditBudgetDetailsPage(driver);
-    
-//     editBudgetDetailsPage.clickFXSPAConfigIcon();
-//     editBudgetDetailsPage.switchWindow();
+        EditBudgetDetailsPage editBudgetDetailsPage =
+                new EditBudgetDetailsPage(driver);
 
-//     editBudgetDetailsPage.clickRandom();
-//     editBudgetDetailsPage.clickBudgetDetails();
-//     editBudgetDetailsPage.clickRandom();
-//     editBudgetDetailsPage.clickRow();
+        // Navigate to Budget Details module
+        navigationSteps.navigateToModule(
+                ModuleName.BUDGET_DETAILS
+        );
 
-//     // Click Reset
-//     editBudgetDetailsPage.resetBudgetDetails();
+        // Open existing row
+        editBudgetDetailsPage.clickRow();
 
-//     // Assertions
+        // Click Reset
+        editBudgetDetailsPage.resetBudgetDetails();
 
-//     AssertionUtils.assertEqualsWithMessage(
-//             editBudgetDetailsPage.getBudgetDetailsNameValue(),
-//             "",
-//             "Budget Details name reset successfully",
-//             "Budget Details name not cleared"
-//     );
-
-// }
+        // Validate Reset
+        AssertionUtils.assertEqualsWithMessage(
+                editBudgetDetailsPage.getBudgetDetailsNameValue(),
+                "",
+                "Budget Details name reset successfully",
+                "Budget Details name not cleared"
+        );
+    }
 }

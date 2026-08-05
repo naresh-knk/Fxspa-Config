@@ -11,22 +11,10 @@ public class StatusPage extends BasePage {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    // ===== Correct Locators =====
-
-    // FIXED: Proper dropdown (not span)
     private By statusDropdown =
             By.xpath("//mat-select[@aria-label='Status']");
 
     // Overlay-safe options
-    private By activeOption =
-            By.xpath("//div[contains(@class,'cdk-overlay-pane')]//span[normalize-space()='Active']");
-
-    private By inactiveOption =
-            By.xpath("//div[contains(@class,'cdk-overlay-pane')]//span[normalize-space()='Inactive']");
-
-    private By allOption =
-            By.xpath("//div[contains(@class,'cdk-overlay-pane')]//span[normalize-space()='All']");
-
     private By toggles =
             By.xpath("//mat-slide-toggle//input[@type='checkbox']");
 
@@ -44,21 +32,11 @@ public class StatusPage extends BasePage {
     public StatusPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Wait =====
 
-    private void waitForAngularIdle() {
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
 
     private void jsClick(WebElement element) {
 
@@ -79,13 +57,13 @@ public class StatusPage extends BasePage {
         return selected.getText().trim().toLowerCase();
     }
 
-    // ===== Select Status (Smart) =====
+    // ===== Select Status =====
 
     public void selectStatus(String status) {
 
     waitForAngularIdle();
 
-    // Step 0: Skip if already selected
+    // Skip if already selected
     try {
         String current = driver.findElement(
                 By.xpath("//mat-select//span[contains(@class,'mat-select-value-text')]")
@@ -96,23 +74,23 @@ public class StatusPage extends BasePage {
         }
     } catch (Exception ignored) {}
 
-    // Step 1: Open dropdown
+    //  Open dropdown
     WebElement dropdown = wait.until(ExpectedConditions.elementToBeClickable(statusDropdown));
     jsClick(dropdown);
 
-    // Step 2: Wait for overlay to appear
+    //  Wait for overlay to appear
     wait.until(ExpectedConditions.presenceOfElementLocated(
             By.xpath("//div[contains(@class,'cdk-overlay-pane')]")
     ));
 
-    // Step 3: Dynamic option locator (NO switch needed)
+    // Dynamic option locator (NO switch needed)
    By optionLocator = By.xpath(
     "//div[contains(@class,'cdk-overlay-pane')]//span[" +
     "translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='" 
     + status.toLowerCase() + "']"
 );
 
-    // Step 4: Wait and click
+    //  Wait and click
     WebElement option = wait.until(ExpectedConditions.elementToBeClickable(optionLocator));
     jsClick(option);
 
@@ -128,7 +106,7 @@ public class StatusPage extends BasePage {
     boolean hasActive = false;
     boolean hasInactive = false;
 
-    // 👉 Loop for pagination (only useful for "all")
+    //  Loop for pagination (only useful for "all")
     while (true) {
 
         List<WebElement> toggleList = driver.findElements(toggles);
@@ -147,40 +125,40 @@ public class StatusPage extends BasePage {
                 hasInactive = true;
             }
 
-            // ✅ Validation for Active filter
+            // Validation for Active filter
             if (expectedStatus.equalsIgnoreCase("active") && !isChecked) {
                 throw new AssertionError("Inactive record found in Active filter");
             }
 
-            // ✅ Validation for Inactive filter
+            // Validation for Inactive filter
             if (expectedStatus.equalsIgnoreCase("inactive") && isChecked) {
                 throw new AssertionError("Active record found in Inactive filter");
             }
         }
 
-        // ✅ If not "all", no need pagination
+        // If not "all", no need pagination
         if (!expectedStatus.equalsIgnoreCase("all")) {
             break;
         }
 
-        // ✅ If both found → stop
+        // If both found → stop
         if (hasActive && hasInactive) {
             break;
         }
 
-        // 👉 Check next button
+        // Check next button
         List<WebElement> nextBtns = driver.findElements(nextButton);
 
         if (nextBtns.isEmpty()) {
             break; // no more pages
         }
 
-        // 👉 Go to next page
+        // Go to next page
         jsClick(nextBtns.get(0));
         waitForAngularIdle();
     }
 
-    // ✅ Final validation for "all"
+    // Final validation for "all"
     if (expectedStatus.equalsIgnoreCase("all")) {
         if (!(hasActive && hasInactive)) {
             throw new AssertionError(

@@ -12,7 +12,6 @@ public class EditResourcesPage extends BasePage {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    
     private By fxSPAConfigIcon =
             By.xpath("//div[contains(@title,'FX SPA Configuration (FX SPA)')]");
 
@@ -22,163 +21,167 @@ public class EditResourcesPage extends BasePage {
     private By overlayBackdrop =
             By.xpath("//div[contains(@class,'cdk-overlay-backdrop')]");
 
-    private By randomIcon =
-           By.xpath("/html/body/app-root/div[1]/nav/ul/li/a/span[1]");
+    private By rowclick =
+            By.xpath("(//td[contains(text(),'Name')])[1]");
 
-    private By resources=
-            By.xpath("//span[normalize-space()='Resources']");
+    private By rname =
+            By.xpath("//input[@placeholder='Resource Name']");
 
-        private By rowclick = By.xpath("(//td[contains(text(),'Name')])[1]");
+    private By rdesc =
+            By.xpath("//input[contains(@placeholder,'Description')]");
 
-    private By rname= By.xpath("//input[@placeholder='Resource Name']");
-    private By rdesc= By.xpath("//input[contains(@placeholder,'Description')]");
     private String updateResourcesName;
+
     private By updateButton =
             By.xpath("//button[contains(text(),' Update ')]");
-            private By resetButton =
-            By.xpath("//button[contains(text(),'Reset')]");
 
+    private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
     // ===== Constructor =====
     public EditResourcesPage(WebDriver driver) {
+
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Common Waits =====
 
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
-
     private void jsClick(WebElement element) {
+
         ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+                .executeScript(
+                        "arguments[0].scrollIntoView({block:'center'});",
+                        element);
+
         ((JavascriptExecutor) driver)
                 .executeScript("arguments[0].click();", element);
     }
 
-
     // ===== Actions =====
 
-
     public void clickFXSPAConfigIcon() {
+
         waitForAngularIdle();
+
         WebElement fx =
-                wait.until(ExpectedConditions.elementToBeClickable(fxSPAConfigIcon));
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                fxSPAConfigIcon));
+
         jsClick(fx);
+
         waitForAngularIdle();
     }
 
-    public void switchWindow(){
+    public void switchWindow() {
+
         String currentWindow = driver.getWindowHandle();
+
         for (String windowHandle : driver.getWindowHandles()) {
+
             if (!windowHandle.equals(currentWindow)) {
+
                 driver.switchTo().window(windowHandle);
                 break;
             }
         }
     }
 
-       public void clickRandom() throws InterruptedException {
-        waitForAngularIdle();
-        wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
-       // Thread.sleep(10000); // Temporary wait to observe the click action, replace with proper wait if needed
-    }
+    public void clickRow() {
 
-
-    public void clickResources() {
-        waitForAngularIdle();
-        wait.until(ExpectedConditions.elementToBeClickable(resources)).click();
-        waitForAngularIdle();
-    }
-
-     public void clickRow() {
         waitForAngularIdle();
 
         WebElement plus =
-                wait.until(ExpectedConditions.elementToBeClickable(rowclick));
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                rowclick));
+
         jsClick(plus);
     }
 
     public void updateResources() {
 
-        String randomName = RandomStringUtils.randomAlphabetic(4);
-        //String randomNumeric = RandomStringUtils.randomNumeric(2);
+        String randomName =
+                RandomStringUtils.randomAlphabetic(4);
 
         waitForAngularIdle();
 
-        
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(rname))
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(rname))
                 .sendKeys("Name " + randomName);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(rdesc))
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(rdesc))
                 .sendKeys("Desc " + randomName);
 
         waitForAngularIdle();
 
         WebElement create =
-                wait.until(ExpectedConditions.visibilityOfElementLocated(updateButton));
-        jsClick(create);
-        //waitForAngularIdle();
-    
-}
+                wait.until(
+                        ExpectedConditions.visibilityOfElementLocated(
+                                updateButton));
 
-public void resetResources() {
+        jsClick(create);
+    }
+
+    public void resetResources() {
 
         waitForAngularIdle();
 
         WebElement reset =
-                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+                wait.until(
+                        ExpectedConditions.visibilityOfElementLocated(
+                                resetButton));
+
         jsClick(reset);
-        //waitForAngularIdle();
-    
-}
-
-public String getUpdateResourcesName() {
-    return updateResourcesName.trim();
-}
-
-public String getToastMsg() {
-
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-
-    for (int i = 0; i < 15; i++) {
-
-        String toast = (String) js.executeScript(
-                "var e=document.querySelector('#toast-popup p'); return e?e.innerText:'';"
-        );
-
-        if (!toast.isEmpty()) {
-            return toast.trim();
-        }
-
-        try {
-            Thread.sleep(200);
-        } catch (Exception e) {}
     }
 
-    return "";
-}
+    public String getUpdateResourcesName() {
 
-// ===== Reset Validation Getters =====
+        return updateResourcesName;
+    }
 
-public String getResourcesNameValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(rname))
-            .getAttribute("value")
-            .trim();
-}
+    public String getToastMsg() {
 
-public String getResourcesDescriptionValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(rdesc))
-            .getAttribute("value")
-            .trim();
-}
+        JavascriptExecutor js =
+                (JavascriptExecutor) driver;
+
+        for (int i = 0; i < 15; i++) {
+
+            String toast =
+                    (String) js.executeScript(
+                            "var e=document.querySelector('#toast-popup p'); return e?e.innerText:'';"
+                    );
+
+            if (!toast.isEmpty()) {
+                return toast.trim();
+            }
+
+            try {
+                Thread.sleep(200);
+            } catch (Exception e) {}
+        }
+
+        return "";
+    }
+
+    // ===== Reset Validation Getters =====
+
+    public String getResourcesNameValue() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(rname))
+                .getAttribute("value")
+                .trim();
+    }
+
+    public String getResourcesDescriptionValue() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(rdesc))
+                .getAttribute("value")
+                .trim();
+    }
 }

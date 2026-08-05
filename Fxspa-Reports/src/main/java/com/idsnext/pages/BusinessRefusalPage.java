@@ -1,6 +1,7 @@
 package com.idsnext.pages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -48,35 +49,10 @@ public class BusinessRefusalPage extends BasePage{
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
     }
 
-    // ===== Common Waits =====
-
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
-
-    private void jsClick(WebElement element) {
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].click();", element);
-    }
+   
 
     // ===== Actions =====
 
-
-    public void clickFXReport() {
-        waitForAngularIdle();
-        WebElement fx =
-                wait.until(ExpectedConditions.elementToBeClickable(fxReportsIcon));
-        jsClick(fx);
-        waitForAngularIdle();
-    }
 
     public void clickRandom() {
         wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
@@ -145,6 +121,11 @@ public class BusinessRefusalPage extends BasePage{
         wait.until(ExpectedConditions.elementToBeClickable(generateButton)).click();
         waitForAngularIdle();
     }
+
+    public void closePopupByEscape() {
+    Actions actions = new Actions(driver);
+    actions.sendKeys(Keys.ESCAPE).perform();
+}
 
     public boolean isBusinessRefusalReportGenerated() {
         return isElementVisible(reportTable); // uses BasePage method

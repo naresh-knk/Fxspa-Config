@@ -3,42 +3,41 @@ package tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.idsnext.pages.LoginPage;
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.NegativeBudgetPage;
-import com.idsnext.pages.CreateBudgetDetailsPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.BaseTest;
 
 public class NegativeBudgetTest extends BaseTest {
 
     @Test
-    public void verifyBudgetDetailsNegativeFlow() throws InterruptedException {
+    public void verifyBudgetDetailsNegativeFlow()
+            throws InterruptedException {
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
-
-        CreateBudgetDetailsPage budgetDetailsPage =
-                new CreateBudgetDetailsPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
         NegativeBudgetPage page =
                 new NegativeBudgetPage(driver);
 
         // ===== NAVIGATION =====
 
-        budgetDetailsPage.clickFXSPAConfigIcon();
-        budgetDetailsPage.switchWindow();
-        budgetDetailsPage.clickRandom();
-        budgetDetailsPage.clickBudgetDetails();
-        budgetDetailsPage.clickRandom();
-        budgetDetailsPage.clickAdd();
+        navigationSteps.navigateToAddPage(
+                ModuleName.BUDGET_DETAILS
+        );
+
 
         // ===== STEP 1 : Click Save Without Data =====
 
         page.clickSave();
 
-        String toast1 = page.getToastMessage();
+        String toast1 =
+                page.getToastMessage();
 
-        System.out.println("Step 1 Toast : " + toast1);
+        System.out.println(
+                "Step 1 Toast : " + toast1
+        );
 
         Assert.assertTrue(
                 toast1.toLowerCase().contains("valid")
@@ -57,7 +56,10 @@ public class NegativeBudgetTest extends BaseTest {
         String validationText =
                 page.getAllValidationMessages();
 
-        System.out.println("Step 2 Validation : " + validationText);
+        System.out.println(
+                "Step 2 Validation : "
+                        + validationText
+        );
 
         Assert.assertTrue(
                 validationVisible,

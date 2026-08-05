@@ -1,11 +1,9 @@
 package tests;
 
 import org.testng.annotations.Test;
-
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.EditProductsPage;
-import com.idsnext.pages.LoginPage;
-import com.idsnext.pages.ProductsPage;
-import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -15,28 +13,28 @@ public class EditProductsTest extends BaseTest {
     @Test
     public void verifyProductsNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        EditProductsPage editproductsPage =
+                new EditProductsPage(driver);
 
-        EditProductsPage editproductsPage = new EditProductsPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        // Step 2: CLICK FX SPA    
-        editproductsPage.clickFXSPAConfigIcon();
-        editproductsPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToModule(ModuleName.PRODUCTS);
 
-        // Step 3: Open 3-dot menu
-        editproductsPage.clickRandom();
-        editproductsPage.clickProducts();
-        editproductsPage.clickRandom();
+        // Open Edit Page
         editproductsPage.clickRow();
+
+        // Update Product
         editproductsPage.editProducts();
 
-        // Step 4: Capture Toast Message
-        String actualToastMsg = editproductsPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                editproductsPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Product Successfully Updated!";
+        String expectedToastMsg =
+                "Product Successfully Updated!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -45,44 +43,39 @@ public class EditProductsTest extends BaseTest {
                 "Product updated successfully",
                 "Product not updated"
         );
-
     }
 
-     @Test
-public void verifyResetFunctionality() {
+    @Test
+    public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
+        EditProductsPage editProductPage =
+                new EditProductsPage(driver);
 
-    EditProductsPage editProductPage = new EditProductsPage(driver);
-    ServicesPage servicesPage=new ServicesPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    editProductPage.clickFXSPAConfigIcon();
-    editProductPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToModule(ModuleName.PRODUCTS);
 
-    servicesPage.clickRandom();
-    editProductPage.clickProducts();
-    servicesPage.clickRandom();
-    editProductPage.clickRow();
+        // Open Edit Page
+        editProductPage.clickRow();
 
-    // Click Reset
-    editProductPage.resetProducts();
+        // Click Reset
+        editProductPage.resetProducts();
 
-    // Assertions
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                editProductPage.getProductNameValue(),
+                "",
+                "Product name reset successfully",
+                "Product name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            editProductPage.getProductNameValue(),
-            "",
-            "Product name reset successfully",
-            "Product name not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            editProductPage.getProductDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-}
-
+        AssertionUtils.assertEqualsWithMessage(
+                editProductPage.getProductDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
+    }
 }

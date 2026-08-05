@@ -2,8 +2,9 @@ package tests;
 
 import org.testng.annotations.Test;
 
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.ServicesPage;
-import com.idsnext.pages.LoginPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -11,76 +12,70 @@ import utils.BaseTest;
 public class ServicesTest extends BaseTest {
 
     @Test
-    public void verifyServicesNavigation() throws InterruptedException {
+    public void verifyServicesNavigation() {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        ServicesPage servicesPage = new ServicesPage(driver);
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.SERVICES);
 
-        // Step 2: CLICK FX SPA    
-        servicesPage.clickFXSPAConfigIcon();
-        servicesPage.switchWindow();
+        ServicesPage servicesPage =
+                new ServicesPage(driver);
 
-        // Step 3: Open 3-dot menu
-        servicesPage.clickRandom();
-        servicesPage.clickServices();
-        servicesPage.clickRandom();
-        servicesPage.clickAdd();
+        // Create Service
         servicesPage.createServices();
 
-String expectedServiceName = servicesPage.getCreatedServiceName();
-String actualServiceName = servicesPage.getFirstRowServiceName();
+        // Validation
+        String expectedServiceName =
+                servicesPage.getCreatedServiceName();
 
-AssertionUtils.assertEqualsWithMessage(
-        actualServiceName,
-        expectedServiceName,
-        "Service created and visible in first row",
-        "Service name mismatch in listing"
-);
+        String actualServiceName =
+                servicesPage.getFirstRowServiceName();
+
+        AssertionUtils.assertEqualsWithMessage(
+                actualServiceName,
+                expectedServiceName,
+                "Service created and visible in first row",
+                "Service name mismatch in listing"
+        );
     }
 
-   @Test
-public void verifyResetFunctionality() {
+    @Test
+    public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    ServicesPage servicesPage = new ServicesPage(driver);
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.SERVICES);
 
-    servicesPage.clickFXSPAConfigIcon();
-    servicesPage.switchWindow();
+        ServicesPage servicesPage =
+                new ServicesPage(driver);
 
-    servicesPage.clickRandom();
-    servicesPage.clickServices();
-    servicesPage.clickRandom();
-    servicesPage.clickAdd();
+        // Reset Service
+        servicesPage.resetServices();
 
-    // Click Reset
-    servicesPage.resetServices();
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                servicesPage.getServiceNameValue(),
+                "",
+                "Service name reset successfully",
+                "Service name not cleared"
+        );
 
-    // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                servicesPage.getServiceDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            servicesPage.getServiceNameValue(),
-            "",
-            "Service name reset successfully",
-            "Service name not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            servicesPage.getServiceDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            servicesPage.getServiceDurationValue(),
-            "",
-            "Duration reset successfully",
-            "Duration not cleared"
-    );
-}
+        AssertionUtils.assertEqualsWithMessage(
+                servicesPage.getServiceDurationValue(),
+                "",
+                "Duration reset successfully",
+                "Duration not cleared"
+        );
+    }
 }

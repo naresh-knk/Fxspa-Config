@@ -1,43 +1,39 @@
 package tests;
 
-import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.CopyPage;
-import com.idsnext.pages.LoginPage;
-import com.idsnext.pages.SearchPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.BaseTest;
 
 public class CopyTest extends BaseTest {
 
-    SearchPage searchPage;
+    NavigationSteps navigationSteps;
+
     CopyPage copyPage;
 
     @BeforeMethod
     public void setup() {
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        navigationSteps =
+                new NavigationSteps(driver);
 
-        searchPage = new SearchPage(driver);
-        copyPage = new CopyPage(driver);
-
-        searchPage.clickFXSPAConfigIcon();
-        searchPage.switchWindow();
-        searchPage.clickRandom();
+        copyPage =
+                new CopyPage(driver);
     }
 
     // ===== COMMON METHOD =====
 
-    private void verifyCopyForModule(By moduleLocator, boolean isStaff) {
+    private void verifyCopyForModule(
+            ModuleName moduleName
+    ) {
 
-        searchPage.selectModule(moduleLocator);
-
-        if (isStaff) {
-            searchPage.clickRandom();
-        }
+        navigationSteps.navigateToModule(
+                moduleName
+        );
 
         copyPage.performCopy();
     }
@@ -46,43 +42,57 @@ public class CopyTest extends BaseTest {
 
     @Test
     public void verifyServiceCopy() {
+
         verifyCopyForModule(
-                By.xpath("//span[normalize-space()='Services']"), false);
+                ModuleName.SERVICES
+        );
     }
 
     @Test
     public void verifyResourcesCopy() {
+
         verifyCopyForModule(
-                By.xpath("//span[normalize-space()='Resources']"), false);
+                ModuleName.RESOURCES
+        );
     }
 
     @Test
     public void verifyProductCopy() {
+
         verifyCopyForModule(
-                By.xpath("//span[normalize-space()='Products']"), false);
+                ModuleName.PRODUCTS
+        );
     }
 
     @Test
     public void verifyStaffCopy() {
+
         verifyCopyForModule(
-                By.xpath("//span[normalize-space()='Staff Mapping']"), true);
+                ModuleName.STAFF_MAPPING
+        );
     }
 
     @Test
     public void verifyServiceCategoryCopy() {
+
         verifyCopyForModule(
-                By.xpath("//span[normalize-space()='Service Categories']"), false);
+                ModuleName.SERVICE_CATEGORY
+        );
     }
 
     @Test
     public void verifyProductCategoryCopy() {
+
         verifyCopyForModule(
-                By.xpath("//span[normalize-space()='Product Categories']"), false);
+                ModuleName.PRODUCT_CATEGORY
+        );
     }
 
     @Test
     public void verifyPackageCopy() {
+
         verifyCopyForModule(
-                By.xpath("//span[text()=' Packages ']"), false);
+                ModuleName.PACKAGES
+        );
     }
 }

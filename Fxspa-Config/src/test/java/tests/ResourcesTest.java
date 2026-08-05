@@ -2,9 +2,9 @@ package tests;
 
 import org.testng.annotations.Test;
 
-import com.idsnext.pages.LoginPage;
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.ResourcesPage;
-import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -14,29 +14,25 @@ public class ResourcesTest extends BaseTest {
     @Test
     public void verifyResourcesNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-       loginPage.login(config.getUsername(), config.getPassword());
+        ResourcesPage resourcesPage =
+                new ResourcesPage(driver);
 
-        ResourcesPage resourcesPage = new ResourcesPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        resourcesPage.clickFXSPAConfigIcon();
-        resourcesPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.RESOURCES);
 
-        // Step 3: Open 3-dot menu
-        resourcesPage.clickRandom();
-        resourcesPage.clickResources();
-        resourcesPage.clickRandom();
-        resourcesPage.clickAdd();
+        // Create Resource
         resourcesPage.createResources();
 
-        
-        // Step 4: Capture Toast Message
-        String actualToastMsg = resourcesPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                resourcesPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Resource Successfully Created!";
+        String expectedToastMsg =
+                "Resource Successfully Created!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -45,43 +41,36 @@ public class ResourcesTest extends BaseTest {
                 "Resources created successfully",
                 "Resources not created"
         );
-
     }
 
-   @Test
-public void verifyResetFunctionality() {
+    @Test
+    public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
+        ResourcesPage resourcesPage =
+                new ResourcesPage(driver);
 
-    ResourcesPage resourcesPage = new ResourcesPage(driver);
-    ServicesPage servicesPage=new ServicesPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    resourcesPage.clickFXSPAConfigIcon();
-    resourcesPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.RESOURCES);
 
-    servicesPage.clickRandom();
-    resourcesPage.clickResources();
-    servicesPage.clickRandom();
-    resourcesPage.clickAdd();
+        // Click Reset
+        resourcesPage.resetResources();
 
-    // Click Reset
-    resourcesPage.resetResources();
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                resourcesPage.getResourcesNameValue(),
+                "",
+                "Resources name reset successfully",
+                "Resources name not cleared"
+        );
 
-    // Assertions
-
-    AssertionUtils.assertEqualsWithMessage(
-            resourcesPage.getResourcesNameValue(),
-            "",
-            "Resources name reset successfully",
-            "Resources name not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            resourcesPage.getResourcesDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-}
+        AssertionUtils.assertEqualsWithMessage(
+                resourcesPage.getResourcesDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
+    }
 }

@@ -13,7 +13,7 @@ public class NegativePackagePage extends BasePage {
     public NegativePackagePage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Locators =====
@@ -25,10 +25,6 @@ public class NegativePackagePage extends BasePage {
     private By saveButton = By.xpath("//button[contains(text(),' Save ')]");
     private By errorMessages = By.xpath("//mat-error");
 
-     private By pCode= By.xpath("//input[@placeholder='Package Code*']");
-    private By pName= By.xpath("//input[contains(@placeholder,'Package Name*')]");
-    private By days= By.xpath("//input[contains(@placeholder,'Days')]");
-    private By hsnCode= By.xpath("//input[contains(@placeholder,'HSN Code*')]");
     // Upload photo
     private By uploadInput = By.xpath("//input[@type='file']");
 
@@ -46,15 +42,6 @@ public class NegativePackagePage extends BasePage {
         return errors.toString();
     }
 
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
 
     public void uploadInvalidFile(String filePath) {
         waitForAngularIdle();

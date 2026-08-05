@@ -1,40 +1,43 @@
 package tests;
 
-
 import org.testng.annotations.Test;
 
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.EditServiceCategoriesPage;
-import com.idsnext.pages.LoginPage;
+import com.idsnext.steps.NavigationSteps;
+
 import utils.AssertionUtils;
 import utils.BaseTest;
 
 public class EditServiceCategoriesTest extends BaseTest {
 
     @Test
-    public void verifyServiceCategoriesNavigation() throws InterruptedException {
+    public void verifyServiceCategoriesNavigation() {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        EditServiceCategoriesPage editserviceCategoriesPage =
+                new EditServiceCategoriesPage(driver);
 
-        EditServiceCategoriesPage editserviceCategoriesPage = new EditServiceCategoriesPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        editserviceCategoriesPage.clickFXSPAConfigIcon();
-        editserviceCategoriesPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToModule(
+                ModuleName.SERVICE_CATEGORY
+        );
 
-        // Step 3: Open 3-dot menu
-        editserviceCategoriesPage.clickRandom();
-        editserviceCategoriesPage.clickServiceCategories();
-        editserviceCategoriesPage.clickRandom();
+        // Open Edit Page
         editserviceCategoriesPage.clickRow();
+
+        // Edit Service Category
         editserviceCategoriesPage.editServiceCategories();
 
-         // Step 4: Capture Toast Message
-        String actualToastMsg = editserviceCategoriesPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                editserviceCategoriesPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Service Category Successfully Updated!";
+        String expectedToastMsg =
+                "Service Category Successfully Updated!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -46,48 +49,45 @@ public class EditServiceCategoriesTest extends BaseTest {
     }
 
     @Test
-    public void verifyresetfunctionality() throws InterruptedException {
+    public void verifyresetfunctionality() {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        EditServiceCategoriesPage serviceCategoriesPage =
+                new EditServiceCategoriesPage(driver);
 
-        EditServiceCategoriesPage serviceCategoriesPage = new EditServiceCategoriesPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        serviceCategoriesPage.clickFXSPAConfigIcon();
-        serviceCategoriesPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToModule(
+                ModuleName.SERVICE_CATEGORY
+        );
 
-        // Step 3: Open 3-dot menu
-        serviceCategoriesPage.clickRandom();
-        serviceCategoriesPage.clickServiceCategories();
-        serviceCategoriesPage.clickRandom();
+        // Open Edit Page
         serviceCategoriesPage.clickRow();
+
         // Click Reset
-    serviceCategoriesPage.resetServiceCategories();
+        serviceCategoriesPage.resetServiceCategories();
 
-    // Assertions
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                serviceCategoriesPage.getServiceNameValue(),
+                "",
+                "Service Categories name reset successfully",
+                "Service Categories name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            serviceCategoriesPage.getServiceNameValue(),
-            "",
-            "Service Categories name reset successfully",
-            "Service Categories name not cleared"
-    );
+        AssertionUtils.assertEqualsWithMessage(
+                serviceCategoriesPage.getServiceDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            serviceCategoriesPage.getServiceDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            serviceCategoriesPage.getServiceHSNCodeValue(),
-            "",
-            "HSN code reset successfully",
-            "HSN code not cleared"
-    );
-
+        AssertionUtils.assertEqualsWithMessage(
+                serviceCategoriesPage.getServiceHSNCodeValue(),
+                "",
+                "HSN code reset successfully",
+                "HSN code not cleared"
+        );
     }
 }

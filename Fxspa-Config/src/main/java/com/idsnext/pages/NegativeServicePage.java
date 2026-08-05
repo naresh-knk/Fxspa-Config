@@ -13,7 +13,7 @@ public class NegativeServicePage extends BasePage {
     public NegativeServicePage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Locators =====
@@ -44,11 +44,40 @@ public class NegativeServicePage extends BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(saveButton)).click();
     }
 
-    public void clickFirstThreeFieldsWithoutData() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(serviceName)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(serviceDesc)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(duration)).click();
-    }
+public void clickFirstThreeFieldsWithoutData() {
+
+    waitForAngularIdle();
+
+    WebElement nameField =
+            wait.until(ExpectedConditions.visibilityOfElementLocated(serviceName));
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].scrollIntoView({block:'center'});", nameField);
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].click();", nameField);
+
+
+    WebElement descField =
+            wait.until(ExpectedConditions.visibilityOfElementLocated(serviceDesc));
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].scrollIntoView({block:'center'});", descField);
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].click();", descField);
+
+
+    WebElement durationField =
+            wait.until(ExpectedConditions.visibilityOfElementLocated(duration));
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].scrollIntoView({block:'center'});", durationField);
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].click();", durationField);
+}
+
 
     public boolean isValidationDisplayed() {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(errorMessages)).size() > 0;
@@ -62,15 +91,6 @@ public class NegativeServicePage extends BasePage {
         return errors.toString();
     }
 
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
 
     // ===== NEW METHOD (for first 3 fields only) =====
     public String getFirstThreeFieldErrors() {

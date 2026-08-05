@@ -2,9 +2,10 @@ package tests;
 
 import org.testng.annotations.Test;
 
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.EditServicesPage;
-import com.idsnext.pages.LoginPage;
 import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -14,31 +15,26 @@ public class EditServicesTest extends BaseTest {
     @Test
     public void verifyServicesNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        EditServicesPage editservicesPage =
+                new EditServicesPage(driver);
 
-        EditServicesPage editservicesPage = new EditServicesPage(driver);
-        
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        // Step 2: CLICK FX SPA CONFIG
-        editservicesPage.clickFXSPAConfigIcon();
-        editservicesPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToModule(ModuleName.SERVICES);
 
-        // Step 3: Navigate to Services
-        editservicesPage.clickRandom();
-        editservicesPage.clickServices();
-        editservicesPage.clickRandom();
-
-        // Step 4: Update Service
+        // Update Service
         editservicesPage.clickRow();
         editservicesPage.updateServices();
 
-        // Step 5: Capture Toast Message
-        String actualToastMsg = editservicesPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                editservicesPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Service Successfully Updated!";
+        String expectedToastMsg =
+                "Service Successfully Updated!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -52,43 +48,44 @@ public class EditServicesTest extends BaseTest {
     @Test
     public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
+        EditServicesPage editservicesPage =
+                new EditServicesPage(driver);
 
-    EditServicesPage editservicesPage = new EditServicesPage(driver);
-    ServicesPage servicesPage = new ServicesPage(driver);
+        ServicesPage servicesPage =
+                new ServicesPage(driver);
 
-    editservicesPage.clickFXSPAConfigIcon();
-    editservicesPage.switchWindow();
-    servicesPage.clickRandom();
-    editservicesPage.clickServices();
-    servicesPage.clickRandom();
-    editservicesPage.clickRow();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    // Click Reset
-    editservicesPage.resetServices();
+        // Generic Navigation
+        navigationSteps.navigateToModule(ModuleName.SERVICES);
 
-    // Assertions
+        // Open Edit Page
+        editservicesPage.clickRow();
 
-    AssertionUtils.assertEqualsWithMessage(
-            servicesPage.getServiceNameValue(),
-            "",
-            "Service name reset successfully",
-            "Service name not cleared"
-    );
+        // Click Reset
+        editservicesPage.resetServices();
 
-    AssertionUtils.assertEqualsWithMessage(
-            servicesPage.getServiceDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                servicesPage.getServiceNameValue(),
+                "",
+                "Service name reset successfully",
+                "Service name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            servicesPage.getServiceDurationValue(),
-            "",
-            "Duration reset successfully",
-            "Duration not cleared"
-    );
-}
+        AssertionUtils.assertEqualsWithMessage(
+                servicesPage.getServiceDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
+
+        AssertionUtils.assertEqualsWithMessage(
+                servicesPage.getServiceDurationValue(),
+                "",
+                "Duration reset successfully",
+                "Duration not cleared"
+        );
+    }
 }

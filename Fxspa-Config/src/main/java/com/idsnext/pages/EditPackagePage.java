@@ -1,199 +1,260 @@
 package com.idsnext.pages;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.apache.commons.lang3.RandomStringUtils;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 
 public class EditPackagePage extends BasePage {
 
-    private WebDriver driver;
-    private WebDriverWait wait;
+    // Locators
+    private By rowclick =
+            By.xpath("(//td[contains(text(),'Package')])[1]");
 
-    
+    private By desc =
+            By.xpath("//textarea[contains(@placeholder,'Package Description')]");
+
+    private By pCode =
+            By.xpath("//input[@placeholder='Package Code*']");
+
+    private By pName =
+            By.xpath("//input[contains(@placeholder,'Package Name*')]");
+
+    // Actual date input fields
+    private By startDateField =
+            By.xpath("(//input[contains(@placeholder,'Start Date')])[1]");
+
+    private By endDateField =
+            By.xpath("(//input[contains(@placeholder,'End Date')])[1]");
+
+    private By updateButton =
+            By.xpath("//button[contains(text(),' Update ')]");
+
+    private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
+
     private By fxSPAConfigIcon =
             By.xpath("//div[contains(@title,'FX SPA Configuration (FX SPA)')]");
 
-    private By loader =
-            By.xpath("//div[contains(@class,'loader-outer')]");
-
-    private By overlayBackdrop =
-            By.xpath("//div[contains(@class,'cdk-overlay-backdrop')]");
-
-    private By randomIcon =
-           By.xpath("/html/body/app-root/div[1]/nav/ul/li/a/span[1]");
-
-    private By packages=
-            By.xpath("//span[text()=' Packages ']");
-
-            private By plusButton = By.xpath("//button[normalize-space()='+']");
-
-            private By rowclick = By.xpath("(//td[contains(text(),'Package')])[1]");
-
-    private By desc= By.xpath("//textarea[contains(@placeholder,'Package Description')]");
-
-    private By pCode= By.xpath("//input[@placeholder='Package Code*']");
-    private By pName= By.xpath("//input[contains(@placeholder,'Package Name*')]");
-
-    private String updatePackage;    
-    private By updateButton =
-            By.xpath("//button[contains(text(),' Update ')]");
-            private By resetButton =
-            By.xpath("//button[contains(text(),'Reset')]");
-
-
-    // ===== Constructor =====
+    // Constructor
     public EditPackagePage(WebDriver driver) {
         super(driver);
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
     }
 
-    // ===== Common Waits =====
-
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
-
+    // Common JS Click
     private void jsClick(WebElement element) {
+
         ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+                .executeScript(
+                        "arguments[0].scrollIntoView({block:'center'});",
+                        element
+                );
+
         ((JavascriptExecutor) driver)
                 .executeScript("arguments[0].click();", element);
     }
 
-
-    // ===== Actions =====
-
-
+    // Click FX SPA Icon
     public void clickFXSPAConfigIcon() {
-        waitForAngularIdle();
+
         WebElement fx =
-                wait.until(ExpectedConditions.elementToBeClickable(fxSPAConfigIcon));
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                fxSPAConfigIcon
+                        )
+                );
+
         jsClick(fx);
-        waitForAngularIdle();
     }
 
-    public void switchWindow(){
-        String currentWindow = driver.getWindowHandle();
+    // Switch Window
+    public void switchWindow() {
+
+        String currentWindow =
+                driver.getWindowHandle();
+
         for (String windowHandle : driver.getWindowHandles()) {
+
             if (!windowHandle.equals(currentWindow)) {
+
                 driver.switchTo().window(windowHandle);
                 break;
             }
         }
     }
 
-       public void clickRandom() throws InterruptedException {
-        waitForAngularIdle();
-        wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
+    // Click Existing Package Row
+    public void clickRow() {
+
+        WebElement row =
+                wait.until(
+                        ExpectedConditions.visibilityOfElementLocated(
+                                rowclick
+                        )
+                );
+
+        jsClick(row);
     }
 
-
-    public void clickPackage() {
-        waitForAngularIdle();
-        wait.until(ExpectedConditions.elementToBeClickable(packages)).click();
-        waitForAngularIdle();
-    }
-
-     public void clickAdd() {
-        waitForAngularIdle();
-
-        WebElement plus =
-                wait.until(ExpectedConditions.elementToBeClickable(plusButton));
-        jsClick(plus);
-    }
-
-     public void clickRow() {
-        waitForAngularIdle();
-
-        WebElement plus =
-                wait.until(ExpectedConditions.elementToBeClickable(rowclick));
-        jsClick(plus);
-    }
-
+    // Update Package
     public void updatePackage() {
 
-    String randomNumeric = RandomStringUtils.randomNumeric(2);
+        String randomNumeric =
+                RandomStringUtils.randomNumeric(2);
 
-    waitForAngularIdle();
-    wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
-            .clear();;
+        LocalDate today =
+                LocalDate.now();
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
-            .sendKeys(randomNumeric);
+        LocalDate futureDate =
+                today.plusDays(2);
 
-    waitForAngularIdle();
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    WebElement create = wait.until(
-            ExpectedConditions.elementToBeClickable(updateButton));
+        String start =
+                today.format(formatter);
 
-    jsClick(create);
-}
+        String end =
+                futureDate.format(formatter);
 
-public void resetPackage() {
-
-    String randomNumeric = RandomStringUtils.randomNumeric(2);
-
-    waitForAngularIdle();
-    wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
-            .clear();;
-
-    wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
-            .sendKeys(randomNumeric);
-
-    waitForAngularIdle();
-
-    WebElement reset = wait.until(
-            ExpectedConditions.elementToBeClickable(resetButton));
-
-    jsClick(reset);
-}
-
-public String getUpdatePackage() {
-    return updatePackage.trim();
-}
-
-public String getToastMsg() {
-
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-
-    for (int i = 0; i < 15; i++) {
-
-        String toast = (String) js.executeScript(
-                "var e=document.querySelector('#toast-popup p'); return e?e.innerText:'';"
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(pCode)
         );
 
-        if (!toast.isEmpty()) {
-            return toast.trim();
-        }
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(pName)
+        );
 
-        try {
-            Thread.sleep(200);
-        } catch (Exception e) {}
+        // Description
+        WebElement descriptionField =
+                wait.until(
+                        ExpectedConditions.visibilityOfElementLocated(desc)
+                );
+
+        descriptionField.sendKeys(" " + randomNumeric);
+
+        // Start Date
+        WebElement startDate =
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                startDateField
+                        )
+                );
+
+        startDate.sendKeys(Keys.CONTROL + "a");
+        startDate.sendKeys(start);
+        startDate.sendKeys(Keys.TAB);
+
+        // End Date
+        WebElement endDate =
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                endDateField
+                        )
+                );
+
+        endDate.sendKeys(Keys.CONTROL + "a");
+        endDate.sendKeys(end);
+        endDate.sendKeys(Keys.TAB);
+
+        // Update Button
+        WebElement updateBtn =
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                updateButton
+                        )
+                );
+
+        Actions actions =
+                new Actions(driver);
+
+        actions.doubleClick(updateBtn).perform();
     }
 
-    return "";
-}
+    // Reset Package
+    public void resetPackage() {
 
-// ===== Reset Validation Getters =====
+        String randomNumeric =
+                RandomStringUtils.randomNumeric(2);
 
-public String getPackageNameValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(pCode))
-            .getAttribute("value")
-            .trim();
-}
+        WebElement descriptionField =
+                wait.until(
+                        ExpectedConditions.visibilityOfElementLocated(
+                                desc
+                        )
+                );
 
-public String getPackageDescriptionValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(pName))
-            .getAttribute("value")
-            .trim();
-}
+        descriptionField.sendKeys(" " + randomNumeric);
+
+        WebElement resetBtn =
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                resetButton
+                        )
+                );
+
+        jsClick(resetBtn);
+    }
+
+    // Toast Message
+    public String getToastMsg() {
+
+        JavascriptExecutor js =
+                (JavascriptExecutor) driver;
+
+        for (int i = 0; i < 15; i++) {
+
+            String toast =
+                    (String) js.executeScript(
+                            "var e=document.querySelector('#toast-popup p');"
+                                    + "return e?e.innerText:'';"
+                    );
+
+            if (!toast.isEmpty()) {
+                return toast.trim();
+            }
+
+            try {
+                Thread.sleep(200);
+            } catch (Exception ignored) {
+            }
+        }
+
+        return "";
+    }
+
+    // Validation Getters
+    public String getPackageCodeValue() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        pCode
+                )
+        ).getAttribute("value").trim();
+    }
+
+    public String getPackageNameValue() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        pName
+                )
+        ).getAttribute("value").trim();
+    }
+
+    public String getPackageDescriptionValue() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        desc
+                )
+        ).getAttribute("value").trim();
+    }
 }

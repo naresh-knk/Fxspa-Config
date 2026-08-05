@@ -40,7 +40,7 @@ public class AuditorsPage extends BasePage{
             By.xpath("//div[contains(@class,'cdk-overlay-backdrop')]");
 
              private By reportTable = By.xpath("//tr[2]");
-private By leftArrow = By.xpath("//*[@id=\"mat-datepicker-0\"]/mat-calendar-header/div/div/button[2]");
+private By leftArrow = By.xpath("//button[@aria-label='Previous month']");
 
 
     // ===== Constructor =====
@@ -50,35 +50,6 @@ private By leftArrow = By.xpath("//*[@id=\"mat-datepicker-0\"]/mat-calendar-head
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
     }
 
-    // ===== Common Waits =====
-
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
-
-    private void jsClick(WebElement element) {
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].click();", element);
-    }
-
-    // ===== Actions =====
-
-
-    public void clickFXReport() {
-        waitForAngularIdle();
-        WebElement fx =
-                wait.until(ExpectedConditions.elementToBeClickable(fxReportsIcon));
-        jsClick(fx);
-        waitForAngularIdle();
-    }
 
     public void clickRandom() {
         wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();

@@ -2,38 +2,42 @@ package tests;
 
 import org.testng.annotations.Test;
 
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.EditProductCategoriesPage;
-import com.idsnext.pages.LoginPage;
+import com.idsnext.steps.NavigationSteps;
+
 import utils.AssertionUtils;
 import utils.BaseTest;
 
 public class EditProductCategoriesTest extends BaseTest {
 
     @Test
-    public void verifyProductCategoriesNavigation() throws InterruptedException {
+    public void verifyProductCategoriesNavigation() {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        EditProductCategoriesPage editproductCategoriesPage =
+                new EditProductCategoriesPage(driver);
 
-        EditProductCategoriesPage editproductCategoriesPage = new EditProductCategoriesPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        editproductCategoriesPage.clickFXSPAConfigIcon();
-        editproductCategoriesPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToModule(
+                ModuleName.PRODUCT_CATEGORY
+        );
 
-        // Step 3: Open 3-dot menu
-        editproductCategoriesPage.clickRandom();
-        editproductCategoriesPage.clickProductCategories();
-        editproductCategoriesPage.clickRandom();
+        // Open Edit Page
         editproductCategoriesPage.clickRow();
+
+        // Edit Product Category
         editproductCategoriesPage.editProductCategories();
 
-         // Step 4: Capture Toast Message
-        String actualToastMsg = editproductCategoriesPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                editproductCategoriesPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Product Category Successfully Updated!";
+        String expectedToastMsg =
+                "Product Category Successfully Updated!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -42,53 +46,48 @@ public class EditProductCategoriesTest extends BaseTest {
                 "Product Category updated successfully",
                 "Product Category not updated"
         );
-
-}
-
+    }
 
     @Test
-    public void verifyresetfunctionality() throws InterruptedException {
+    public void verifyresetfunctionality() {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        EditProductCategoriesPage editProductCategoriesPage =
+                new EditProductCategoriesPage(driver);
 
-        EditProductCategoriesPage editProductCategoriesPage = new EditProductCategoriesPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        editProductCategoriesPage.clickFXSPAConfigIcon();
-        editProductCategoriesPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToModule(
+                ModuleName.PRODUCT_CATEGORY
+        );
 
-        // Step 3: Open 3-dot menu
-        editProductCategoriesPage.clickRandom();
-        editProductCategoriesPage.clickProductCategories();
-        editProductCategoriesPage.clickRandom();
+        // Open Edit Page
         editProductCategoriesPage.clickRow();
+
         // Click Reset
-    editProductCategoriesPage.resetProductCategories();
+        editProductCategoriesPage.resetProductCategories();
 
-    // Assertions
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                editProductCategoriesPage.getProductNameValue(),
+                "",
+                "Product Categories name reset successfully",
+                "Product Categories name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            editProductCategoriesPage.getProductNameValue(),
-            "",
-            "Product Categories name reset successfully",
-            "Product Categories name not cleared"
-    );
+        AssertionUtils.assertEqualsWithMessage(
+                editProductCategoriesPage.getProductDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            editProductCategoriesPage.getProductDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            editProductCategoriesPage.getProductHSNCodeValue(),
-            "",
-            "HSN code reset successfully",
-            "HSN code not cleared"
-    );
-
+        AssertionUtils.assertEqualsWithMessage(
+                editProductCategoriesPage.getProductHSNCodeValue(),
+                "",
+                "HSN code reset successfully",
+                "HSN code not cleared"
+        );
     }
 }

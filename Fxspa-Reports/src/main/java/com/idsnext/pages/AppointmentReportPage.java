@@ -16,7 +16,8 @@ public class AppointmentReportPage extends BasePage {
             By.xpath("//div[contains(@title,'FX Reports (FX Reports)')]");
 
     private By randomIcon =
-            By.xpath("(//span[contains(@class,'icon-shuffle shuffle-ico')])[1]");
+            By.xpath("(//span[@class='icon-shuffle shuffle-ico'])[1]");
+    private By randomIconNew=By.xpath("(//span[@class='fas fa-random ng-star-inserted'])");
 
     private By reportsLabel =
             By.xpath("//a[@id='Reports']");
@@ -40,8 +41,8 @@ public class AppointmentReportPage extends BasePage {
     private By overlayBackdrop =
             By.xpath("//div[contains(@class,'cdk-overlay-backdrop')]");
 
-    private By reportTable = By.xpath("//*[@id=\"main_container\"]/app-appointment-report/app-generic-data-table/mat-card[1]/div[2]/table/thead/tr/th[1]");
-private By leftArrow = By.xpath("//*[@id=\"mat-datepicker-0\"]/mat-calendar-header/div/div/button[2]");
+    private By reportTable = By.xpath("//tr[1]");
+private By leftArrow = By.xpath("//button[@aria-label='Previous month']");
 
     // ===== Constructor =====
     public AppointmentReportPage(WebDriver driver) {
@@ -49,28 +50,6 @@ private By leftArrow = By.xpath("//*[@id=\"mat-datepicker-0\"]/mat-calendar-head
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
     }
-
-    // ===== Common Waits =====
-
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
-
-    private void jsClick(WebElement element) {
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].click();", element);
-    }
-
-    // ===== Actions =====
-
 
     public void clickFXReport() {
         waitForAngularIdle();
@@ -80,9 +59,17 @@ private By leftArrow = By.xpath("//*[@id=\"mat-datepicker-0\"]/mat-calendar-head
         waitForAngularIdle();
     }
 
-    public void clickRandom() {
-        wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
+   public void clickRandom() {
+    try {
+        if (!driver.findElements(randomIcon).isEmpty()) {
+            wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
+        } else {
+            wait.until(ExpectedConditions.elementToBeClickable(randomIconNew)).click();
+        }
+    } catch (Exception e) {
+        wait.until(ExpectedConditions.elementToBeClickable(randomIconNew)).click();
     }
+}
 
     public void clickReportSLabel() {
         waitForAngularIdle();
@@ -110,7 +97,7 @@ private By leftArrow = By.xpath("//*[@id=\"mat-datepicker-0\"]/mat-calendar-head
     waitForAngularIdle();
 
     By targetDate =
-            By.xpath("//button[@aria-label='1 April 2026']");
+            By.xpath("//button[@aria-label='1 June 2026']");
 
     int maxAttempts = 24;
 
@@ -150,6 +137,7 @@ private By leftArrow = By.xpath("//*[@id=\"mat-datepicker-0\"]/mat-calendar-head
     }
 
     public boolean isReportGenerated() {
+        waitForAngularIdle();
         return isElementVisible(reportTable); // uses BasePage method
     }
 }

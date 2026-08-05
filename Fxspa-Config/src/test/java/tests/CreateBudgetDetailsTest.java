@@ -1,9 +1,10 @@
 package tests;
 
 import org.testng.annotations.Test;
+
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.CreateBudgetDetailsPage;
-import com.idsnext.pages.LoginPage;
-import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -13,28 +14,27 @@ public class CreateBudgetDetailsTest extends BaseTest {
     @Test
     public void verifybudgetDetailsNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        CreateBudgetDetailsPage budgetDetailsPage = new CreateBudgetDetailsPage(driver);
+        CreateBudgetDetailsPage budgetDetailsPage =
+                new CreateBudgetDetailsPage(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        budgetDetailsPage.clickFXSPAConfigIcon();
-        budgetDetailsPage.switchWindow();
+        // Navigate to Budget Details Add Page
+        navigationSteps.navigateToAddPage(
+                ModuleName.BUDGET_DETAILS
+        );
 
-        // Step 3: Open 3-dot menu
-        budgetDetailsPage.clickRandom();
-        budgetDetailsPage.clickBudgetDetails();
-        budgetDetailsPage.clickRandom();
-        budgetDetailsPage.clickAdd();
+        // Create Budget Details
         budgetDetailsPage.createBudgetDetails();
 
-          // Step 4: Capture Toast Message
-        String actualToastMsg = budgetDetailsPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                budgetDetailsPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Budget Amount Successfully Created!";
+        String expectedToastMsg =
+                "Budget Amount Successfully Created!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -43,38 +43,31 @@ public class CreateBudgetDetailsTest extends BaseTest {
                 "Budget Amount created successfully",
                 "Budget Amount not created"
         );
-
     }
 
-    
-     @Test
+    @Test
     public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    CreateBudgetDetailsPage BudgetDetailsPage = new CreateBudgetDetailsPage(driver);
-    ServicesPage servicesPage=new ServicesPage(driver);
+        CreateBudgetDetailsPage budgetDetailsPage =
+                new CreateBudgetDetailsPage(driver);
 
-    BudgetDetailsPage.clickFXSPAConfigIcon();
-    BudgetDetailsPage.switchWindow();
+        // Navigate to Budget Details Add Page
+        navigationSteps.navigateToAddPage(
+                ModuleName.BUDGET_DETAILS
+        );
 
-    servicesPage.clickRandom();
-    BudgetDetailsPage.clickBudgetDetails();
-    servicesPage.clickRandom();
-    BudgetDetailsPage.clickAdd();
+        // Click Reset
+        budgetDetailsPage.resetBudgetDetails();
 
-    // Click Reset
-    BudgetDetailsPage.resetBudgetDetails();
-
-    // Assertions
-
-    AssertionUtils.assertEqualsWithMessage(
-            BudgetDetailsPage.getBudgetDetailsNameValue(),
-            "",
-            "Budget Details name reset successfully",
-            "Budget Details name not cleared"
-    );
-
-}
+        // Validate Reset
+        AssertionUtils.assertEqualsWithMessage(
+                budgetDetailsPage.getBudgetDetailsNameValue(),
+                "",
+                "Budget Details name reset successfully",
+                "Budget Details name not cleared"
+        );
+    }
 }

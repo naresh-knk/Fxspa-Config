@@ -2,9 +2,9 @@ package tests;
 
 import org.testng.annotations.Test;
 
-import com.idsnext.pages.LoginPage;
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.ProductsPage;
-import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -14,71 +14,61 @@ public class ProductsTest extends BaseTest {
     @Test
     public void verifyProductsNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-       loginPage.login(config.getUsername(), config.getPassword());
+        ProductsPage productsPage =
+                new ProductsPage(driver);
 
-        ProductsPage productsPage = new ProductsPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        // Step 2: CLICK FX Spa     
-        productsPage.clickFXSPAConfigIcon();
-        productsPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.PRODUCTS);
 
-        // Step 3: Open 3-dot menu
-        productsPage.clickRandom();
-        productsPage.clickProducts();
-        productsPage.clickRandom();
-        productsPage.clickAdd();
+        // Create Product
         productsPage.createProducts();
 
-        String expectedProductName = productsPage.getCreatedProductName();
-String actualProductName = productsPage.getFirstRowProductName();
+        // Validation
+        String expectedProductName =
+                productsPage.getCreatedProductName();
 
-AssertionUtils.assertEqualsWithMessage(
-        actualProductName,
-        expectedProductName,
-        "Product created and visible in first row",
-        "Product name mismatch in listing"
-);
+        String actualProductName =
+                productsPage.getFirstRowProductName();
 
-
+        AssertionUtils.assertEqualsWithMessage(
+                actualProductName,
+                expectedProductName,
+                "Product created and visible in first row",
+                "Product name mismatch in listing"
+        );
     }
 
-     @Test
-public void verifyResetFunctionality() {
+    @Test
+    public void verifyResetFunctionality() {
 
-    LoginPage loginPage = new LoginPage(driver);
-    loginPage.login(config.getUsername(), config.getPassword());
+        ProductsPage productsPage =
+                new ProductsPage(driver);
 
-    ProductsPage ProductPage = new ProductsPage(driver);
-    ServicesPage servicesPage=new ServicesPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    ProductPage.clickFXSPAConfigIcon();
-    ProductPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.PRODUCTS);
 
-    servicesPage.clickRandom();
-    ProductPage.clickProducts();
-    servicesPage.clickRandom();
-    ProductPage.clickAdd();
+        // Click Reset
+        productsPage.resetProducts();
 
-    // Click Reset
-    ProductPage.resetProducts();
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                productsPage.getProductNameValue(),
+                "",
+                "Product name reset successfully",
+                "Product name not cleared"
+        );
 
-    // Assertions
-
-    AssertionUtils.assertEqualsWithMessage(
-            ProductPage.getProductNameValue(),
-            "",
-            "Product name reset successfully",
-            "Product name not cleared"
-    );
-
-    AssertionUtils.assertEqualsWithMessage(
-            ProductPage.getProductDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-}
-
+        AssertionUtils.assertEqualsWithMessage(
+                productsPage.getProductDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
+    }
 }

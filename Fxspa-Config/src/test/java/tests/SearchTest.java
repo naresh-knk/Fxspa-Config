@@ -1,86 +1,143 @@
 package tests;
 
-import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.idsnext.pages.LoginPage;
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.SearchPage;
+import com.idsnext.steps.NavigationSteps;
+
 import utils.BaseTest;
 
 public class SearchTest extends BaseTest {
+
+    NavigationSteps navigationSteps;
 
     SearchPage searchPage;
 
     @BeforeMethod
     public void setup() {
 
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        navigationSteps =
+                new NavigationSteps(driver);
 
-        searchPage = new SearchPage(driver);
-
-        searchPage.clickFXSPAConfigIcon();
-        searchPage.switchWindow();
-        searchPage.clickRandom();
+        searchPage =
+                new SearchPage(driver);
     }
+
+    // ===== COMMON METHOD =====
+
+    private void verifySearch(
+            ModuleName moduleName,
+            String searchValue,
+            String columnName
+    ) {
+
+        navigationSteps.navigateToModule(
+                moduleName
+        );
+
+        searchPage.search(searchValue);
+
+        searchPage.validateColumnValues(
+                columnName,
+                searchValue
+        );
+    }
+
+    // ===== SERVICES =====
 
     @Test
     public void verifyServiceSearch() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Services']"));
-        searchPage.search("Service");
-        searchPage.validateColumnValues("Service Name", "Service");
+
+        verifySearch(
+                ModuleName.SERVICES,
+                "Service",
+                "Service Name"
+        );
     }
+
+    // ===== RESOURCES =====
 
     @Test
     public void verifyResourcesSearch() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Resources']"));
-        searchPage.search("Resource");
-        searchPage.validateColumnValues("Resource Name", "Resource");
+
+        verifySearch(
+                ModuleName.RESOURCES,
+                "Resource",
+                "Resource Name"
+        );
     }
-    
+
+    // ===== PRODUCTS =====
 
     @Test
     public void verifyProductSearch() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Products']"));
-        searchPage.search("Product");
-        searchPage.validateColumnValues("Product Name", "Product");
+
+        verifySearch(
+                ModuleName.PRODUCTS,
+                "Product",
+                "Product Name"
+        );
     }
+
+    // ===== STAFF =====
 
     @Test
     public void verifyStaffSearch() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Staff Mapping']"));
-        searchPage.clickRandom();
-        searchPage.search("deep");
-        searchPage.validateColumnValues("Staff", "deep");
+
+        verifySearch(
+                ModuleName.STAFF_MAPPING,
+                "deep",
+                "Staff"
+        );
     }
+
+    // ===== SERVICE CATEGORY =====
 
     @Test
     public void verifyServiceCategorySearch() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Service Categories']"));
-        searchPage.search("Name");
-        searchPage.validateColumnValues("Service Line", "Name");
+
+        verifySearch(
+                ModuleName.SERVICE_CATEGORY,
+                "Name",
+                "Service Line"
+        );
     }
+
+    // ===== PRODUCT CATEGORY =====
 
     @Test
     public void verifyProductCategorySearch() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Product Categories']"));
-        searchPage.search("Product");
-        searchPage.validateColumnValues("Product Line", "Product");
+
+        verifySearch(
+                ModuleName.PRODUCT_CATEGORY,
+                "Product",
+                "Product Line"
+        );
     }
+
+    // ===== PACKAGE =====
 
     @Test
     public void verifyPackageSearch() {
-        searchPage.selectModule(By.xpath("//span[text()=' Packages ']"));
-        searchPage.search("0");
-        searchPage.validateColumnValues("Code", "0");
+
+        verifySearch(
+                ModuleName.PACKAGES,
+                "0",
+                "Code"
+        );
     }
+
+    // ===== ADVANCED SETTINGS =====
 
     @Test
     public void verifyAdvanceSearch() {
-        searchPage.selectModule(By.xpath("//span[normalize-space()='Advanced Settings']"));
-        //mat-header-cell[text()=' Operation ID ']
-        searchPage.search("Advance");
-        searchPage.validateColumnValues("Operation Name", "Advance");
+
+        verifySearch(
+                ModuleName.ADVANCED_SETTINGS,
+                "Enable",
+                "Operation Name"
+        );
     }
 }

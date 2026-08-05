@@ -13,7 +13,7 @@ public class NegativeProductCategoryPage extends BasePage {
     public NegativeProductCategoryPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===== Locators =====
@@ -35,9 +35,36 @@ public class NegativeProductCategoryPage extends BasePage {
     }
 
     public void clickFieldsWithoutData() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ProductCategoryName)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ProductCategoryDesc)).click();  
-        wait.until(ExpectedConditions.visibilityOfElementLocated(HsnCode)).click();   }
+
+    clickAndTab(ProductCategoryName);
+
+    clickAndTab(ProductCategoryDesc);
+
+    clickAndTab(HsnCode);
+}
+
+private void clickAndTab(By locator) {
+
+    WebElement element = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(locator));
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+
+    try {
+
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+
+        element.click();
+
+    } catch (Exception e) {
+
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].click();", element);
+    }
+
+    element.sendKeys(Keys.TAB);
+}
 
     public boolean isValidationDisplayed() {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(errorMessages)).size() > 0;

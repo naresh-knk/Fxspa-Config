@@ -1,8 +1,11 @@
 package tests;
 
 import org.testng.annotations.Test;
-import com.idsnext.pages.LoginPage;
+
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.StaffMappingPage;
+import com.idsnext.steps.NavigationSteps;
+
 import utils.AssertionUtils;
 import utils.BaseTest;
 
@@ -11,28 +14,26 @@ public class StaffMappingTest extends BaseTest {
     @Test
     public void verifyStaffMappingNavigation() throws InterruptedException {
 
-        // Step 1: Login
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(config.getUsername(), config.getPassword());
+        StaffMappingPage staffMappingPage =
+                new StaffMappingPage(driver);
 
-        StaffMappingPage staffMappingPage = new StaffMappingPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-        // Step 2: CLICK FX REPORTS     
-        staffMappingPage.clickFXSPAConfigIcon();
-        staffMappingPage.switchWindow();
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(
+                ModuleName.STAFF_MAPPING);
 
-        // Step 3: Open 3-dot menu
-        staffMappingPage.clickRandom();
-        staffMappingPage.clickStaffMapping();
-        staffMappingPage.clickRandom();
-        staffMappingPage.clickAdd();
+        // Create Staff Mapping
         staffMappingPage.createStaffMapping();
 
-          // Step 4: Capture Toast Message
-        String actualToastMsg = staffMappingPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                staffMappingPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Staff mapped to services successfully";
+        String expectedToastMsg =
+                "Staff mapped to services successfully";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -41,6 +42,5 @@ public class StaffMappingTest extends BaseTest {
                 "Staff mapped to services successfully",
                 "Staff not mapped to services"
         );
-
     }
 }
