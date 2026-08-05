@@ -12,7 +12,6 @@ public class EditProductCategoriesPage extends BasePage {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    
     private By fxSPAConfigIcon =
             By.xpath("//div[contains(@title,'FX SPA Configuration (FX SPA)')]");
 
@@ -23,24 +22,36 @@ public class EditProductCategoriesPage extends BasePage {
             By.xpath("//div[contains(@class,'cdk-overlay-backdrop')]");
 
     private By randomIcon =
-           By.xpath("/html/body/app-root/div[1]/nav/ul/li/a/span[1]");
+            By.xpath("//i[contains(@class,'fa-random')]");
 
-    private By resources=
+    private By randomMenuOpened =
+            By.cssSelector("span.menu-span.rotate");
+
+    private By resources =
             By.xpath("//span[normalize-space()='Product Categories']");
 
-        //     private By plusButton = By.xpath("//button[normalize-space()='+']");
-        private By rowclick = By.xpath("(//td[contains(text(),'Name')])[1]");
-    private By ProductLine= By.xpath("//input[@placeholder='Product Line']");
-    private By hsnCode= By.xpath("//input[contains(@placeholder,'HSN Code')]");
-    private By desc= By.xpath("//input[contains(@placeholder,'Description')]");
+    private By rowclick =
+            By.xpath("(//td[contains(text(),'Name')])[1]");
+
+    private By ProductLine =
+            By.xpath("//input[@placeholder='Product Line']");
+
+    private By hsnCode =
+            By.xpath("//input[contains(@placeholder,'HSN Code')]");
+
+    private By desc =
+            By.xpath("//input[contains(@placeholder,'Description')]");
+
     private By updateButton =
-        By.xpath("//button[contains(text(),' Update ')]");
+            By.xpath("//button[contains(text(),' Update ')]");
+
     private By resetButton =
-        By.xpath("//button[contains(text(),'Reset')]");
+            By.xpath("//button[contains(text(),'Reset')]");
+
     private String updateProductCategory;
 
-
     // ===== Constructor =====
+
     public EditProductCategoriesPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
@@ -49,62 +60,81 @@ public class EditProductCategoriesPage extends BasePage {
 
     // ===== Common Waits =====
 
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
-
     private void jsClick(WebElement element) {
+
         ((JavascriptExecutor) driver)
                 .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+
         ((JavascriptExecutor) driver)
                 .executeScript("arguments[0].click();", element);
     }
 
-
     // ===== Actions =====
+
     public void clickFXSPAConfigIcon() {
+
         waitForAngularIdle();
+
         WebElement fx =
                 wait.until(ExpectedConditions.elementToBeClickable(fxSPAConfigIcon));
+
         jsClick(fx);
+
         waitForAngularIdle();
     }
 
-    public void switchWindow(){
+    public void switchWindow() {
+
         String currentWindow = driver.getWindowHandle();
+
         for (String windowHandle : driver.getWindowHandles()) {
+
             if (!windowHandle.equals(currentWindow)) {
+
                 driver.switchTo().window(windowHandle);
                 break;
             }
         }
     }
 
-       public void clickRandom() throws InterruptedException {
-        waitForAngularIdle();
-        wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
-       // Thread.sleep(10000); // Temporary wait to observe the click action, replace with proper wait if needed
-    }
+    public void clickRandom() {
 
+        waitForAngularIdle();
+
+        boolean isOpened = false;
+
+        try {
+            isOpened = driver.findElement(randomMenuOpened).isDisplayed();
+        } catch (Exception e) {
+            isOpened = false;
+        }
+
+        if (!isOpened) {
+
+            WebElement random =
+                    wait.until(ExpectedConditions.elementToBeClickable(randomIcon));
+
+            jsClick(random);
+        }
+    }
 
     public void clickProductCategories() {
+
         waitForAngularIdle();
+
         wait.until(ExpectedConditions.elementToBeClickable(resources)).click();
+
         waitForAngularIdle();
     }
 
-     public void clickRow() {
+    public void clickRow() {
+
         waitForAngularIdle();
 
-        WebElement plus =
+        WebElement row =
                 wait.until(ExpectedConditions.elementToBeClickable(rowclick));
-        jsClick(plus);
+
+        jsClick(row);
     }
 
     public void editProductCategories() {
@@ -114,76 +144,87 @@ public class EditProductCategoriesPage extends BasePage {
 
         waitForAngularIdle();
 
-        
         wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
                 .sendKeys(randomNumeric);
+
         wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
                 .sendKeys("Desc " + randomName);
-        
 
         waitForAngularIdle();
 
-        WebElement create =
+        WebElement update =
                 wait.until(ExpectedConditions.visibilityOfElementLocated(updateButton));
-        jsClick(create);
-        //waitForAngularIdle();
-}
 
+        jsClick(update);
+    }
 
     public void resetProductCategories() {
-        
+
+        String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
+
+        waitForAngularIdle();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
+                .sendKeys(randomNumeric);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+                .sendKeys("Desc " + randomName);
+
         waitForAngularIdle();
 
         WebElement reset =
                 wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
+
         jsClick(reset);
-        //waitForAngularIdle();
-}
-
-public String getUpdateProductCategory() {
-    return updateProductCategory.trim();
-}
-
-public String getToastMsg() {
-
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-
-    for (int i = 0; i < 15; i++) {
-
-        String toast = (String) js.executeScript(
-                "var e=document.querySelector('#toast-popup p'); return e?e.innerText:'';"
-        );
-
-        if (!toast.isEmpty()) {
-            return toast.trim();
-        }
-
-        try {
-            Thread.sleep(200);
-        } catch (Exception e) {}
     }
 
-    return "";
-}
+    public String getUpdateProductCategory() {
+        return updateProductCategory == null ? "" : updateProductCategory.trim();
+    }
 
-// ===== Reset Validation Getters =====
+    public String getToastMsg() {
 
-public String getProductNameValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(ProductLine))
-            .getAttribute("value")
-            .trim();
-}
+        JavascriptExecutor js = (JavascriptExecutor) driver;
 
-public String getProductDescriptionValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
-            .getAttribute("value")
-            .trim();
-}
+        for (int i = 0; i < 15; i++) {
 
-public String getProductHSNCodeValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
-            .getAttribute("value")
-            .trim();
-}  
+            String toast = (String) js.executeScript(
+                    "var e=document.querySelector('#toast-popup p'); return e?e.innerText:'';"
+            );
 
+            if (!toast.isEmpty()) {
+                return toast.trim();
+            }
+
+            try {
+                Thread.sleep(200);
+            } catch (Exception ignored) {}
+        }
+
+        return "";
+    }
+
+    // ===== Reset Validation Getters =====
+
+    public String getProductNameValue() {
+
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(ProductLine))
+                .getAttribute("value")
+                .trim();
+    }
+
+    public String getProductDescriptionValue() {
+
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(desc))
+                .getAttribute("value")
+                .trim();
+    }
+
+    public String getProductHSNCodeValue() {
+
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(hsnCode))
+                .getAttribute("value")
+                .trim();
+    }
 }

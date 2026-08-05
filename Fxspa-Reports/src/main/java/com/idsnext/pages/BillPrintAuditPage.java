@@ -50,58 +50,9 @@ public class BillPrintAuditPage extends BasePage{
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
     }
 
-    // ===== Common Waits =====
-
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
-
-    private void jsClick(WebElement element) {
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].click();", element);
-    }
-
-  
-private void selectFromMatDropdownByIndex(By dropdown, int index) {
-
-    waitForAngularIdle();
-
-    WebElement dd =
-            wait.until(ExpectedConditions.elementToBeClickable(dropdown));
-
-    jsClick(dd);
-
-    By option =
-            By.xpath("(//mat-option//span)[" + (index + 1) + "]");
-
-    WebElement opt =
-            wait.until(ExpectedConditions.elementToBeClickable(option));
-
-    jsClick(opt);
-
-    waitForAngularIdle();
-}
-
-
 
     // ===== Actions =====
 
-
-    public void clickFXReport() {
-        waitForAngularIdle();
-        WebElement fx =
-                wait.until(ExpectedConditions.elementToBeClickable(fxReportsIcon));
-        jsClick(fx);
-        waitForAngularIdle();
-    }
 
     public void clickRandom() {
         wait.until(ExpectedConditions.elementToBeClickable(randomIcon)).click();
@@ -122,10 +73,10 @@ private void selectFromMatDropdownByIndex(By dropdown, int index) {
         wait.until(ExpectedConditions.elementToBeClickable(bRefusal)).click();
     }
 
-    public void clickOutlets() {
-        waitForAngularIdle();
-        selectFromMatDropdownByIndex(outlets, 0);
-    }
+//     public void clickOutlets() {
+//         waitForAngularIdle();
+//         selectFromMatDropdownByIndex(outlets, 0);
+//     }
 
 public void clickCalender() {
 

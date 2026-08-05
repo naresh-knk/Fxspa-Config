@@ -1,42 +1,52 @@
 package tests;
 
-import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.PaginationPage;
-import com.idsnext.pages.SearchPage;
+import com.idsnext.steps.NavigationSteps;
+
 import utils.BaseTest;
 
 public class PaginationTest extends BaseTest {
 
-    SearchPage searchPage;
+    NavigationSteps navigationSteps;
+
     PaginationPage paginationPage;
 
     @BeforeMethod
     public void setup() {
 
-        searchPage = new SearchPage(driver);
-        paginationPage = new PaginationPage(driver);
-        searchPage.clickRandom();
+        navigationSteps =
+                new NavigationSteps(driver);
+
+        paginationPage =
+                new PaginationPage(driver);
     }
 
     // ===== COMMON METHOD =====
-    private void verifyPaginationForModule(By moduleLocator, boolean isStaff) {
 
-        searchPage.selectModule(moduleLocator);
+    private void verifyPaginationForModule(
+            ModuleName moduleName
+    ) {
 
-        if (isStaff) {
-            searchPage.clickRandom();
-        }
+        navigationSteps.navigateToModule(
+                moduleName
+        );
 
-        // ITEMS PER PAGE VALIDATION
+        // ===== ITEMS PER PAGE VALIDATION =====
+
         paginationPage.selectItemsPerPage("5");
+
         paginationPage.validateItemsPerPage(5);
 
         paginationPage.selectItemsPerPage("10");
+
         paginationPage.validateItemsPerPage(10);
 
-        // PAGINATION VALIDATION
+        // ===== PAGINATION VALIDATION =====
+
         paginationPage.validatePagination();
     }
 
@@ -44,49 +54,65 @@ public class PaginationTest extends BaseTest {
 
     @Test
     public void verifyServicePagination() {
+
         verifyPaginationForModule(
-                By.xpath("//span[normalize-space()='Services']"), false);
+                ModuleName.SERVICES
+        );
     }
 
     @Test
     public void verifyResourcesPagination() {
+
         verifyPaginationForModule(
-                By.xpath("//span[normalize-space()='Resources']"), false);
+                ModuleName.RESOURCES
+        );
     }
 
     @Test
     public void verifyProductPagination() {
+
         verifyPaginationForModule(
-                By.xpath("//span[normalize-space()='Products']"), false);
+                ModuleName.PRODUCTS
+        );
     }
 
     @Test
     public void verifyStaffPagination() {
+
         verifyPaginationForModule(
-                By.xpath("//span[normalize-space()='Staff Mapping']"), true);
+                ModuleName.STAFF_MAPPING
+        );
     }
 
     @Test
     public void verifyServiceCategoryPagination() {
+
         verifyPaginationForModule(
-                By.xpath("//span[normalize-space()='Service Categories']"), false);
+                ModuleName.SERVICE_CATEGORY
+        );
     }
 
     @Test
     public void verifyProductCategoryPagination() {
+
         verifyPaginationForModule(
-                By.xpath("//span[normalize-space()='Product Categories']"), false);
+                ModuleName.PRODUCT_CATEGORY
+        );
     }
 
     @Test
     public void verifyPackagePagination() {
+
         verifyPaginationForModule(
-                By.xpath("//span[text()=' Packages ']"), false);
+                ModuleName.PACKAGES
+        );
     }
 
     @Test
     public void verifyAdvancePagination() {
+
         verifyPaginationForModule(
-                By.xpath("//span[normalize-space()='Advanced Settings']"), false);
+                ModuleName.ADVANCED_SETTINGS
+        );
     }
 }

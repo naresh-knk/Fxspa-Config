@@ -22,34 +22,52 @@ public class ServicesPage extends BasePage {
     private By overlayBackdrop =
             By.xpath("//div[contains(@class,'cdk-overlay-backdrop')]");
 
-    private By randomIcon =
-           By.xpath("/html/body/app-root/div[1]/nav/ul/li/a/span[1]");
+    private By plusButton =
+            By.xpath("//button[normalize-space()='+']");
 
-    private By services=
-            By.xpath("//span[normalize-space()='Services']");
+    private By sname =
+            By.xpath("//input[@placeholder='Service Name']");
 
-            private By plusButton = By.xpath("//button[normalize-space()='+']");
+    private By sdesc =
+            By.xpath("//input[contains(@placeholder,'Service Description')]");
 
-    private By sname= By.xpath("//input[@placeholder='Service Name']");
-    private By sdesc= By.xpath("//input[contains(@placeholder,'Service Description')]");
-    private By sduration= By.xpath("//input[contains(@placeholder,'Duration(Minutes)')]");
-    private By selectServiceCategory = By.xpath("//span[text()='Select Service Category']");
-    private By serviceAvailableFor=By.xpath("//span[text()='Service Available For']");
-    private By ranclick= By.xpath("(//mat-option[@role='option'])[1]");
-    private By resource=By.xpath("//span[text()='Resource']");
-    private By property=By.xpath("//span[text()='Property']");
-    private By spaOutlets= By.xpath("//span[text()='Spa Outlets']");
-        private By checkBox=By.xpath("//mat-label[text()='Week Days']/following-sibling::*");
+    private By sduration =
+            By.xpath("//input[contains(@placeholder,'Duration(Minutes)')]");
 
-    private By sAmt= By.xpath("(//input[contains(@placeholder,'Amount')])[1]");
-    private By sPrice= By.xpath("//input[contains(@formcontrolname,'SpecialAmount')]");
-    private String createdServiceName;  
+    private By selectServiceCategory =
+            By.xpath("//span[text()='Select Service Category']");
+
+    private By serviceAvailableFor =
+            By.xpath("//span[text()='Service Available For']");
+
+    private By ranclick =
+            By.xpath("(//mat-option[@role='option'])[1]");
+
+    private By resource =
+            By.xpath("//span[text()='Resource']");
+
+    private By property =
+            By.xpath("//span[text()='Property']");
+
+    private By spaOutlets =
+            By.xpath("//span[text()='Spa Outlets']");
+
+    private By checkBox =
+            By.xpath("//mat-label[text()='Week Days']/following-sibling::*");
+
+    private By sAmt =
+            By.xpath("(//input[contains(@placeholder,'Amount')])[1]");
+
+    private By sPrice =
+            By.xpath("//input[contains(@formcontrolname,'SpecialAmount')]");
+
+    private String createdServiceName;
 
     private By createButton =
             By.xpath("//button[contains(text(),' Save ')]");
-        private By resetButton =
-            By.xpath("//button[contains(text(),'Reset')]");
 
+    private By resetButton =
+            By.xpath("//button[contains(text(),'Reset')]");
 
     // ===== Constructor =====
     public ServicesPage(WebDriver driver) {
@@ -60,36 +78,29 @@ public class ServicesPage extends BasePage {
 
     // ===== Common Waits =====
 
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
-
     private void jsClick(WebElement element) {
         ((JavascriptExecutor) driver)
                 .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+
         ((JavascriptExecutor) driver)
                 .executeScript("arguments[0].click();", element);
     }
 
-
-    
     private void selectFromMatDropdown(By dropdown, String optionText) {
+
         waitForAngularIdle();
 
         WebElement dd =
                 wait.until(ExpectedConditions.elementToBeClickable(dropdown));
+
         jsClick(dd);
 
         By option =
                 By.xpath("//mat-option//span[normalize-space()='" + optionText + "']");
+
         WebElement opt =
                 wait.until(ExpectedConditions.elementToBeClickable(option));
+
         jsClick(opt);
 
         waitForAngularIdle();
@@ -97,186 +108,176 @@ public class ServicesPage extends BasePage {
 
     // ===== Actions =====
 
-
     public void clickFXSPAConfigIcon() {
+
         waitForAngularIdle();
+
         WebElement fx =
                 wait.until(ExpectedConditions.elementToBeClickable(fxSPAConfigIcon));
+
         jsClick(fx);
+
         waitForAngularIdle();
     }
 
-    public void switchWindow(){
+    public void switchWindow() {
+
         String currentWindow = driver.getWindowHandle();
+
         for (String windowHandle : driver.getWindowHandles()) {
+
             if (!windowHandle.equals(currentWindow)) {
+
                 driver.switchTo().window(windowHandle);
                 break;
             }
         }
     }
 
-     public void clickRandom() {
+    public void clickAdd() {
 
-    // Wait for Angular API calls to finish
-    waitForAngularIdle();
-
-    // Wait for loader to disappear
-    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".loader-outer")));
-
-    // Wait for element to be clickable
-    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(randomIcon));
-
-    // Scroll to element (helps if element is not visible)
-    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-
-    // Click element
-    element.click();
-}
-
-
-    public void clickServices() {
-        waitForAngularIdle();
-        wait.until(ExpectedConditions.elementToBeClickable(services)).click();
-        waitForAngularIdle();
-    }
-
-     public void clickAdd() {
         waitForAngularIdle();
 
         WebElement plus =
                 wait.until(ExpectedConditions.elementToBeClickable(plusButton));
+
         jsClick(plus);
     }
 
- 
     public void createServices() {
 
-    String randomName = RandomStringUtils.randomAlphabetic(4);
-    String randomNumeric = RandomStringUtils.randomNumeric(2);
+        String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
 
-    createdServiceName = "Name " + randomName;   // store generated service name
+        createdServiceName = "Name " + randomName;
 
-    waitForAngularIdle();
+        waitForAngularIdle();
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sname))
-            .sendKeys(createdServiceName);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sname))
+                .sendKeys(createdServiceName);
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sdesc))
-            .sendKeys("Desc " + randomName);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sdesc))
+                .sendKeys("Desc " + randomName);
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sduration))
-            .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sduration))
+                .sendKeys(randomNumeric);
 
-    selectFromMatDropdown(selectServiceCategory, "Ayurveda");
-    selectFromMatDropdown(serviceAvailableFor, "All");
+        selectFromMatDropdown(selectServiceCategory, "Ayurveda");
+        selectFromMatDropdown(serviceAvailableFor, "All");
 
-    driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
+        driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
 
-    selectFromMatDropdown(resource, "resources11");
+        selectFromMatDropdown(resource, "resources11");
 
-    driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
-    selectFromMatDropdown(property, "FX FD Central QA Property1 - 900003 (900003)");
-    selectFromMatDropdown(spaOutlets, "Spa Plein De Vie");
+        driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
 
-    driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
+        selectFromMatDropdown(property,
+                "FX FD Central QA Property1 - 900003 (900003)");
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(checkBox)).click();
+        selectFromMatDropdown(spaOutlets, "Spa Plein De Vie");
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sAmt))
-            .sendKeys(randomNumeric);
+        driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sPrice))
-            .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(checkBox)).click();
 
-    waitForAngularIdle();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sAmt))
+                .sendKeys(randomNumeric);
 
-    WebElement create =
-            wait.until(ExpectedConditions.visibilityOfElementLocated(createButton));
-    jsClick(create);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sPrice))
+                .sendKeys(randomNumeric);
 
-    waitForAngularIdle();
-}
+        WebElement create =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(createButton));
 
- public void resetServices() {
+        jsClick(create);
 
-    String randomName = RandomStringUtils.randomAlphabetic(4);
-    String randomNumeric = RandomStringUtils.randomNumeric(2);
+        waitForAngularIdle();
+    }
 
-    createdServiceName = "Name " + randomName;   // store generated service name
+    public void resetServices() {
 
-    waitForAngularIdle();
+        String randomName = RandomStringUtils.randomAlphabetic(4);
+        String randomNumeric = RandomStringUtils.randomNumeric(2);
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sname))
-            .sendKeys(createdServiceName);
+        createdServiceName = "Name " + randomName;
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sdesc))
-            .sendKeys("Desc " + randomName);
+        waitForAngularIdle();
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sduration))
-            .sendKeys(randomNumeric);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sname))
+                .sendKeys(createdServiceName);
 
-    selectFromMatDropdown(selectServiceCategory, "Ayurveda");
-    selectFromMatDropdown(serviceAvailableFor, "All");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sdesc))
+                .sendKeys("Desc " + randomName);
 
-    driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sduration))
+                .sendKeys(randomNumeric);
 
-    selectFromMatDropdown(resource, "resources11");
+        selectFromMatDropdown(selectServiceCategory, "Ayurveda");
+        selectFromMatDropdown(serviceAvailableFor, "All");
 
-    driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
-    selectFromMatDropdown(property, "FX FD Central QA Property1 - 900003 (900003)");
-    selectFromMatDropdown(spaOutlets, "Spa Plein De Vie");
+        driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
 
-    driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
+        selectFromMatDropdown(resource, "resources11");
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(checkBox)).click();
+        driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sAmt))
-            .sendKeys(randomNumeric);
+        selectFromMatDropdown(property,
+                "FX FD Central QA Property1 - 900003 (900003)");
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(sPrice))
-            .sendKeys(randomNumeric);
+        selectFromMatDropdown(spaOutlets, "Spa Plein De Vie");
 
-    waitForAngularIdle();
+        driver.findElement(ranclick).sendKeys(Keys.ESCAPE);
 
-    WebElement reset =
-            wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
-    jsClick(reset);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(checkBox)).click();
 
-    waitForAngularIdle();
-}
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sAmt))
+                .sendKeys(randomNumeric);
 
+        wait.until(ExpectedConditions.visibilityOfElementLocated(sPrice))
+                .sendKeys(randomNumeric);
 
-public String getCreatedServiceName() {
-    return createdServiceName;
-}
+        WebElement reset =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(resetButton));
 
-public String getFirstRowServiceName() {
+        jsClick(reset);
 
-    By firstRowService = By.xpath("//*[@id=\"maintable\"]/table/tbody/tr[2]/td[2]");
+        waitForAngularIdle();
+    }
 
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(firstRowService))
-            .getText()
-            .trim();
-}
-// ===== Reset Validation Getters =====
+    public String getCreatedServiceName() {
+        return createdServiceName;
+    }
 
-public String getServiceNameValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(sname))
-            .getAttribute("value")
-            .trim();
-}
+    public String getFirstRowServiceName() {
 
-public String getServiceDescriptionValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(sdesc))
-            .getAttribute("value")
-            .trim();
-}
+        By firstRowService =
+                By.xpath("//*[@id=\"maintable\"]/table/tbody/tr[2]/td[2]");
 
-public String getServiceDurationValue() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(sduration))
-            .getAttribute("value")
-            .trim();
-}  
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(firstRowService))
+                .getText()
+                .trim();
+    }
 
+    // ===== Reset Validation Getters =====
+
+    public String getServiceNameValue() {
+
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(sname))
+                .getAttribute("value")
+                .trim();
+    }
+
+    public String getServiceDescriptionValue() {
+
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(sdesc))
+                .getAttribute("value")
+                .trim();
+    }
+
+    public String getServiceDurationValue() {
+
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(sduration))
+                .getAttribute("value")
+                .trim();
+    }
 }

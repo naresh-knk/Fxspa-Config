@@ -35,9 +35,34 @@ public class NegativeServiceCategoryPage extends BasePage {
     }
 
     public void clickFieldsWithoutData() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ServiceCategoryName)).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(ServiceCategoryDesc)).click();  
-        wait.until(ExpectedConditions.visibilityOfElementLocated(HsnCode)).click();   }
+
+    clickField(ServiceCategoryName);
+
+    clickField(ServiceCategoryDesc);
+
+    clickField(HsnCode);
+}
+
+private void clickField(By locator) {
+
+    WebElement element = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(locator));
+
+    ((JavascriptExecutor) driver)
+            .executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+
+    try {
+
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+
+        element.click();
+
+    } catch (Exception e) {
+
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].click();", element);
+    }
+}
 
     public boolean isValidationDisplayed() {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(errorMessages)).size() > 0;

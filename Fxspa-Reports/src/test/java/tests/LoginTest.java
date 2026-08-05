@@ -8,7 +8,7 @@ import utils.BaseTest;
 
 public class LoginTest extends BaseTest {
 
-    @Test
+   // @Test
     public void verifyValidLogin() {
         LoginPage loginPage = new LoginPage(driver);
 

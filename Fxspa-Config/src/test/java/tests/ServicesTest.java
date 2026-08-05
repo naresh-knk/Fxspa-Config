@@ -1,68 +1,81 @@
 package tests;
 
 import org.testng.annotations.Test;
+
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
+
 import utils.AssertionUtils;
 import utils.BaseTest;
 
 public class ServicesTest extends BaseTest {
 
     @Test
-    public void verifyServicesNavigation() throws InterruptedException {
+    public void verifyServicesNavigation() {
 
-        ServicesPage servicesPage = new ServicesPage(driver);
-        servicesPage.clickRandom();
-        servicesPage.clickServices();
-        servicesPage.clickRandom();
-        servicesPage.clickAdd();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
+
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.SERVICES);
+
+        ServicesPage servicesPage =
+                new ServicesPage(driver);
+
+        // Create Service
         servicesPage.createServices();
 
-String expectedServiceName = servicesPage.getCreatedServiceName();
-String actualServiceName = servicesPage.getFirstRowServiceName();
+        // Validation
+        String expectedServiceName =
+                servicesPage.getCreatedServiceName();
 
-AssertionUtils.assertEqualsWithMessage(
-        actualServiceName,
-        expectedServiceName,
-        "Service created and visible in first row",
-        "Service name mismatch in listing"
-);
+        String actualServiceName =
+                servicesPage.getFirstRowServiceName();
+
+        AssertionUtils.assertEqualsWithMessage(
+                actualServiceName,
+                expectedServiceName,
+                "Service created and visible in first row",
+                "Service name mismatch in listing"
+        );
     }
 
-   @Test
-public void verifyResetFunctionality() {
+    @Test
+    public void verifyResetFunctionality() {
 
-    ServicesPage servicesPage = new ServicesPage(driver);
-    servicesPage.clickRandom();
-    servicesPage.clickServices();
-    servicesPage.clickRandom();
-    servicesPage.clickAdd();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    // Click Reset
-    servicesPage.resetServices();
+        // Generic Navigation
+        navigationSteps.navigateToAddPage(ModuleName.SERVICES);
 
-    // Assertions
+        ServicesPage servicesPage =
+                new ServicesPage(driver);
 
-    AssertionUtils.assertEqualsWithMessage(
-            servicesPage.getServiceNameValue(),
-            "",
-            "Service name reset successfully",
-            "Service name not cleared"
-    );
+        // Reset Service
+        servicesPage.resetServices();
 
-    AssertionUtils.assertEqualsWithMessage(
-            servicesPage.getServiceDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                servicesPage.getServiceNameValue(),
+                "",
+                "Service name reset successfully",
+                "Service name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            servicesPage.getServiceDurationValue(),
-            "",
-            "Duration reset successfully",
-            "Duration not cleared"
-    );
-}
+        AssertionUtils.assertEqualsWithMessage(
+                servicesPage.getServiceDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
 
-
+        AssertionUtils.assertEqualsWithMessage(
+                servicesPage.getServiceDurationValue(),
+                "",
+                "Duration reset successfully",
+                "Duration not cleared"
+        );
+    }
 }

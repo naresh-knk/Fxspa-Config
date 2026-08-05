@@ -91,15 +91,6 @@ public void clickFirstThreeFieldsWithoutData() {
         return errors.toString();
     }
 
-    private void waitForAngularIdle() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loader));
-        } catch (Exception ignored) {}
-
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(overlayBackdrop));
-        } catch (Exception ignored) {}
-    }
 
     // ===== NEW METHOD (for first 3 fields only) =====
     public String getFirstThreeFieldErrors() {

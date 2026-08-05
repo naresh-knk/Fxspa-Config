@@ -1,9 +1,9 @@
 package tests;
 
 import org.testng.annotations.Test;
-
+import com.idsnext.enums.ModuleName;
 import com.idsnext.pages.EditProductsPage;
-import com.idsnext.pages.ServicesPage;
+import com.idsnext.steps.NavigationSteps;
 
 import utils.AssertionUtils;
 import utils.BaseTest;
@@ -13,20 +13,28 @@ public class EditProductsTest extends BaseTest {
     @Test
     public void verifyProductsNavigation() throws InterruptedException {
 
-         EditProductsPage editproductsPage = new EditProductsPage(driver);
+        EditProductsPage editproductsPage =
+                new EditProductsPage(driver);
 
-        // Open 3-dot menu
-        editproductsPage.clickRandom();
-        editproductsPage.clickProducts();
-        editproductsPage.clickRandom();
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
+
+        // Generic Navigation
+        navigationSteps.navigateToModule(ModuleName.PRODUCTS);
+
+        // Open Edit Page
         editproductsPage.clickRow();
+
+        // Update Product
         editproductsPage.editProducts();
 
-        //  Capture Toast Message
-        String actualToastMsg = editproductsPage.getToastMsg();
+        // Capture Toast Message
+        String actualToastMsg =
+                editproductsPage.getToastMsg();
 
         // Expected Toast Message
-        String expectedToastMsg = "Product Successfully Updated!";
+        String expectedToastMsg =
+                "Product Successfully Updated!";
 
         // Assertion
         AssertionUtils.assertEqualsWithMessage(
@@ -35,39 +43,39 @@ public class EditProductsTest extends BaseTest {
                 "Product updated successfully",
                 "Product not updated"
         );
-
     }
 
-     @Test
-public void verifyResetFunctionality() {
+    @Test
+    public void verifyResetFunctionality() {
 
+        EditProductsPage editProductPage =
+                new EditProductsPage(driver);
 
-    EditProductsPage editProductPage = new EditProductsPage(driver);
-    ServicesPage servicesPage=new ServicesPage(driver);
+        NavigationSteps navigationSteps =
+                new NavigationSteps(driver);
 
-    servicesPage.clickRandom();
-    editProductPage.clickProducts();
-    servicesPage.clickRandom();
-    editProductPage.clickRow();
+        // Generic Navigation
+        navigationSteps.navigateToModule(ModuleName.PRODUCTS);
 
-    // Click Reset
-    editProductPage.resetProducts();
+        // Open Edit Page
+        editProductPage.clickRow();
 
-    // Assertions
+        // Click Reset
+        editProductPage.resetProducts();
 
-    AssertionUtils.assertEqualsWithMessage(
-            editProductPage.getProductNameValue(),
-            "",
-            "Product name reset successfully",
-            "Product name not cleared"
-    );
+        // Assertions
+        AssertionUtils.assertEqualsWithMessage(
+                editProductPage.getProductNameValue(),
+                "",
+                "Product name reset successfully",
+                "Product name not cleared"
+        );
 
-    AssertionUtils.assertEqualsWithMessage(
-            editProductPage.getProductDescriptionValue(),
-            "",
-            "Description reset successfully",
-            "Description not cleared"
-    );
-}
-
+        AssertionUtils.assertEqualsWithMessage(
+                editProductPage.getProductDescriptionValue(),
+                "",
+                "Description reset successfully",
+                "Description not cleared"
+        );
+    }
 }
