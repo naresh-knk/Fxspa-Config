@@ -1,5 +1,6 @@
 package com.idsnext.steps;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import com.idsnext.pages.AppointmentReportPage;
 import com.idsnext.pages.NavigationPage;
@@ -24,9 +25,18 @@ public class ReportNavigationSteps {
         navigationPage.clickModule(module);
     }
 
-    public void configureFiltersAndGenerate() {
+    public void 
+    configureFiltersAndGenerate() {
         reportPage.clickCalender();
         reportPage.clickCalenderDate();
         reportPage.clickGenerate();
     }
+
+     public void generate() {
+        reportPage.clickGenerate();
+    }
+
+  public void addText() {
+    reportPage.addGuest();
+}
 }

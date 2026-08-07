@@ -73,10 +73,6 @@ public class BillPrintAuditPage extends BasePage{
         wait.until(ExpectedConditions.elementToBeClickable(bRefusal)).click();
     }
 
-//     public void clickOutlets() {
-//         waitForAngularIdle();
-//         selectFromMatDropdownByIndex(outlets, 0);
-//     }
 
 public void clickCalender() {
 

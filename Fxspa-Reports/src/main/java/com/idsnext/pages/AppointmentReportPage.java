@@ -43,6 +43,7 @@ public class AppointmentReportPage extends BasePage {
 
     private By reportTable = By.xpath("//tr[1]");
 private By leftArrow = By.xpath("//button[@aria-label='Previous month']");
+private By totalGuest=By.xpath("//input[@placeholder='Total Guest in Hotel']");
 
     // ===== Constructor =====
     public AppointmentReportPage(WebDriver driver) {
@@ -59,6 +60,7 @@ private By leftArrow = By.xpath("//button[@aria-label='Previous month']");
         waitForAngularIdle();
     }
 
+
    public void clickRandom() {
     try {
         if (!driver.findElements(randomIcon).isEmpty()) {
@@ -70,6 +72,10 @@ private By leftArrow = By.xpath("//button[@aria-label='Previous month']");
         wait.until(ExpectedConditions.elementToBeClickable(randomIconNew)).click();
     }
 }
+
+    public void addGuest(){
+        type(totalGuest, "10");
+    }
 
     public void clickReportSLabel() {
         waitForAngularIdle();

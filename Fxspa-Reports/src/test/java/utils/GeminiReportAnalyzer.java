@@ -13,7 +13,6 @@ import java.util.Scanner;
 
 public class GeminiReportAnalyzer {
 
-    // ===== FIXED: Hardcoded fallback key completely removed to pass GitHub Push Protection =====
     private static String apiKey = System.getenv("GEMINI_API_KEY"); 
     private static final String MODEL_NAME = "gemini-2.5-flash"; 
 
